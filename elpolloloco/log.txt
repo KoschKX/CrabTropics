@@ -1,41 +1,60 @@
-12:00 
-	started project.
-	looking for some graphics.
+22. Apr, 2025:
 
-12:20
-	set up project structure 
-	set up html
+	12:00 
+		started project.
+		looking for some graphics.
 
-13:30
-	watching graphics loading video
-	image won't load. probably it's has to be loaded first? It doesn't work like in the video.
-	added onload function. unbind after first load, to prevent recursion. 
+	12:20
+		set up project structure 
+		set up html
 
-13:40
-	watching classes videos
+	13:30
+		watching graphics loading video
+		image won't load. probably it's has to be loaded first? It doesn't work like in the video.
+		added onload function. unbind after first load, to prevent recursion. 
 
-14:30
-	background is one layer. 
-	separating foreground from background
-	separating clouds images
+	13:40
+		watching classes videos
 
-16:00
-	updated world class to load new images, with attention to order.
+	14:30
+		background is one layer. 
+		separating foreground from background
+		separating clouds images
 
-17:00
-	Break. Best friend needs help with her US Visa application.
+	16:00
+		updated world class to load new images, with attention to order.
 
-18:00
-	modified code to allow for enemy variants. same for clouds.
+	17:00
+		break. best friend needs help with her US Visa application.
 
-19:00 
-	movement code.
-	i want one screen, like a classic arcade game. 
-	blocked player from moving off the screen.
+	18:00
+		modified code to allow for enemy variants. same for clouds.
 
-20:00 
-	jumping
+	19:00 
+		movement code.
+		i want one screen, like a classic arcade game. 
+		blocked player from moving off the screen.
 
-20:30
-	collision boxes
-		
+	20:00 
+		jumping. 
+		animation is a little quirky.
+
+	20:30
+		collision boxes
+			
+	23:00
+		hit detection code. doesn't work so great.
+		adding falling condition to the top collision. seems to work.
+		tired. 
+
+23. Apr, 2025:
+
+	09:00
+		status bar in the video doesn't seem to do what I need.
+		using a text-based solution. ascii for the zelda hearts.
+
+	09:30
+		teacher said, zoom meeting is at 11:30. I have time to add a GAME OVER screen. :D
+
+	10:00
+		game works okay. the graphics flicker when loaded from a webpage. :(
