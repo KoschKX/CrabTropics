@@ -1,75 +1,125 @@
-body{
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-
-	margin: 0;
-	padding: 0;
-
-	padding: 3em;
+:root{
+	--border-radius: 4px;
+	--border-color: #000;
 }
 
-h1{
-	margin-top: 0;
-}
-h1.title{
-	color: #bfbfbf;
-}
+/* LAYOUT */
 
-textarea#msg{
-	width: 100%;
-	min-height: 25vh;
-	margin-top: 0.5em;
-	margin-bottom: 1em;
-	padding-top: 1em;
-	padding-bottom: 1em;
+	body{
+	    display: flex;
+	    flex-direction: row;
+	    align-items: center;
+	    margin: 0;
+	    font-family: monospace;
+	    background-color: #000;
+	    padding: 3em;
+	    justify-content: center;
+	    min-height: 90vh;
+	}
 
-	resize: vertical;
+	#main{
+		width: 100%;
+		max-width: 800px;
 
-	text-align: center;
-}
+	    padding: 2em;
+	    background: #ffffffde;
+	    border-radius: var(--border-radius);
+	}
 
-.splash_holder{
-	width: 100%;
-    overflow: hidden;
-    position: relative;
-    aspect-ratio: 19 / 6;
-    border: 1px solid #000;
-}
-.splash_holder::after{
-    content: "";
-    background: url(./light-mesh.png);
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    opacity: 0.33;
-}
+/* TEXT */
 
-img#splash{
-	width: calc(100% + 2px);
-	height: 100%;
-	object-fit: cover;
-	object-position: center;
-}
+	h1{
+		margin-top: 0;
+	}
+	h1.title{
+		opacity: 0.5;
+	}
 
-#interface{
-	width: 100%;
-}
 
-.control{
-	margin-bottom: 0.5em;
-}
+/* SPLASH */
 
-.kontobar{
-	margin-top: 1em;
-	display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-}
+	.splash_holder{
+		width: 100%;
+	    overflow: hidden;
+	    position: relative;
+	    aspect-ratio: 19 / 6;
+	    border: 1px solid var(--border-color);
+	    border-radius: var(--border-radius);
+	}
+	.splash_holder::after{
+	    content: "";
+	    background: url(./light-mesh.png);
+	    width: 100%;
+	    height: 100%;
+	    position: absolute;
+	    z-index: 1;
+	    left: 0;
+	    top: 0;
+	    opacity: 0.33;
+	}
 
-.right{
-	text-align: right;
-}
+/* BACKGROUND */
+
+	#bg{
+		background: url(./scrooge.jpg);
+		width: 100%;
+	    height: 100%;
+	    position: fixed;
+	    left: 0;
+	    top: 0;
+	    z-index: -1;
+	    opacity: 0.5;
+	}
+	#bg::after{
+	    content: "";
+	    background: url(./dark-mesh.png);
+	    width: 100%;
+	    height: 100%;
+	    position: absolute;
+	    z-index: 1;
+	    left: 0;
+	    top: 0;
+	    opacity: 0.33;
+	}
+
+	img#splash{
+		width: calc(100% + 2px);
+		height: 100%;
+		object-fit: cover;
+		object-position: center;
+	}
+
+/* UI */
+
+	#interface{
+		width: 100%;
+	}
+
+	.control{
+		margin-top: 0.25em;
+		margin-bottom: 0.25em;
+	}
+
+	.kontobar{
+		margin-top: 1em;
+		display: flex;
+	    flex-direction: row;
+	    justify-content: space-between;
+	}
+
+	.right{
+		text-align: right;
+	}
+
+	textarea#msg{
+		width: 100%;
+		min-height: 25vh;
+		margin-top: 0.5em;
+		margin-bottom: 1em;
+		padding-top: 1em;
+		margin-bottom: 1.5em;
+
+		resize: vertical;
+
+		text-align: center;
+	}

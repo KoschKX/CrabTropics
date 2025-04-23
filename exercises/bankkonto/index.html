@@ -9,38 +9,41 @@
     <script src="script.js"></script>
 </head>
 <body>
-
-    <div>
-        <h1 class="title">Bankkonto</h1>
-    </div>
-
-    <div class="splash_holder">
-        <img id="splash" src="mrkrabs.jpg" />
-    </div>
-    
-    <div id="interface">
-       
-        <div class="kontobar">
-            <div class="right">
-                <label for="konten">Konten:</label>
-                <select id="konten"><option value="">------------</option></select>
-            </div>
-            <div class="right">
-                Kontostand: &nbsp;<span id="kontostand">€0</span>
-            </div>
-        </div>
-
-        <hr>
-
-        <textarea id="msg" readonly></textarea>
+    <div id="main">
 
         <div>
-            <input  class="control" id="beitrag" type="text" placeholder="beitrag" />
-            <button class="control" id="einzahlen">einzahlen</button>
-            <button class="control" id="auszahlen">auszahlen</button>
-            <button class="control" id="abfragen">abfragen</button>
-            <button class="control" id="einstellen">Neue Konto einstellen</button>
+            <h1 class="title">Bankkonto</h1>
+        </div>
+
+        <div class="splash_holder">
+            <img id="splash" src="mrkrabs.jpg" />
+        </div>
+        
+        <div id="interface">
+           
+            <div class="kontobar">
+                <div class="right">
+                    <label for="konten">Konten:</label>
+                    <select id="konten"><option value="">------------</option></select>
+                </div>
+                <div class="right">
+                    Kontostand: &nbsp;<span id="kontostand">€0</span>
+                </div>
+            </div>
+
+            <hr>
+
+            <textarea id="msg" readonly></textarea>
+
+            <div>
+                <input  class="control" id="beitrag" type="text" placeholder="beitrag" />
+                <button class="control" id="einzahlen">einzahlen</button>
+                <button class="control" id="auszahlen">auszahlen</button>
+                <button class="control" id="abfragen">abfragen</button>
+                <button class="control" id="einstellen">Neue Konto einstellen</button>
+            </div>
         </div>
     </div>
+    <div id="bg"></div>
 </body>
 </html>
