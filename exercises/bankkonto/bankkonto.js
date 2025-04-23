@@ -9,27 +9,18 @@ class Bankkonto {
   }
 
   einzahlen(amount) {
-    if (amount <= 0) {
-      console.log('Deposit must be positive.');
-      return;
-    }
-
+    if (amount <= 0) { return; }
     this.kontostand += amount;
-
     this.recordTransaction('deposit', amount);
   }
 
   auszahlen(amount) {
-    if (amount <= 0) { console.log('Withdrawal must be positive.'); return; }
-    if (amount > this.kontostand) { console.log('Nah man, you\'re too broke.'); return; }
-
+    if (amount <= 0) { return; }
     this.kontostand -= amount;
-
     this.recordTransaction('withdrawal', -amount);
   }
 
   abfragen() {
-    console.log('Account status for '+ this.benutzer +': €'+ this.kontostand.toFixed(2));
     return this.kontostand;
   }
 
@@ -46,21 +37,6 @@ class Bankkonto {
       kontostand: this.kontostand,
       zeit
     });
-
-    switch(action){
-      case 'deposit': 
-        if(amount>1999.99){
-          console.log('That\'s the real cheeez, man.');
-        }else{
-          console.log('More muny.');
-        }
-        break;
-      case 'withdrawal':
-        if(amount>2000){
-          console.log('Gotta pay dem bills.');
-        }
-        break;
-    }
   }
 
 }

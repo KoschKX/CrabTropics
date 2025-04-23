@@ -2,4 +2,67 @@ body{
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+
+	margin: 0;
+	padding: 0;
+
+	padding: 3em;
+}
+
+h1{
+	margin-top: 0;
+}
+h1.title{
+	color: #bfbfbf;
+}
+
+textarea#msg{
+	width: 100%;
+	min-height: 25vh;
+	margin-top: 0.5em;
+	margin-bottom: 1em;
+
+	resize: vertical;
+
+	text-align: center;
+}
+
+.splash_holder{
+	width: 100%;
+    overflow: hidden;
+    position: relative;
+    aspect-ratio: 19 / 6;
+}
+.splash_holder::after{
+    content: "";
+    background: url(./light-mesh.png);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    opacity: 0.33;
+}
+
+img#splash{
+	width: 100%;
+	 height: 100%;
+	object-fit: cover;
+	object-position: center;
+}
+
+#interface{
+	width: 100%;
+}
+
+.right{
+	text-align: right;
+}
+
+.kontobar{
+	margin-top: 1em;
+	display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }

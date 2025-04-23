@@ -6,9 +6,41 @@
     <title>Bankkonto</title>
     <link rel="stylesheet" href="style.css">
     <script src="bankkonto.js"></script>
+    <script src="script.js"></script>
 </head>
 <body>
-    <h1>Bankkonto</h1>
-    <img src="mrkrabs.jpg" />
+
+    <div>
+        <h1 class="title">Bankkonto</h1>
+    </div>
+
+    <div class="splash_holder">
+        <img id="splash" src="mrkrabs.jpg" />
+    </div>
+    
+    <div id="interface">
+       
+        <div class="kontobar">
+            <div class="right">
+                <label for="konten">Konten:</label>
+                <select id="konten"><option value="">------------</option></select>
+            </div>
+            <div class="right">
+                Kontostand: &nbsp;<span id="kontostand">€0</span>
+            </div>
+        </div>
+
+        <hr>
+
+        <textarea id="msg" readonly></textarea>
+
+        <div>
+            <input id="beitrag" type="text" placeholder="beitrag" />
+            <button id="einzahlen">einzahlen</button>
+            <button id="auszahlen">auszahlen</button>
+            <button id="abfragen">abfragen</button>
+            <button id="einstellen">Neue Konto einstellen</button>
+        </div>
+    </div>
 </body>
 </html>
