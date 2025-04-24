@@ -4,10 +4,8 @@ class Character extends MovableObject{
 	category = 'character';
 	world;
 
-	dead = false;
-	hurt = false;
 	health = 3;
-	lastHit = 0;
+	starthealth = 3;
 
 	IMAGES_IDLE = [
 		'./img/pirate/IDLE_000.png',
@@ -42,9 +40,9 @@ class Character extends MovableObject{
 		'./img/pirate/HURT_001.png',
 		'./img/pirate/HURT_002.png',
 		'./img/pirate/HURT_003.png',
-		'./img/pirate/HURT_004.png',
-		'./img/pirate/HURT_005.png',
-		'./img/pirate/HURT_006.png',
+		//'./img/pirate/HURT_004.png',
+		//'./img/pirate/HURT_005.png',
+		//'./img/pirate/HURT_006.png',
 	];
 
 	IMAGES_DIE = [
@@ -56,13 +54,8 @@ class Character extends MovableObject{
 		'./img/pirate/DIE_006.png',
 	];
 
-	currImage = 0;
-	currImageSet = null;
-
 	speed = 3;
-	grounded = true;
-	falling = false;
-	jumping = false;
+
 
 	box = [
 		this.width*0.25,
@@ -78,32 +71,19 @@ class Character extends MovableObject{
 		this.world = world;
 		this.currImageSet = this.IMAGES_IDLE;
 		this.loadImages(this.currImageSet);
-		this.animate();
+		this.init();
 
 	}
 
-	animate() {
+	init() {
 		this.handleGravity();
-	    setInterval(() => { this.handleAnimation(); }, 1000 / 10 );
+	    setInterval(() => { this.handleAnimation(); }, 1000 / 24 );
 	    setInterval(() => { this.handleControls(); }, 1000 / 60 );
+	    setInterval(() => { this.main(); }, 1000 / 60 );
 	}
 
-	changeAnimation(anim){
-		if(this.currImageSet!=anim){
-			this.currImageSet=anim;
-			this.loadImages(anim);	
-		}
-	}
+	main() { 
 
-	playAnimation(anim){
-		if(anim){
-	    	let i = this.currImage % anim.length;
-	        let path = anim[i];
-	        this.img.src = this.imageCache[path];
-	        if(!this.dead || i < anim.length-1){
-	        	this.currImage++;
-	    	}
-	    }
 	}
 
 	handleAnimation(){
@@ -111,7 +91,7 @@ class Character extends MovableObject{
 
 		if(this.dead){
 			this.changeAnimation(this.IMAGES_DIE);
-		}else if(this.hurt){
+		}else if(this.hurt && !this.invincible){
 			this.changeAnimation(this.IMAGES_HURT);
 		}else{
 			if(this.jumping){
@@ -138,93 +118,6 @@ class Character extends MovableObject{
 		}
 		if(this.world.keyboard.SPACE && !this.isAboveGround()){
 			this.jump();
-		}
-	}
-
-	handleGravity(){
-		setInterval(() => {
-			if(this.isAboveGround() || this.speedY > 0){ 
-				this.y -= this.speedY;
-				this.speedY -= this.acceleration;
-				this.jumping = false;
-				if(this.speedY > 0){
-					this.falling = false;
-				}else{
-					this.falling = true; 
-				}
-			}else{
-				this.falling = false;
-			}
-			if(this.isAboveGround()  || this.speedY == 0){
-				this.jumping = true;
-			}
-		}, 1000 / 60);
-	}
-
-	isAboveGround(){
-		return this.y < this.world.ground;
-	}
-
-	moveLeft(){
-		if(this.x<0-(this.width*0.5)){return;}
-		if(this.currDirection==1){ this.x-=this.width*0.25; }
-		this.x -= this.speed;
-        this.currDirection = 0;     
-	}
-
-	moveRight(){
-		if(this.x>740-(this.width*0.5)){return;}
-		if(this.currDirection==0){ this.x+=this.width*0.25; }
-		this.x += this.speed;
-		this.currDirection = 1;     
-	}
-
-	jump(){
-		if(!this.isAboveGround()){
-			this.speedY = 20;
-			this.jumping = true;
-		}
-	}
-
-	isHurt(){
-		let timepassed = new Date().getTime() - this.lastHit;
-		timepassed = timepassed / 1000;
-		return timepassed < 1;
-	}
-
-	deadTime(inSeconds) {
-		if (this.dead) {
-			let timepassed = new Date().getTime() - this.lastHit;
-			timepassed = timepassed / 1000; 
-			if(inSeconds){
-				timepassed = timepassed.toFixed(0);
-			}
-			return timepassed;
-		}
-		return -1;
-	}
-
-	revive(){
-		this.dead=false;
-		this.health=3;
-		this.hurt=true;
-	}
-
-	isHit(){
-		if(!this.hurt){
-			this.hurt=true;
-
-			this.health--;
-			if(this.health < 0){
-				this.health = 0;
-			} else {
-				this.lastHit = new Date().getTime();
-			}
-
-			if(this.health==0){
-				this.dead = true;
-			}
-			//console.log('hurt: '+this.health);
 		}
 	}
 

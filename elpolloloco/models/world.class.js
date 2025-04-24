@@ -9,7 +9,7 @@ class World{
 	ctx;
 
 	debug = false;
-	cache = true;
+	cache = false;
 
 	constructor(cvs, keyboard){
     	this.ctx = cvs.getContext('2d');
@@ -35,15 +35,24 @@ class World{
 			this.level.enemies.forEach((enemy) => {
 				if(this.character.isColliding(enemy)){
 					let dir = this.character.getCollisionDirection(enemy);
-					
 					if(this.debug){
 						console.log('Collision with ' + enemy.name + " : "+dir);
 					}
-					
-					if(this.character.falling && dir=='top' && enemy instanceof Crab){
-						enemy.isHit();
+					if(
+						this.character.falling && 
+						dir=='top' && 
+						enemy instanceof Crab
+					){
+						//if(!enemy.dead){
+							this.character.bounce(enemy);
+							enemy.isHit();
+						//}
 					}else{
-						if(!enemy.dead && ( dir=='left' || dir=='right' ) && enemy instanceof Crab){
+						if(
+							(!this.character.hurt && !this.character.hurt && !this.character.invincible) && (!enemy.dead && !enemy.hurt) && 
+							( dir=='left' || dir=='right' ) && 
+							enemy instanceof Crab
+						){
 							this.character.isHit();
 						}
 					}
@@ -57,13 +66,22 @@ class World{
 
 		this.ctx.drawImage(this.character.img, this.character.x, this.character.y, this.character.width, this.character.height);
 
-		this.addToMap(this.level.sky);
+		
+
+		this.addToMap(this.level.backgroundA);
 		this.addObjectsToMap(this.level.clouds);
 
-		this.addToMap(this.level.background);
+		this.addToMap(this.level.backgroundB);
+
+		this.addObjectsToMap(this.level.enemies.filter(enemy => enemy.name === 'Ship'));
+
+		this.addToMap(this.level.backgroundC);
+
+		this.addObjectsToMap(this.level.enemies.filter(enemy => enemy.dead && enemy.name === 'Crab'));
+
 		this.addToMap(this.character);
 
-		this.addObjectsToMap(this.level.enemies);
+		this.addObjectsToMap(this.level.enemies.filter(enemy => !enemy.dead && enemy.name === 'Crab'));
 
 		this.printStatsBar();
 
@@ -78,17 +96,22 @@ class World{
 		let statusText = '';
 		if(this.character.dead){
 			this.ctx.font = "bold 60px Arial";
-			this.ctx.textAlign = "center"; 
-			this.ctx.textBaseline = "middle";
-
 			this.ctx.fillStyle = "white";   
 			this.ctx.strokeStyle = "black";  
 			this.ctx.lineWidth = 1;     
 
+			this.ctx.textAlign = "center"; 
+			this.ctx.textBaseline = "middle";
+
 			let cTime = (this.character.deadTime(true));
 			if(cTime<=10){
 				statusText='CONTINUE? '+(10-cTime);
-				if(this.keyboard.ENTER){
+				if(this.keyboard.SPACE){
+					this.level.enemies.forEach((enemy) => {
+						enemy.health=1;
+						enemy.isHit();
+						enemy.revive(3000);
+					});
 					this.character.revive();
 				}
 			}
@@ -96,13 +119,16 @@ class World{
 				this.gameover=true;
 				statusText='GAME OVER';
 			}
- 
 			this.ctx.fillText(statusText, this.cvs.width*.5, this.cvs.height*.5);
 			this.ctx.strokeText(statusText, this.cvs.width*.5, this.cvs.height*.5);
 		}else{
 			this.ctx.font = "30px Arial";
 			this.ctx.fillStyle = "red"; 
-			this.ctx.strokeStyle = "white";   
+			this.ctx.strokeStyle = "white"; 
+			this.ctx.lineWidth = 1;  
+
+			this.ctx.textAlign = "left"; 
+			this.ctx.textBaseline = "middle";
 
 			for(let i = 0; i<this.character.health; i++){
 				statusText+='♥';
@@ -120,6 +146,10 @@ class World{
 	}
 
 	addToMap(mo) {
+
+		// FLICKER IF INVINCIBLE 
+			if(mo.invincible&&mo.flicker(1)){ return ;}
+	    
 	    mo.cvs = this.cvs; 
 	    this.ctx.save(); 
 	    mo.handleFlip(this.ctx);
@@ -127,8 +157,8 @@ class World{
 	    if(this.debug){
 	    	mo.drawCollider(this.ctx);
 	    }
-	    
 	    this.ctx.restore(); 
+	   
 	}
 
 

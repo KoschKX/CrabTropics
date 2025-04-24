@@ -1,15 +1,17 @@
 class Level{
 	enemies;
 	clouds;
-	sky;
-	background;
+	backgroundA;
+	backgroundB;
+	backgroundC;
 	ground;
 
-	constructor(enemies, clouds, sky, background, ground){
+	constructor(enemies, clouds, backgroundA, backgroundB, backgroundC, ground){
 		this.enemies = enemies;
 		this.clouds = clouds;
-		this.sky = sky;
-		this.background = background;
+		this.backgroundA = backgroundA;
+		this.backgroundB = backgroundB;
+		this.backgroundC = backgroundC;
 		this.ground = ground;
 	}
 }

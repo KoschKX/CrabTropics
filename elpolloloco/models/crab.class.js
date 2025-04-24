@@ -3,6 +3,7 @@ class Crab extends MovableObject{
 	name = 'Crab';
 
 	dead = false;
+	dying = false;
 
 	IMAGES_MOVEA = [
 		'./img/crabA/MOVE_001.png',
@@ -15,6 +16,7 @@ class Crab extends MovableObject{
 		'./img/crabA/MOVE_008.png',
 		'./img/crabA/MOVE_009.png',
 	];
+	IMAGES_MOVESA_OFFSETS = [ 0, -2, -5, -5, 4, 0, 1, 2, 5 ];
 
 	IMAGES_MOVEB = [
 		'./img/crabB/MOVE_001.png',
@@ -27,6 +29,7 @@ class Crab extends MovableObject{
 		'./img/crabB/MOVE_008.png',
 		'./img/crabB/MOVE_009.png',
 	];
+	IMAGES_MOVESB_OFFSETS = [ 0, -2, -4, -6, -4, -2, 0, 2, 4 ];
 
 	IMAGES_DIEA = [
 		'./img/crabA/DIE_001.png',
@@ -52,9 +55,7 @@ class Crab extends MovableObject{
 		'./img/crabB/DIE_009.png',
 	];
 
-
-	currImage = 0;
-	currImageSet = null;
+	legsOffset = 0;
 
 	box = [
 		this.width*0.1,
@@ -68,11 +69,11 @@ class Crab extends MovableObject{
 		switch(variant){
 			case 0:
 				super().loadImage('./img/crabA/MOVE_000.png');
-				this.currImageSet=this.IMAGES_MOVEA;
+				this.changeAnimation(this.IMAGES_MOVEA,this.IMAGES_MOVESA_OFFSETS);
 				break;
 			case 1:
 				super().loadImage('./img/crabB/MOVE_000.png');
-				this.currImageSet=this.IMAGES_MOVEB;
+				this.changeAnimation(this.IMAGES_MOVEB,this.IMAGES_MOVESB_OFFSETS);
 				break;
 			default:
 				console.log('Variant doesn\'t exist');
@@ -88,49 +89,28 @@ class Crab extends MovableObject{
 
 		this.speed = this.random(0.5, 1);
 
+		this.originalspeed = this.speed;
+
 		this.loadImages(this.currImageSet);
-		this.animate();
+		this.init();
 
 	}
 
-	isHit() {
-		if(!this.dead){
-			this.dead=true;
-			this.anim_change=true;
+	init() {
+	    setInterval(() => { this.handleAnimation(); }, 1000 / 24 );
+	    setInterval(() => { this.handleMovement(); }, 1000 / 60 );
+	    setInterval(() => { this.main(); }, 1000 / 60 );
+	}
+
+	main(){
+		if(this.dead){
+			this.revive(3000);
 		}
 	}
-
-	animate() {
-	    setInterval(() => {
-	    	this.handleAnimation();
-	    }, 1000 / 30);
-
-	    setInterval(() => {
-	    	this.handleMovement();
-		}, 1000 / 60);
-	}
-
-	changeAnimation(anim){
-		if(this.currImageSet!=anim){
-			this.currImageSet=anim;
-			this.loadImages(anim);	
-		}
-	}
-
-	playAnimation(anim){
-		if(anim){
-	    	let i = this.currImage % anim.length;
-	        let path = anim[i];
-	        this.img.src = this.imageCache[path];
-	        if(!this.dead || i < anim.length-1){
-	        	this.currImage++;
-	    	}
-	    }
-	}
-
 
 	handleAnimation(){
-		if(this.dead){
+		//this.hurt=this.isHurt();
+		if(this.dead||this.hurt){
 			switch(this.variant){
 				case 0:
 					this.changeAnimation(this.IMAGES_DIEA);
@@ -141,44 +121,44 @@ class Crab extends MovableObject{
 				default:
 					break;
 			}
-			this.dying=true;
 		}else{
 			switch(this.variant){
 				case 0:
 					this.changeAnimation(this.IMAGES_MOVEA);
 					break;
 				case 1:
-					this.changeAnimation(this.IMAGES_MOVEB);
+					this.changeAnimation(this.IMAGES_MOVEB,this.IMAGES_MOVESB_OFFSETS);
 					break;
 				default:
 					break;
 			}
 		}
 		this.playAnimation(this.currImageSet);
+
+		if(this.currImageSet==this.IMAGES_MOVEB || this.currImageSet==this.IMAGES_MOVEA){
+			this.applyAnimationOffsets(this.currOffsetSet);
+		}
+
 	}
 
 	handleMovement(){
 		if(this.dead){ return; }
+
 	    if(this.currDirection===0){
 	    	this.moveLeft();
 	    }
 	    if(this.currDirection===1){
 	    	this.moveRight();
 	    }
+
 	    if(this.currDirection===0&&this.x<this.width){
 	    	this.currDirection=1;
 		}
 	    if(this.currDirection===1&&this.x>720-this.width){
 	    	this.currDirection=0;
 		}
+
 	}
 
-	moveLeft(){
-		this.x-=this.speed;
-	}
-
-	moveRight(){
-		this.x+=this.speed;
-	}
 
 }
