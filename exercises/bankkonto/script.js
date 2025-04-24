@@ -152,6 +152,7 @@ function log(msg='',konto=''){
       tagline = '['+date+']'+' | '+'['+konto+']'
     }
     box_msg.innerHTML+=tagline+'\n';
+    // box_msg.innerHTML+= '---\n';
     box_msg.innerHTML+=msg;
     box_msg.innerHTML+= '\n---\n';
     box_msg.innerHTML+= '\n';

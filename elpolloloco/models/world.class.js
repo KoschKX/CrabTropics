@@ -9,14 +9,22 @@ class World{
 	ctx;
 
 	debug = false;
+	cache = true;
 
 	constructor(cvs, keyboard){
     	this.ctx = cvs.getContext('2d');
     	this.cvs = cvs;
-	    this.character.img.onload = () => {
-	        this.draw();
-	        this.character.img.onload = null;
+
+
+  		if(this.cache){
+    		this.draw();
+    	}else{
+	    	this.character.img.onload = () => {
+		        this.draw();
+		        this.character.img.onload = null;
+		    };
 	    };
+	   
 	    this.keyboard = keyboard;
 	   	
 	   	this.checkCollisions();

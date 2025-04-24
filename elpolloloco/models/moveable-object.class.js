@@ -21,14 +21,12 @@ class MovableObject{
 		this.img.src = path;
 	}
 
-	loadImages(arr){
-		this.imageCache = {};
+	loadImages(arr,key){
+		//this.imageCache = {};
 		arr.forEach((path) => {
 			const img = new Image(); 
 			img.src = path;
 			this.imageCache[path] = path;
-			//this.img.onload = () => console.log(' + path + 'loaded');
-			//this.img.onerror = () => console.error('Failed to load '+path);
 		});
 	}
 
