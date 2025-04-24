@@ -117,9 +117,25 @@
 		margin-top: 0.5em;
 		margin-bottom: 1em;
 		padding-top: 1em;
-		margin-bottom: 1.5em;
+		margin-bottom: 0.25em;
 
 		resize: vertical;
 
 		text-align: center;
 	}
+
+/* ERROR */
+
+	input,
+	select,
+	button{
+    	outline: 2px dotted transparent;
+		transition: outline-color 1s ease-out;
+	}
+	
+	input.animated,
+	select.animated,
+	button.animated {
+	  	outline-color: red;
+	}
+

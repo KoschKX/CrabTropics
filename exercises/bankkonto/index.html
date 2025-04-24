@@ -24,7 +24,7 @@
             <div class="kontobar">
                 <div class="right">
                     <label for="konten">Konten:</label>
-                    <select id="konten"><option value="">------------</option></select>
+                    <select id="konten"><option value="none">------------</option></select>
                 </div>
                 <div class="right">
                     Kontostand: &nbsp;<span id="kontostand">€0</span>
@@ -34,13 +34,16 @@
             <hr>
 
             <textarea id="msg" readonly></textarea>
+            <div style="text-align: center;"><button class="control" id="clear">Protokoll löschen</button></div>
+            <br>
 
             <div>
-                <input  class="control" id="beitrag" type="text" placeholder="beitrag" />
+                <input  class="control" id="eintrag" type="text" placeholder="eintrag" />
                 <button class="control" id="einzahlen">einzahlen</button>
                 <button class="control" id="auszahlen">auszahlen</button>
                 <button class="control" id="abfragen">abfragen</button>
                 <button class="control" id="einstellen">Neue Konto einstellen</button>
+
             </div>
         </div>
     </div>
