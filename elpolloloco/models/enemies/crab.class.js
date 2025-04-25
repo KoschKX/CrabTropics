@@ -1,8 +1,17 @@
-class Crab extends Character{
+class Crab extends Enemy{
 
 	name = 'Crab';
 
-	dead = false; dying = false;
+	height = 64; width = 128;
+
+	frameRate = 24; useGravity = false; 
+	speed = 3; frameRate = 24;
+
+	boxes = [
+				[this.width*0.25, this.height*0.25, this.width*0.5, this.height*0.5, 'red'],
+				[this.width*0.1, this.height*0.1, this.width*0.75, this.height*0.25, 'yellow']
+			]
+
 
 	IMAGES_MOVEA = [
 		'./img/crabA/MOVE_001.png',
@@ -54,24 +63,34 @@ class Crab extends Character{
 		'./img/crabB/DIE_009.png',
 	];
 
-	legsOffset = 0;
-
-	box = [
-		this.width*0.1,
-		this.height*0.1,
-		this.width*0.75,
-		this.height*0.25
-	];
-
 	constructor(variant){
+		super();
+		this.variant=variant;
+		
+		this.x = 200 + Math.random() * 500; this.y += 64;  
+		this.speed = this.random(0.5, 1); this.originalspeed = this.speed;
 
-		switch(variant){
+		this.init();
+	}
+
+	main(){
+		super.main();
+		
+		if(this.dead){
+			this.revive(3000);
+		}
+	}
+
+	init() {
+		super.init();
+
+		switch(this.variant){
 			case 0:
-				super().loadImage('./img/crabA/MOVE_000.png');
+				this.loadImage('./img/crabA/MOVE_000.png');
 				this.changeAnimation(this.IMAGES_MOVEA,this.IMAGES_MOVESA_OFFSETS);
 				break;
 			case 1:
-				super().loadImage('./img/crabB/MOVE_000.png');
+				this.loadImage('./img/crabB/MOVE_000.png');
 				this.changeAnimation(this.IMAGES_MOVEB,this.IMAGES_MOVESB_OFFSETS);
 				break;
 			default:
@@ -79,36 +98,16 @@ class Crab extends Character{
 				break;
 		}
 
-		this.variant = variant;
+		this.loadImage(this.currImageSet[0]);
+		this.changeAnimation(this.currImageSet, this.currOffsetSet);
 
-		this.height = 64;
-		this.width = 128
-		this.x = 200 + Math.random() * 500;
-		this.y += 64;
-
-		this.speed = this.random(0.5, 1);
-
-		this.originalspeed = this.speed;
-
+		this.currImageSet = this.IMAGES_IDLE;
 		this.loadImages(this.currImageSet);
-		this.init();
-
-	}
-
-	init() {
-	    setInterval(() => { this.handleAnimation(); }, 1000 / 24 );
-	    setInterval(() => { this.handleMovement(); }, 1000 / 60 );
-	    setInterval(() => { this.main(); }, 1000 / 60 );
-	}
-
-	main(){
-		if(this.dead){
-			this.revive(3000);
-		}
 	}
 
 	handleAnimation(){
-		//this.hurt=this.isHurt();
+		if(!this.world){ return; }
+
 		if(this.dead||this.hurt){
 			switch(this.variant){
 				case 0:
@@ -136,25 +135,6 @@ class Crab extends Character{
 
 		if(this.currImageSet==this.IMAGES_MOVEB || this.currImageSet==this.IMAGES_MOVEA){
 			this.applyAnimationOffsets(this.currOffsetSet);
-		}
-
-	}
-
-	handleMovement(){
-		if(this.dead){ return; }
-
-	    if(this.currDirection===0){
-	    	this.moveLeft();
-	    }
-	    if(this.currDirection===1){
-	    	this.moveRight();
-	    }
-
-	    if(this.currDirection===0&&this.x<this.width){
-	    	this.currDirection=1;
-		}
-	    if(this.currDirection===1&&this.x>720-this.width){
-	    	this.currDirection=0;
 		}
 
 	}

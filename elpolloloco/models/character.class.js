@@ -1,32 +1,36 @@
 class Character extends MovableObject{
 
-	name = ''; 
+	name = 'Character'; 
 
-	x = 120; y = 350;
-	width = 128; height = 128;
-	speed = 1; speedY = 0; acceleration =1;
-	
 	dead = false; hurt = false;
 	invincible = false; reviving = false;
 	health = 1; starthealth = 1;
 	lastHit = 0; lastFlicker = 0;
 
-	falling = false; jumping = false;
+	useGravity = true; falling = false; jumping = false;
 
-	box = [
-		this.width,
-		this.height,
-		this.width,
-		this.height
-	];
+	boxes = [
+				[0, 0, this.width, this.height, 'white'],
+			]
 
-	cvs; 
+	constructor(){
+		super();
+	}
+
+
+	init() {
+		super.init();
+	}
+
+	main(){
+		super.main();
+	}
 
 /* COLLISIONS */
 
-	getCollisionDirection(mo) {
-		const [bx, by, bw, bh] = this.box;
-		const [mx, my, mw, mh] = mo.box;
+	getCollisionDirection(mo,boxA,boxB) {
+		const [bx, by, bw, bh] = this.boxes[boxA];
+		const [mx, my, mw, mh] = mo.boxes[boxB];
 
 		const thisLeft = this.x + bx;
 		const thisRight = thisLeft + bw;
@@ -42,41 +46,59 @@ class Character extends MovableObject{
 		const overlapY = Math.min(thisBottom, moBottom) - Math.max(thisTop, moTop);
 
 		if (overlapX < overlapY) {
-			if (this.x < mo.x) return "left"; 
-			else return "right"; 
+			if (this.x < mo.x) return 4; 
+			else return 2; 
 		} else {
-			if (this.y < mo.y) return "top"; 
-			else return "bottom"; 
+			if (this.y < mo.y) return 1; 
+			else return 3; 
 		}
 	}
 
-	isColliding(mo) {
-		if(!mo || !mo.box){ return; }
-		return (
-			this.x + this.box[0] < mo.x + mo.box[0] + mo.box[2] &&
-			this.x + this.box[0] + this.box[2] > mo.x + mo.box[0] &&
-			this.y + this.box[1] < mo.y + mo.box[1] + mo.box[3] &&
-			this.y + this.box[1] + this.box[3] > mo.y + mo.box[1]
+	isColliding(mo,idxA,idxB) {
+		if(!this.world){ return; }
+		if(!this.boxes || !mo || !mo.boxes){ return; }
+
+		if(idxA>this.boxes.length-1 || idxB>mo.boxes.length-1){ return; }
+
+		let dir;
+		let isColliding = (
+			this.x + this.boxes[idxA][0] < mo.x + mo.boxes[idxB][0] + mo.boxes[idxB][2] &&
+			this.x + this.boxes[idxA][0] + this.boxes[idxA][2] > mo.x + mo.boxes[idxB][0] &&
+			this.y + this.boxes[idxA][1] < mo.y + mo.boxes[idxB][1] + mo.boxes[idxB][3] &&
+			this.y + this.boxes[idxA][1] + this.boxes[idxA][3] > mo.y + mo.boxes[idxB][1]
 		);
-	}
 
-	drawCollider(ctx){
-		if(this instanceof Character || this instanceof Crab){
-			ctx.beginPath();
-			ctx.lineWidth = "1";
-			
-			if (this instanceof Character) {
-				ctx.strokeStyle = "yellow";
-			} else if (this instanceof Crab) {
-				ctx.strokeStyle = "red";
+		if(isColliding){  
+			dir = this.getCollisionDirection(mo,idxA,idxB);
+			if(this.world.debug){
+				let tdir = '';
+				if(dir==1){ tdir = 'top'; }
+				if(dir==2){ tdir = 'right'; }
+				if(dir==3){ tdir = 'bottom'; }
+				if(dir==4){ tdir = 'left'; }
+				console.log('Collision with ['+this.name+':'+idxA+']['+mo.name+':'+idxB+']'+' : '+tdir);
 			}
-				
-			ctx.rect(this.box[0], this.box[1],this.box[2],this.box[3]);
-			ctx.stroke();
+		}else{
+			dir=0; 
 		}
+
+		return dir;
 	}
 
+	drawCollider(ctx, idx){
+		if(!ctx || !this.boxes || this.boxes.length<idx){ return; }
+		ctx.beginPath();
+		ctx.lineWidth = "1";
+		ctx.strokeStyle = this.boxes[idx][4];
+		ctx.rect(this.boxes[idx][0], this.boxes[idx][1],this.boxes[idx][2],this.boxes[idx][3]);
+		ctx.stroke();
+	}
 
+	drawColliders(ctx){
+		this.boxes.forEach((enemy,idx) => {
+			this.drawCollider(ctx, idx);
+		});
+	}
 
 /* SPRITE */
 
@@ -96,7 +118,11 @@ class Character extends MovableObject{
 		if(anim){
 	    	let i = this.currImage % anim.length;
 	        let path = anim[i];
+	        
+	        if(!this.imageCache[path]){ return; }
+
 	        this.img.src = this.imageCache[path];
+
 	        if(this.hurt||this.invincible){
 	        	if(this.health==0){
 		        	if(i == anim.length-1){
@@ -120,82 +146,55 @@ class Character extends MovableObject{
 	    }
 	}
 
-	applyAnimationOffsets(oset){
-		if(oset){
-			let i = this.currImage % this.currImageSet.length;
-			let off = oset[i];
-			let fscale = 100/this.width;
-			let foff = off*fscale;
-			if(this.currDirection===0){
-				this.x+=foff;
-			}
-			if(this.currDirection===1){
-				this.x-=foff;
-
-			}
-		}
-	}
-
-	handleFlip(ctx){
-		if (this.currDirection == 0) {
-	        ctx.translate(this.x + this.width, this.y); 
-	        ctx.scale(-1, 1); 
-	        ctx.drawImage(this.img, 0, 0, this.width, this.height); 
-	    } else {
-	        ctx.translate(this.x, this.y); 
-	        ctx.drawImage(this.img, 0, 0, this.width, this.height); 
-	    }
-	}
-
-
 /* MOVEMENT */
 
 	handleGravity(){
-		setInterval(() => {
-			if(this.isAboveGround() || this.speedY > 0){ 
-				this.y -= this.speedY;
-				this.speedY -= this.acceleration;
-				this.jumping = false;
-				if(this.speedY > 0){
-					this.falling = false;
-				}else{
-					this.falling = true; 
-				}
-			}else{
+		if(!this.world){ return; }
+		if((this.isAboveGround() || this.isOnGround()) || this.speedY > 0){ 
+			this.y -= this.speedY;
+			this.speedY -= this.acceleration;
+			this.jumping = false;
+			if(this.speedY > 0){
 				this.falling = false;
+			}else{
+				this.falling = true; 
 			}
-			if(this.isAboveGround()  || this.speedY == 0){
-				this.jumping = true;
-			}
-			if(!this.isAboveGround()){
-				this.y = this.world.ground;
-			}
-		}, 1000 / 60);
+		}else{
+			this.falling = false;
+		}
+		if(this.isAboveGround()  || this.speedY == 0){
+			this.jumping = true;
+		}
+		if(this.isAboveGround()  || this.speedY == 0){
+			this.jumping = true;
+		}
+		if(!this.isAboveGround()){
+			this.y = this.world.ground;
+		}
 	}
 
 	moveLeft(){
-		if(this.x<0-(this.width*0.5)){return;}
+		if(!this.world){ return; }
+		if(this.x<0-(this.width*0.5)){ return; }
 		if(this.currDirection==1){ this.x-=this.width*0.25; }
 		this.x -= this.speed;
         this.currDirection = 0;     
 	}
 
 	moveRight(){
-		if(this.x>740-(this.width*0.5)){return;}
+		if(!this.world){ return; }
+		if(this.x>this.world.cvs.width-(this.width*0.5)){ return; }
 		if(this.currDirection==0){ this.x+=this.width*0.25; }
 		this.x += this.speed;
 		this.currDirection = 1;     
 	}
 
 	jump(){
+		if(this.dead){ return; }
 		if(!this.isAboveGround()){
 			this.speedY = 20;
 			this.jumping = true;
 		}
-	}
-
-	isAboveGround(){
-		return this.y < this.world.ground;
 	}
 
 /* STATUS */

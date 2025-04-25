@@ -1,6 +1,7 @@
 class World{
-	player = new Player(this);
+	
 	level = level01;
+
 	keyboard;
 	ground = 350;
 	gameover = false;
@@ -9,56 +10,69 @@ class World{
 	ctx;
 
 	debug = false;
-	cache = false;
+	cache = true;
 
 	constructor(cvs, keyboard){
-    	this.ctx = cvs.getContext('2d');
+		this.ctx = cvs.getContext('2d');
     	this.cvs = cvs;
+	    this.keyboard = keyboard;
 
+	    this.level.setWorld(this);
+	    this.player = this.level.player;
 
+	    this.init();
+	}
+
+	init(){
   		if(this.cache){
     		this.draw();
     	}else{
-	    	this.player.img.onload = () => {
-		        this.draw();
-		        this.player.img.onload = null;
-		    };
+    		if(this.player.img){
+		    	this.player.img.onload = () => {
+			        this.draw();
+			        this.player.img.onload = null;
+			    };
+			}
 	    };
-	   
-	    this.keyboard = keyboard;
-	   	
-	   	this.checkCollisions();
+
+	    this.main();
+	}
+
+	main(){
+		this.checkCollisions();
 	}
 
 	checkCollisions(){
 		setInterval(() => {
 			this.level.enemies.forEach((enemy) => {
-				if(this.player.isColliding(enemy)){
-					let dir = this.player.getCollisionDirection(enemy);
-					if(this.debug){
-						console.log('Collision with ' + enemy.name + " : "+dir);
-					}
+				let colA = this.player.isColliding(enemy,0,0);
+				let colB = this.player.isColliding(enemy,1,1);
+				if(colB){
+					
 					if(
 						this.player.falling && 
-						dir=='top' && 
+						colB==1 && 
 						enemy instanceof Crab
 					){
+
 						if(!this.player.dead){
-						//if(!enemy.dead){
-							this.player.bounce(enemy.y-enemy.height*2);
-							enemy.isHit();
+							//if(!enemy.dead){
+								this.player.bounce(17.5, enemy.y-enemy.height);
+								enemy.isHit();
+							//}
 						}
-						//}
-					}else{
-						if(
-							(!this.player.hurt && !this.player.hurt && !this.player.invincible) && (!enemy.dead && !enemy.hurt) && 
-							( dir=='left' || dir=='right' ) && 
-							enemy instanceof Crab
-						){
-							this.player.isHit();
-						}
+						
 					}
-				}
+				}else if(colA){
+					if(
+						(!this.player.hurt && !this.player.hurt && !this.player.invincible) && (!enemy.dead && !enemy.hurt) && 
+						( colA==4 || colA==2 ) && 
+						enemy instanceof Crab
+					){
+						this.player.isHit();
+					}
+				};
+				
 			});
 		}, 1000 / 60);
 	}
@@ -66,9 +80,9 @@ class World{
 	draw() {
 		this.ctx.clearRect(0,0,this.cvs.width,this.cvs.height);
 
-		this.ctx.drawImage(this.player.img, this.player.x, this.player.y, this.player.width, this.player.height);
+		if(!this.player.img){ return false; }
 
-		
+		this.ctx.drawImage(this.player.img, this.player.x, this.player.y, this.player.width, this.player.height);
 
 		this.addToMap(this.level.backgroundA);
 		this.addObjectsToMap(this.level.clouds);
@@ -76,6 +90,8 @@ class World{
 		this.addToMap(this.level.backgroundB);
 
 		this.addObjectsToMap(this.level.enemies.filter(enemy => enemy.name === 'Ship'));
+
+		this.addObjectsToMap(this.level.effects.filter(effect => effect.name === 'Explosion'));
 
 		this.addToMap(this.level.backgroundC);
 
@@ -148,6 +164,8 @@ class World{
 	}
 
 	addToMap(mo) {
+		
+		//mo.world=this;
 
 		// FLICKER IF INVINCIBLE 
 			if(mo.invincible&&mo.flicker(1)){ return ;}
@@ -156,8 +174,8 @@ class World{
 	    this.ctx.save(); 
 	    mo.handleFlip(this.ctx);
 	    
-	    if(this.debug){
-	    	mo.drawCollider(this.ctx);
+	    if(this.debug && mo instanceof Character){
+	    	mo.drawColliders(this.ctx);
 	    }
 	    this.ctx.restore(); 
 	   

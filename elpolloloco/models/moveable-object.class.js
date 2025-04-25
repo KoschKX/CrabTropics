@@ -2,7 +2,7 @@ class MovableObject{
 
 	name = ''; 
 
-	x = 120; y = 350;
+	x = 120; y = 350; ground = 350;
 	width = 128; height = 128;
 	speed = 1; speedY = 0; acceleration =1;
 	
@@ -11,13 +11,39 @@ class MovableObject{
 	currImageSet = null; currOffsetSet = null;
 	img; cache; imageCache = [];
 
-	falling = false; bouncing = false;
+	useGravity = false; falling = false; bouncing = false;
 
-	cvs; 
+	world; cvs; 
 
-	main(){
+	frameRate=60;
 
+	gvtyInterval;
+	animInterval;
+	mainInterval;
+
+	currImageSet=[''];
+	currOffsetSet=[''];
+
+	stamp = 0;
+
+	constructor(world){
+		if(world){
+			this.world = world;
+			this.ground = world.ground;
+		}
+
+		this.stamp = new Date();
 	}
+
+	init(){
+		if(this.useGravity){
+			clearInterval(this.gvtyInterval); this.gvtyInterval = setInterval(() => { this.handleGravity(); }, 1000 / 60 );
+		}
+		clearInterval(this.animInterval); this.animInterval = setInterval(() => { this.handleAnimation(); }, 1000 / this.frameRate );
+	    clearInterval(this.mainInterval); this.mainInterval = setInterval(() => { this.main(); }, 1000 / 60 );
+	}
+
+	main(){}
 
 /* SPRITE */
 
@@ -26,17 +52,19 @@ class MovableObject{
 		this.img.src = path;
 	}
 
-	loadImages(arr,key){
-		//this.imageCache = {};
+	loadImages(arr){
+		if(!arr){ return; }
 		arr.forEach((path) => {
+			if(!path || path==''){ return; }
 			const img = new Image(); 
 			img.src = path;
 			this.imageCache[path] = path;
 		});
+		return arr;
 	}
 
-
 	handleFlip(ctx){
+		if(!this.img){ return; }
 		if (this.currDirection == 0) {
 	        ctx.translate(this.x + this.width, this.y); 
 	        ctx.scale(-1, 1); 
@@ -45,6 +73,10 @@ class MovableObject{
 	        ctx.translate(this.x, this.y); 
 	        ctx.drawImage(this.img, 0, 0, this.width, this.height); 
 	    }
+	}
+
+	handleAnimation(){
+		this.playAnimation(this.currImageSet);
 	}
 
 	changeAnimation(anim,offs=null){
@@ -65,6 +97,9 @@ class MovableObject{
 	        let path = anim[i];
 	        this.img.src = this.imageCache[path];
 	        this.currImage++;
+	        if(this.currOffsetSet){
+				this.applyAnimationOffsets(this.currOffsetSet);
+			}
 	    }
 	}
 
@@ -86,26 +121,25 @@ class MovableObject{
 /* MOVEMENT */
 
 	handleGravity(){
-		setInterval(() => {
-			if(this.isAboveGround() || this.speedY > 0){ 
-				this.y -= this.speedY;
-				this.speedY -= this.acceleration;
-				this.bouncing = false;
-				if(this.speedY > 0){
-					this.falling = false;
-				}else{
-					this.falling = true; 
-				}
-			}else{
+		if(!this.world){ return; }
+		if((this.isAboveGround() || this.isOnGround()) || this.speedY > 0){ 
+			this.y -= this.speedY;
+			this.speedY -= this.acceleration;
+			this.bouncing = false;
+			if(this.speedY > 0){
 				this.falling = false;
+			}else{
+				this.falling = true; 
 			}
-			if(this.isAboveGround()  || this.speedY == 0){
-				this.bouncing = true;
-			}
-			if(!this.isAboveGround()){
-				this.y = this.world.ground;
-			}
-		}, 1000 / 60);
+		}else{
+			this.falling = false;
+		}
+		if(this.isAboveGround()  || this.speedY == 0){
+			this.bouncing = true;
+		}
+		if(!this.isAboveGround()){
+			this.y = this.world.ground;
+		}
 	}
 
 	moveLeft(){
@@ -122,24 +156,35 @@ class MovableObject{
 		this.currDirection = 1;     
 	}
 
-	bounce(startpoint){
-		if(!this.isAboveGround()){
-			this.speedY = 15;
+	bounce(spd,point){
+		//if(!this.isAboveGround()){
+			this.speedY = spd;
 			this.bouncing = true;
-			if(startpoint){
-				this.y=startpoint;
+			if(point){
+				this.y=point;
 			}
-		}
+		//}
 	}
 
 	isAboveGround(){
-		return this.y < this.world.ground;
+		if(!this.world){ return; }
+		return this.y < this.world.ground
 	}
+
+	isOnGround(){
+		if(!this.world){ return; }
+		return this.y == this.world.ground
+	}
+
 
 /* UTILS */
 
 	random(min, max) {
 	  return min + Math.random() * (max - min);
+	}
+	
+	randomInt(min, max) {
+	  return Math.floor(Math.random() * (max - min + 1)) + min;
 	}
 
 }

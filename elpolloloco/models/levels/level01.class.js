@@ -1,4 +1,5 @@
 const level01 = new Level(
+	new Pirate(),
 	[
 		new Crab(0),
 		new Crab(1),
