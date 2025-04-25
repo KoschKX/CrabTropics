@@ -1,9 +1,8 @@
-class Crab extends MovableObject{
+class Crab extends Character{
 
 	name = 'Crab';
 
-	dead = false;
-	dying = false;
+	dead = false; dying = false;
 
 	IMAGES_MOVEA = [
 		'./img/crabA/MOVE_001.png',

@@ -1,4 +1,4 @@
-class Ship extends MovableObject{
+class Ship extends Character{
 
 	name = 'Ship';
 

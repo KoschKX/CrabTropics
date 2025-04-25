@@ -7,8 +7,7 @@ class Cloud extends MovableObject{
 	y = 50;
 	speed = 1;
 
-	randx = 720;
-	randy = 200;
+	randx = 720; randy = 200;
 	
 	constructor(variant,randx,randy){
 

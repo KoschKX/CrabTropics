@@ -1,124 +1,269 @@
 class Character extends MovableObject{
 
-	name = 'Character';
-	category = 'character';
-	world;
+	name = ''; 
 
-	health = 3;
-	starthealth = 3;
+	x = 120; y = 350;
+	width = 128; height = 128;
+	speed = 1; speedY = 0; acceleration =1;
+	
+	dead = false; hurt = false;
+	invincible = false; reviving = false;
+	health = 1; starthealth = 1;
+	lastHit = 0; lastFlicker = 0;
 
-	IMAGES_IDLE = [
-		'./img/pirate/IDLE_000.png',
-		'./img/pirate/IDLE_001.png',
-		'./img/pirate/IDLE_002.png',
-		'./img/pirate/IDLE_003.png',
-		'./img/pirate/IDLE_004.png',
-		'./img/pirate/IDLE_005.png',
-		'./img/pirate/IDLE_006.png',
-	];
-
-	IMAGES_WALK = [
-		'./img/pirate/WALK_000.png',
-		'./img/pirate/WALK_001.png',
-		'./img/pirate/WALK_002.png',
-		'./img/pirate/WALK_003.png',
-		'./img/pirate/WALK_004.png',
-		'./img/pirate/WALK_005.png',
-		'./img/pirate/WALK_006.png',
-	];
-
-	IMAGES_JUMP = [
-		'./img/pirate/JUMP_001.png',
-		'./img/pirate/JUMP_002.png',
-		'./img/pirate/JUMP_003.png',
-		'./img/pirate/JUMP_004.png',
-		'./img/pirate/JUMP_005.png',
-		'./img/pirate/JUMP_006.png',
-	];
-
-	IMAGES_HURT = [
-		'./img/pirate/HURT_001.png',
-		'./img/pirate/HURT_002.png',
-		'./img/pirate/HURT_003.png',
-		//'./img/pirate/HURT_004.png',
-		//'./img/pirate/HURT_005.png',
-		//'./img/pirate/HURT_006.png',
-	];
-
-	IMAGES_DIE = [
-		'./img/pirate/DIE_001.png',
-		'./img/pirate/DIE_002.png',
-		'./img/pirate/DIE_003.png',
-		'./img/pirate/DIE_004.png',
-		'./img/pirate/DIE_005.png',
-		'./img/pirate/DIE_006.png',
-	];
-
-	speed = 3;
-
+	falling = false; jumping = false;
 
 	box = [
-		this.width*0.25,
-		this.height*0.33,
-		this.width*0.25,
-		this.height*0.5
+		this.width,
+		this.height,
+		this.width,
+		this.height
 	];
 
-	y = 0;
+	cvs; 
 
-	constructor(world){
-		super().loadImage('./img/pirate/IDLE_000.png');
-		this.world = world;
-		this.currImageSet = this.IMAGES_IDLE;
-		this.loadImages(this.currImageSet);
-		this.init();
+/* COLLISIONS */
 
+	getCollisionDirection(mo) {
+		const [bx, by, bw, bh] = this.box;
+		const [mx, my, mw, mh] = mo.box;
+
+		const thisLeft = this.x + bx;
+		const thisRight = thisLeft + bw;
+		const thisTop = this.y + by;
+		const thisBottom = thisTop + bh;
+
+		const moLeft = mo.x + mx;
+		const moRight = moLeft + mw;
+		const moTop = mo.y + my;
+		const moBottom = moTop + mh;
+
+		const overlapX = Math.min(thisRight, moRight) - Math.max(thisLeft, moLeft);
+		const overlapY = Math.min(thisBottom, moBottom) - Math.max(thisTop, moTop);
+
+		if (overlapX < overlapY) {
+			if (this.x < mo.x) return "left"; 
+			else return "right"; 
+		} else {
+			if (this.y < mo.y) return "top"; 
+			else return "bottom"; 
+		}
 	}
 
-	init() {
-		this.handleGravity();
-	    setInterval(() => { this.handleAnimation(); }, 1000 / 24 );
-	    setInterval(() => { this.handleControls(); }, 1000 / 60 );
-	    setInterval(() => { this.main(); }, 1000 / 60 );
+	isColliding(mo) {
+		if(!mo || !mo.box){ return; }
+		return (
+			this.x + this.box[0] < mo.x + mo.box[0] + mo.box[2] &&
+			this.x + this.box[0] + this.box[2] > mo.x + mo.box[0] &&
+			this.y + this.box[1] < mo.y + mo.box[1] + mo.box[3] &&
+			this.y + this.box[1] + this.box[3] > mo.y + mo.box[1]
+		);
 	}
 
-	main() { 
-
+	drawCollider(ctx){
+		if(this instanceof Character || this instanceof Crab){
+			ctx.beginPath();
+			ctx.lineWidth = "1";
+			
+			if (this instanceof Character) {
+				ctx.strokeStyle = "yellow";
+			} else if (this instanceof Crab) {
+				ctx.strokeStyle = "red";
+			}
+				
+			ctx.rect(this.box[0], this.box[1],this.box[2],this.box[3]);
+			ctx.stroke();
+		}
 	}
 
-	handleAnimation(){
-		this.hurt=this.isHurt();
 
-		if(this.dead){
-			this.changeAnimation(this.IMAGES_DIE);
-		}else if(this.hurt && !this.invincible){
-			this.changeAnimation(this.IMAGES_HURT);
-		}else{
-			if(this.jumping){
-				this.changeAnimation(this.IMAGES_JUMP);
-	    	}else{
-		    	if(this.world.keyboard.RIGHT || this.world.keyboard.LEFT){
-		    		this.changeAnimation(this.IMAGES_WALK);
-		    	}else{
-		    		this.changeAnimation(this.IMAGES_IDLE);
-		    	}
+
+/* SPRITE */
+
+	changeAnimation(anim,offs=null){
+		if(this.currImageSet!=anim){
+			this.currImageSet=anim;
+			this.loadImages(anim);	
+			if(offs){
+				this.currOffsetSet=offs;
+			}else{
+				this.currOffsetSet=null;
 			}
 		}
-		this.playAnimation(this.currImageSet);
 	}
 
-	handleControls(){
-		if(this.dead){ return; }
+	playAnimation(anim){
+		if(anim){
+	    	let i = this.currImage % anim.length;
+	        let path = anim[i];
+	        this.img.src = this.imageCache[path];
+	        if(this.hurt||this.invincible){
+	        	if(this.health==0){
+		        	if(i == anim.length-1){
+		    			this.hurt=false;
+		        		this.dead=true;
+		    		}
+		    	}else{
+		    		if(i < anim.length-1){
+		    			this.setInvincible(1000);
+		    			this.hurt=false;
+		    		}
+		    	}
+	        }
+	        if(this.dead){
+	        	if(i < anim.length-1){
+	        		this.currImage++;
+	    		}
+	        }else{
+	        	this.currImage++;
+	        }
+	    }
+	}
 
-		if(this.world.keyboard.LEFT){
-    		this.moveLeft();
-		}
-		if(this.world.keyboard.RIGHT){
-			this.moveRight();
-		}
-		if(this.world.keyboard.SPACE && !this.isAboveGround()){
-			this.jump();
+	applyAnimationOffsets(oset){
+		if(oset){
+			let i = this.currImage % this.currImageSet.length;
+			let off = oset[i];
+			let fscale = 100/this.width;
+			let foff = off*fscale;
+			if(this.currDirection===0){
+				this.x+=foff;
+			}
+			if(this.currDirection===1){
+				this.x-=foff;
+
+			}
 		}
 	}
+
+	handleFlip(ctx){
+		if (this.currDirection == 0) {
+	        ctx.translate(this.x + this.width, this.y); 
+	        ctx.scale(-1, 1); 
+	        ctx.drawImage(this.img, 0, 0, this.width, this.height); 
+	    } else {
+	        ctx.translate(this.x, this.y); 
+	        ctx.drawImage(this.img, 0, 0, this.width, this.height); 
+	    }
+	}
+
+
+/* MOVEMENT */
+
+	handleGravity(){
+		setInterval(() => {
+			if(this.isAboveGround() || this.speedY > 0){ 
+				this.y -= this.speedY;
+				this.speedY -= this.acceleration;
+				this.jumping = false;
+				if(this.speedY > 0){
+					this.falling = false;
+				}else{
+					this.falling = true; 
+				}
+			}else{
+				this.falling = false;
+			}
+			if(this.isAboveGround()  || this.speedY == 0){
+				this.jumping = true;
+			}
+			if(!this.isAboveGround()){
+				this.y = this.world.ground;
+			}
+		}, 1000 / 60);
+	}
+
+	moveLeft(){
+		if(this.x<0-(this.width*0.5)){return;}
+		if(this.currDirection==1){ this.x-=this.width*0.25; }
+		this.x -= this.speed;
+        this.currDirection = 0;     
+	}
+
+	moveRight(){
+		if(this.x>740-(this.width*0.5)){return;}
+		if(this.currDirection==0){ this.x+=this.width*0.25; }
+		this.x += this.speed;
+		this.currDirection = 1;     
+	}
+
+	jump(){
+		if(!this.isAboveGround()){
+			this.speedY = 20;
+			this.jumping = true;
+		}
+	}
+
+	isAboveGround(){
+		return this.y < this.world.ground;
+	}
+
+/* STATUS */
+
+	isHit(){
+		if(!this.hurt){
+			this.hurt=true;
+			this.health--;
+			if(this.health < 0){
+				this.health = 0;
+			} else {
+				this.lastHit = new Date().getTime();
+			}
+			if(this.health==0){
+				//this.dead = true;
+			}
+		}
+	}
+
+	isHurt(){
+		let timepassed = new Date().getTime() - this.lastHit;
+		timepassed = timepassed / 1000;
+		return timepassed < 1;
+	}
+
+
+	deadTime(inSeconds) {
+		if (this.dead) {
+			let timepassed = new Date().getTime() - this.lastHit;
+			timepassed = timepassed / 1000; 
+			if(inSeconds){
+				timepassed = timepassed.toFixed(0);
+			}
+			return timepassed;
+		}
+		return -1;
+	}
+
+	flicker(intv){
+		this.lastFlicker ||= performance.now();
+	    const eTime = performance.now() - this.lastFlicker;
+	    return Math.floor(eTime / intv) % 2 === 0;
+	}
+
+	setInvincible(delay){
+		if(!this.invincible){
+			setTimeout(() => {
+				this.invincible=false;
+			},delay);
+			this.invincible=true;
+		}
+	}
+
+	isInvincible(){
+		let timepassed = new Date().getTime() - this.hit;
+		timepassed = timepassed / 1000;
+		return timepassed < 1;
+	}
+
+	revive(delay=0){
+		if(!this.reviving){
+			setTimeout(() => {
+				this.dead=false; this.hurt=false; this.health=this.starthealth;
+				this.reviving=false;
+			},delay);
+			this.reviving=true;
+		}
+	}
+
 
 }

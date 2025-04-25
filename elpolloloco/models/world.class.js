@@ -1,5 +1,5 @@
 class World{
-	character = new Character(this);
+	player = new Player(this);
 	level = level01;
 	keyboard;
 	ground = 350;
@@ -19,9 +19,9 @@ class World{
   		if(this.cache){
     		this.draw();
     	}else{
-	    	this.character.img.onload = () => {
+	    	this.player.img.onload = () => {
 		        this.draw();
-		        this.character.img.onload = null;
+		        this.player.img.onload = null;
 		    };
 	    };
 	   
@@ -33,27 +33,29 @@ class World{
 	checkCollisions(){
 		setInterval(() => {
 			this.level.enemies.forEach((enemy) => {
-				if(this.character.isColliding(enemy)){
-					let dir = this.character.getCollisionDirection(enemy);
+				if(this.player.isColliding(enemy)){
+					let dir = this.player.getCollisionDirection(enemy);
 					if(this.debug){
 						console.log('Collision with ' + enemy.name + " : "+dir);
 					}
 					if(
-						this.character.falling && 
+						this.player.falling && 
 						dir=='top' && 
 						enemy instanceof Crab
 					){
+						if(!this.player.dead){
 						//if(!enemy.dead){
-							this.character.bounce(enemy);
+							this.player.bounce(enemy.y-enemy.height*2);
 							enemy.isHit();
+						}
 						//}
 					}else{
 						if(
-							(!this.character.hurt && !this.character.hurt && !this.character.invincible) && (!enemy.dead && !enemy.hurt) && 
+							(!this.player.hurt && !this.player.hurt && !this.player.invincible) && (!enemy.dead && !enemy.hurt) && 
 							( dir=='left' || dir=='right' ) && 
 							enemy instanceof Crab
 						){
-							this.character.isHit();
+							this.player.isHit();
 						}
 					}
 				}
@@ -64,7 +66,7 @@ class World{
 	draw() {
 		this.ctx.clearRect(0,0,this.cvs.width,this.cvs.height);
 
-		this.ctx.drawImage(this.character.img, this.character.x, this.character.y, this.character.width, this.character.height);
+		this.ctx.drawImage(this.player.img, this.player.x, this.player.y, this.player.width, this.player.height);
 
 		
 
@@ -79,7 +81,7 @@ class World{
 
 		this.addObjectsToMap(this.level.enemies.filter(enemy => enemy.dead && enemy.name === 'Crab'));
 
-		this.addToMap(this.character);
+		this.addToMap(this.player);
 
 		this.addObjectsToMap(this.level.enemies.filter(enemy => !enemy.dead && enemy.name === 'Crab'));
 
@@ -94,7 +96,7 @@ class World{
 	printStatsBar(){
 		
 		let statusText = '';
-		if(this.character.dead){
+		if(this.player.dead){
 			this.ctx.font = "bold 60px Arial";
 			this.ctx.fillStyle = "white";   
 			this.ctx.strokeStyle = "black";  
@@ -103,7 +105,7 @@ class World{
 			this.ctx.textAlign = "center"; 
 			this.ctx.textBaseline = "middle";
 
-			let cTime = (this.character.deadTime(true));
+			let cTime = (this.player.deadTime(true));
 			if(cTime<=10){
 				statusText='CONTINUE? '+(10-cTime);
 				if(this.keyboard.SPACE){
@@ -112,7 +114,7 @@ class World{
 						enemy.isHit();
 						enemy.revive(3000);
 					});
-					this.character.revive();
+					this.player.revive();
 				}
 			}
 			if(cTime>10){
@@ -130,7 +132,7 @@ class World{
 			this.ctx.textAlign = "left"; 
 			this.ctx.textBaseline = "middle";
 
-			for(let i = 0; i<this.character.health; i++){
+			for(let i = 0; i<this.player.health; i++){
 				statusText+='♥';
 			}
 			this.ctx.fillText(statusText, 20, 40);
