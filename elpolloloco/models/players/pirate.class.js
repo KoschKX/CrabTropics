@@ -59,7 +59,6 @@ class Pirate extends Player{
 	];
 
 
-
 	constructor(){
 		super();
 		this.init();
@@ -74,6 +73,16 @@ class Pirate extends Player{
 
 	main(){
 		super.main();
+	}
+
+	cache(){
+		this.cacheImages(this.IMAGES_IDLE);
+		this.cacheImages(this.IMAGES_WALK);
+		this.cacheImages(this.IMAGES_JUMP);
+		this.cacheImages(this.IMAGES_HURT);
+		this.cacheImages(this.IMAGES_DIE);
+
+		super.cacheImages();
 	}
 
 	handleAnimation(){
@@ -98,5 +107,16 @@ class Pirate extends Player{
 		this.playAnimation(this.currImageSet);
 	}
 
+	getImages(){
+		let images = [];
+
+		images = images.concat(this.IMAGES_IDLE);
+		images = images.concat(this.IMAGES_WALK);
+		images = images.concat(this.IMAGES_JUMP);
+		images = images.concat(this.IMAGES_HURT);
+		images = images.concat(this.IMAGES_DIE);
+
+		return images;
+	}
 
 }

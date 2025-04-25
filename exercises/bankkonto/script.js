@@ -38,6 +38,7 @@ document.addEventListener("DOMContentLoaded", function () {
       curr_konto = field_eintrag.value;
       field_eintrag.value = '';
       curr_eintrag='';
+      updateKontoDisplay(curr_konto);
     }); 
 
     button_einzahlen.addEventListener('click', function() {

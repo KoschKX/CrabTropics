@@ -65,4 +65,13 @@ class Explosion extends MovableObject{
 		world.level.effects = world.level.effects.filter(obj => obj !== toRemove);
 	}
 
+	getImages(){
+		let images = [];
+		
+		images = images.concat(this.IMAGES_EXPLODE);
+
+		return images;
+	}
+
+
 }

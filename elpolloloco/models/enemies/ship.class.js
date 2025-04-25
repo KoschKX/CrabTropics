@@ -74,8 +74,6 @@ class Ship extends Enemy{
 	  		let cannCenterX = self.cannonLocs[cann][0] * (100/self.width);
 	  		let cannCenterY = self.cannonLocs[cann][1] * (100/self.height);
 
-	  		console.log(cann+" : "+cannCenterX);
-
 	 		let shotCenterX = (shot.width * 0.5) + cannCenterX;
 	  		let shotCenterY = (shot.height * 0.1) + cannCenterY;
 
@@ -84,10 +82,13 @@ class Ship extends Enemy{
 
 	  		shot.world = world;
 	  		world.level.effects.push(shot);
-	  		console.log('FIREEEE!');
+	  		
 	  	}, rDelay);
 	}
 
+	cacheAll(){
+		this.cacheImages(this.IMAGES_FLOAT);
+	}
 
 
 }

@@ -7,3 +7,9 @@ body{
 canvas{
 	background-color: black;
 }
+
+#cache{
+	overflow: hidden;
+	width: 0;
+	height: 0;
+}

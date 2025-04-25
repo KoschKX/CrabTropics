@@ -27,6 +27,12 @@ function init(){
             case 13:
                 keyboard.ENTER = true;
                 break;
+            case 9:
+                keyboard.TAB = true;
+                    e.preventDefault();
+            case 20: 
+                keyboard.CAPSLOCK = !keyboard.CAPSLOCK;
+                break;
         }
     });
 
@@ -44,6 +50,12 @@ function init(){
             case 13:
                 keyboard.ENTER = false;
                 break;
+            case 9:
+                keyboard.TAB = false;
+                    e.preventDefault();
+            case 20: 
+                keyboard.CAPSLOCK = keyboard.CAPSLOCK;
+                break;          
         }
     });
 }

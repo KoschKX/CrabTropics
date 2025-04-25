@@ -139,5 +139,16 @@ class Crab extends Enemy{
 
 	}
 
+	getImages(){
+		let images = [];
+		
+		images = images.concat(this.IMAGES_MOVEA);
+		images = images.concat(this.IMAGES_MOVEB);
+		images = images.concat(this.IMAGES_DIEA);
+		images = images.concat(this.IMAGES_DIEB);
+
+		return images;
+	}
+
 
 }

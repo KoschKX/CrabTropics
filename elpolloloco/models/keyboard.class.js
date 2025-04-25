@@ -3,4 +3,6 @@ class Keyboard{
 	RIGHT;
 	SPACE;
 	ENTER;
+	TAB;
+	CAPSLOCK;
 }

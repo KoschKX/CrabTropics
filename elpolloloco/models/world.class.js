@@ -18,6 +18,8 @@ class World{
 	    this.keyboard = keyboard;
 
 	    this.level.setWorld(this);
+	    this.level.preload();
+
 	    this.player = this.level.player;
 
 	    this.init();
@@ -103,6 +105,8 @@ class World{
 
 		this.printStatsBar();
 
+		this.checkDebugKey();
+
 		self=this;
 		requestAnimationFrame(function(){
 			self.draw();
@@ -180,6 +184,11 @@ class World{
 	    this.ctx.restore(); 
 	   
 	}
+
+	checkDebugKey(){
+		this.debug = this.keyboard.CAPSLOCK
+	}
+
 
 
 }
