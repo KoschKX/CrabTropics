@@ -29,6 +29,8 @@ class Cannonball extends Enemy{
 
 	madeGroundContact = false;
 
+	groundOffset = 36;
+
 	constructor(){
 		super();
 		this.init();
@@ -53,13 +55,6 @@ class Cannonball extends Enemy{
 		this.updateCollisionBoxes();
 
 		this.checkGroundHit();
-	}
-
-	jump(){
-		if(!this.isAboveGround()){
-			this.speedY = 20;
-			this.jumping = true;
-		}
 	}
 
 	checkGroundHit(){
@@ -101,24 +96,29 @@ class Cannonball extends Enemy{
 
 
 	handleScaling() {
-	    
-	    let mxw ; let mxh;
+	    let mxw, mxh;
 
-	    if(this.madeGroundContact){
-	    	mxw=this.maxZoomWidth; mxh=this.maxZoomHeight;
-	    	this.scale += 0.05;
-	    }else{
-	    	mxw=this.maxWidth; mxh=this.maxHeight;
-	    	this.scale += 0.01;
+	    if (this.madeGroundContact) {
+	        mxw = this.maxZoomWidth; mxh = this.maxZoomHeight;
+	        this.scale += 0.05;
+	    } else {
+	        mxw = this.maxWidth;  mxh = this.maxHeight;
+	        this.scale += 0.01;
 	    }
-	    if(this.width * this.scale < mxw){
-	    	this.width *= this.scale;
+
+	    const centerX = this.x + this.width / 2;
+	    const centerY = this.y + this.height / 2;
+
+	    if (this.width * this.scale < mxw) {
+	        this.width *= this.scale;
 	    }
-	   	if(this.height * this.scale < mxh){
-	    	this.height *= this.scale;
+	    if (this.height * this.scale < mxh) {
+	        this.height *= this.scale;
 	    }
+
+	    this.x = centerX - this.width / 2;
+	    this.y = centerY - this.height / 2;
 	}
-
 
 	updateCollisionBoxes(){
 		this.boxes[0][2] = this.width;
