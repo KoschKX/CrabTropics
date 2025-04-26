@@ -19,7 +19,11 @@ class Ship extends Enemy{
 	cannonLocs = [
 					[  33, 0.0 ],
 					[ -33, 0.0 ],
-				 ]
+				 ];
+
+	lastShot = 0;
+	maxShots = 2;
+
 	
 	constructor(){
 		super();
@@ -52,38 +56,36 @@ class Ship extends Enemy{
 		if(!this.world || !this.world.level){ return; }
 		let world = this.world;
 
-		this.explosions = this.world.level.effects.filter(effect => effect.name === 'Explosion');
-		if(this.explosions.length>3){ return; }
+	 	const rDelay = this.randomInt(100,100000);
+	 	const now = Date.now();
 
-	 	const rDelay = this.random(10000,1000000);
-	 		let self = this;
+  		this.explosions = this.world.level.effects.filter(effect => effect.name === 'Explosion');
 
-	  	setTimeout(function(){
-	  		self.explosions = self.world.level.effects.filter(effect => effect.name === 'Explosion');
-	  		if(self.explosions.length>3){ return; }
+  		if(now - this.lastShot < rDelay || this.explosions.length>=this.maxShots){ 
+  			return;
+  		}
 
-	  		let cann = self.randomInt(0, self.cannonLocs.length-1);
-
+	  		let cann = this.randomInt(0, this.cannonLocs.length-1);
 	  		let shot = new Explosion();
+	  			shot.scale = this.random(0.25, 0.1);
 
-	  			shot.scale = self.random(0.25, 0.1);
+	  		let shipCenterX = this.x + (this.width*0.5);
+	  		let shipCenterY = this.y + (this.height*0.5);
 
-	  		let shipCenterX = self.x + (self.width*0.5);
-	  		let shipCenterY = self.y + (self.height*0.5);
-
-	  		let cannCenterX = self.cannonLocs[cann][0] * (100/self.width);
-	  		let cannCenterY = self.cannonLocs[cann][1] * (100/self.height);
+	  		let cannCenterX = this.cannonLocs[cann][0] * (100/this.width);
+	  		let cannCenterY = this.cannonLocs[cann][1] * (100/this.height);
 
 	 		let shotCenterX = (shot.width * 0.5) + cannCenterX;
 	  		let shotCenterY = (shot.height * 0.1) + cannCenterY;
 
-	  		shot.x = shipCenterX - shotCenterX;
-	  		shot.y = shipCenterY - shotCenterY;
+  		shot.x = shipCenterX - shotCenterX;
+  		shot.y = shipCenterY - shotCenterY;
 
-	  		shot.world = world;
-	  		world.level.effects.push(shot);
-	  		
-	  	}, rDelay);
+  		shot.world = world;
+  		world.level.effects.push(shot);
+
+  		this.lastShot = new Date().getTime();
+		  		
 	}
 
 	cacheAll(){
