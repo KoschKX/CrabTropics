@@ -3,7 +3,7 @@ class World{
 	level = level01;
 
 	keyboard;
-	ground = 350;
+	ground;
 	gameover = false;
 
 	cvs;
@@ -20,6 +20,7 @@ class World{
 	    this.level.setWorld(this);
 	    this.level.preload();
 
+	    this.ground = this.level.ground;
 	    this.player = this.level.player;
 
 	    this.init();
@@ -49,12 +50,12 @@ class World{
 			this.level.enemies.forEach((enemy) => {
 				let colA = this.player.isColliding(enemy,0,0);
 				let colB = this.player.isColliding(enemy,1,1);
+
 				if(colB){
-					
 					if(
 						this.player.falling && 
 						colB==1 && 
-						enemy instanceof Crab
+						enemy instanceof Enemy
 					){
 
 						if(!this.player.dead){
@@ -69,11 +70,20 @@ class World{
 					if(
 						(!this.player.hurt && !this.player.hurt && !this.player.invincible) && (!enemy.dead && !enemy.hurt) && 
 						( colA==4 || colA==2 ) && 
-						enemy instanceof Crab
+						enemy instanceof Enemy
 					){
 						this.player.isHit();
 					}
-				};
+				}
+				/* else if(enemy instanceof Cannonball){
+					this.level.enemies.forEach((enemyB) => {
+						let colC = enemy.isColliding(enemyB,0,0);
+						if(colC){
+							enemyB.isHit();
+						}
+					});
+				}
+				*/
 				
 			});
 		}, 1000 / 60);
@@ -84,8 +94,7 @@ class World{
 
 		if(!this.player.img){ return false; }
 
-		this.ctx.drawImage(this.player.img, this.player.x, this.player.y, this.player.width, this.player.height);
-
+		
 		this.addToMap(this.level.backgroundA);
 		this.addObjectsToMap(this.level.clouds);
 
@@ -93,15 +102,23 @@ class World{
 
 		this.addObjectsToMap(this.level.enemies.filter(enemy => enemy.name === 'Ship'));
 
+
+		this.addObjectsToMap(this.level.enemies.filter(enemy => !enemy.falling && enemy.name === 'Cannonball'));
+
+
 		this.addObjectsToMap(this.level.effects.filter(effect => effect.name === 'Explosion'));
 
 		this.addToMap(this.level.backgroundC);
 
 		this.addObjectsToMap(this.level.enemies.filter(enemy => enemy.dead && enemy.name === 'Crab'));
 
+
+		//this.ctx.drawImage(this.player.img, this.player.x, this.player.y-64, this.player.width, this.player.height);
 		this.addToMap(this.player);
 
 		this.addObjectsToMap(this.level.enemies.filter(enemy => !enemy.dead && enemy.name === 'Crab'));
+
+		this.addObjectsToMap(this.level.enemies.filter(enemy => enemy.falling && enemy.name === 'Cannonball'));
 
 		this.printStatsBar();
 
@@ -174,10 +191,9 @@ class World{
 		// FLICKER IF INVINCIBLE 
 			if(mo.invincible&&mo.flicker(1)){ return ;}
 	    
-	    mo.cvs = this.cvs; 
 	    this.ctx.save(); 
 	    mo.handleFlip(this.ctx);
-	    
+
 	    if(this.debug && mo instanceof Character){
 	    	mo.drawColliders(this.ctx);
 	    }

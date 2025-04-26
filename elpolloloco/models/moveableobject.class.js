@@ -2,7 +2,7 @@ class MovableObject{
 
 	name = ''; 
 
-	x = 120; y = 350; ground = 350;
+	x = 120; y = 350; 
 	width = 128; height = 128;
 	speed = 1; speedY = 0; acceleration =1;
 	
@@ -23,6 +23,8 @@ class MovableObject{
 
 	currImageSet=[''];
 	currOffsetSet=[''];
+
+	groundOffset = 0;
 
 	stamp = 0;
 
@@ -138,7 +140,7 @@ class MovableObject{
 			this.bouncing = true;
 		}
 		if(!this.isAboveGround()){
-			this.y = this.world.ground;
+			this.y = this.ground;
 		}
 	}
 
@@ -150,7 +152,8 @@ class MovableObject{
 	}
 
 	moveRight(){
-		if(this.x>740-(this.width*0.5)){return;}
+		if(!this.world){ return; }
+		if(this.x>this.world.cvs.width-(this.width*0.5)){return;}
 		if(this.currDirection==0){ this.x+=this.width*0.25; }
 		this.x += this.speed;
 		this.currDirection = 1;     
@@ -168,12 +171,13 @@ class MovableObject{
 
 	isAboveGround(){
 		if(!this.world){ return; }
-		return this.y < this.world.ground
+		//console.log(this.name+" : "+this.world.ground);
+		return this.y < this.world.ground + this.groundOffset;
 	}
 
 	isOnGround(){
 		if(!this.world){ return; }
-		return this.y == this.world.ground
+		return this.y == this.world.ground + this.groundOffset;
 	}
 
 

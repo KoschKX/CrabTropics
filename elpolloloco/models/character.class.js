@@ -165,11 +165,8 @@ class Character extends MovableObject{
 		if(this.isAboveGround()  || this.speedY == 0){
 			this.jumping = true;
 		}
-		if(this.isAboveGround()  || this.speedY == 0){
-			this.jumping = true;
-		}
 		if(!this.isAboveGround()){
-			this.y = this.world.ground;
+			this.y = this.world.ground + this.groundOffset;
 		}
 	}
 

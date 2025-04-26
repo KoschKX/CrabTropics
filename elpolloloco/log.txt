@@ -36,8 +36,8 @@
 		blocked player from moving off the screen.
 
 	20:00 
-		jumping. 
-		animation is a little quirky.
+		Jumping. animation is a little quirky. 
+		Seesm the offsets aren't correct inside the images themselves.
 
 	20:30
 		collision boxes
@@ -58,3 +58,50 @@
 
 	10:00
 		game works okay. the graphics flicker when loaded from a webpage. :(
+
+24. Apr, 2025
+	
+	13:30
+		Fixed the flickering problem. The images were kind of large and if caching is disabled in the 
+		debugger, they load continuously.
+
+	15:00	
+		Teacher found some problems in my code, mostly with use cases. 
+		I uploaded the changes but forgot to separate the descriptions on github from the bankkonto code.
+		I thought we were supposed to show the classes to him, but turns out we didn't have to.
+	
+	19:00
+		Break. Best friend needs help with designing her daughters Confirmation invitation. 
+		We are ording chinese takeout. :D
+
+	21:00
+		Added Bouncing, Jump, Invincibility and a Pirate Ship that floats back and forth.
+
+25. Apr, 2025
+	
+	12:00
+		Played some visual pinball. Tales of the Arabian knights *_* 
+
+	14:00
+		My brother was in a car accident. 
+		It was not a bad one, but the insurance company prefers the vehicle is destroyed :(
+
+	16:00
+		Worked on the pirate game a bit. Refactored the classes, so they inherit logically. 
+		Thinking of making a UML diagram to show the teacher.
+
+	19:00 
+		Best friend's husband wants changes to the invitations. Have to go back over there.
+
+	22:00
+		Fixed the cannon explosion timing code using lastFired, like in the instruction video for the isHurt() code.
+
+	23:00
+		Added cannon balls. For some reason they won't harm both the player and the enemies.
+		Will look at the logic tomorrow.
+
+26. Apr, 2025
+	13:00
+		Looking at cannonball logic now.
+
+	

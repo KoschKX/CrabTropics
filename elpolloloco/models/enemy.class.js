@@ -54,6 +54,7 @@ class Enemy extends Character{
 	}
 
 	handleMovement(){
+		if(!this.world){ return; }
 		if(this.dead){ return; }
 
 	    if(this.currDirection===0){
@@ -66,7 +67,7 @@ class Enemy extends Character{
 	    if(this.currDirection===0&&this.x<this.width){
 	    	this.currDirection=1;
 		}
-	    if(this.currDirection===1&&this.x>720-this.width){
+	    if(this.currDirection===1&&this.x>this.world.cvs.width-this.width){
 	    	this.currDirection=0;
 		}
 

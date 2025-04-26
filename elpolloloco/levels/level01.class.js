@@ -1,9 +1,11 @@
 const level01 = new Level(
+	new Pirate(),
 	[
 		new Crab(0),
 		new Crab(1),
 		new Crab(0),
 		new Ship(0),
+		new Cannonball(0),
 	],
 	[
 		new Cloud(0, [0,200], [25,50]),
@@ -13,7 +15,10 @@ const level01 = new Level(
 	new Background('./img/beach/skyA.png', 0 , 0),
 	new Background('./img/beach/oceanA.png', 0 , 0),
 	new Background('./img/beach/beachA.png', 0 , 0),
-	350,
+	[
+		new Explosion(),
+	]
+	450,
 );
 
 	

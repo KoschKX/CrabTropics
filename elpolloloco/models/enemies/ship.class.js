@@ -15,6 +15,7 @@ class Ship extends Enemy{
 	frameRate = 24; 
 
 	explosions = [];
+	cballs = [];
 
 	cannonLocs = [
 					[  33, 0.0 ],
@@ -66,7 +67,8 @@ class Ship extends Enemy{
   		}
 
 	  		let cann = this.randomInt(0, this.cannonLocs.length-1);
-	  		let shot = new Explosion();
+
+		  	let shot = new Explosion();
 	  			shot.scale = this.random(0.25, 0.1);
 
 	  		let shipCenterX = this.x + (this.width*0.5);
@@ -78,18 +80,31 @@ class Ship extends Enemy{
 	 		let shotCenterX = (shot.width * 0.5) + cannCenterX;
 	  		let shotCenterY = (shot.height * 0.1) + cannCenterY;
 
+	  		
+
   		shot.x = shipCenterX - shotCenterX;
   		shot.y = shipCenterY - shotCenterY;
 
-  		shot.world = world;
+
+  			let cball = new Cannonball();
+  			cball.x = shot.x + (cball.x*0.5); cball.y = shot.y;
+  			
+
+  		shot.world = world; cball.world = world;
+
   		world.level.effects.push(shot);
+  		world.level.enemies.push(cball);
 
   		this.lastShot = new Date().getTime();
 		  		
 	}
 
-	cacheAll(){
-		this.cacheImages(this.IMAGES_FLOAT);
+	getImages(){
+		let images = [];
+
+		images = images.concat(this.IMAGES_FLOAT);
+		
+		return images;
 	}
 
 

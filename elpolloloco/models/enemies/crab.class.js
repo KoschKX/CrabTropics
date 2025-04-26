@@ -4,7 +4,7 @@ class Crab extends Enemy{
 
 	height = 64; width = 128;
 
-	frameRate = 24; useGravity = false; 
+	frameRate = 24; useGravity = true; 
 	speed = 3; frameRate = 24;
 
 	boxes = [

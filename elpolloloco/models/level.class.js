@@ -18,8 +18,7 @@ class Level{
 		this.backgroundA = backgroundA;
 		this.backgroundB = backgroundB;
 		this.backgroundC = backgroundC;
-		this.ground = ground;
-
+		this.ground = 410;
 		this.effects = effects;
 	}
 
