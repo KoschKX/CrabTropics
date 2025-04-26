@@ -83,8 +83,7 @@
 		Played some visual pinball. Tales of the Arabian knights *_* 
 
 	14:00
-		My brother was in a car accident. 
-		It was not a bad one, but the insurance company prefers the vehicle is destroyed :(
+		Break
 
 	16:00
 		Worked on the pirate game a bit. Refactored the classes, so they inherit logically. 
