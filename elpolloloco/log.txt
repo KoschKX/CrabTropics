@@ -111,7 +111,8 @@
 	17:00
 		Refactored colliders. Added ability to toggle them on and off.
 
-		
+	17:30
+		Fixed enemy movement bug. Enemies didn't reach the far left end of the screen.
 
 
 	

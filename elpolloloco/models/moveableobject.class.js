@@ -124,25 +124,23 @@ class MovableObject{
 
 	handleGravity(){
 		if(!this.world){ return; }
-		if(this.isAboveGround() || this.isOnGround() || this.speedY > 0){ 
-			this.y -= this.speedY; 
+		if(this.isAboveGround() || this.speedY > 0){ 
+			this.y -= this.speedY;
 			this.speedY -= this.acceleration;
-			
-			this.bouncing = false;
-			
 			if(this.speedY > 0){
 				this.falling = false;
 			}else{
 				this.falling = true; 
 			}
-
 		}else{
 			this.falling = false;
 		}
-		if(this.isAboveGround() || this.speedY == 0){
+		if(this.isAboveGround()  || this.speedY == 0){
 			this.bouncing = true;
 		}
 		if(this.useGround && !this.isAboveGround()){
+			this.falling = false;
+			this.bouncing = false;
 			this.y = this.world.ground + this.groundOffset;
 		}
 	}

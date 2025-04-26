@@ -43,11 +43,13 @@ class Cannonball extends Enemy{
 		clearInterval(this.scaleInterval); this.scaleInterval = setInterval(() => { this.handleScaling(); }, 1000 / 24 );
 
 		this.jump();
+
+		this.hostile = false;
 	}
 
 	main(){
 		super.main();
-		
+
 		this.updateCollisionBoxes();
 
 		this.checkGroundHit();
@@ -61,11 +63,16 @@ class Cannonball extends Enemy{
 	}
 
 	checkGroundHit(){
+
+    	if(this.falling){
+    		this.hostile = true;
+    	}else{
+    		this.hostile = false;
+    	}
+
 		if(!this.madeGroundContact&&this.isOnGround()){
 
 	    	this.bounce(5);
-
-	    	this.hostile = true;
 
 	    	this.useGround = false;
 	    	this.madeGroundContact=true;
