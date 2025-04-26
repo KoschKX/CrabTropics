@@ -7,10 +7,16 @@ class Crab extends Enemy{
 	frameRate = 24; useGravity = true; 
 	speed = 3; frameRate = 24;
 
-	boxes = [
+	boxes_fine = [
 				[this.width*0.25, this.height*0.25, this.width*0.5, this.height*0.5, 'red', true],
 				[this.width*0.1, this.height*0.1, this.width*0.75, this.height*0.25, 'yellow', true]
 			]
+	boxes_hurt = [
+					[this.width*0.25, this.height*0.25, this.width*0.5, this.height*0.5, 'red', true],
+					[this.width*0.1, this.height*0.2, this.width*0.75, this.height*0.25, 'yellow', true]
+				 ]
+
+	boxes=this.boxes_fine;
 
 	hostile = true;
 
@@ -82,10 +88,14 @@ class Crab extends Enemy{
 			
 		}
 		if(this.hurt || this.dead){
+			this.boxes = this.boxes_hurt;
 			this.toggleCollider(0,false);
+			
 		}else{
+			this.boxes = this.boxes_fine;
 			this.toggleCollider(0,true);
 		}
+
 	}
 
 	init() {
@@ -156,6 +166,7 @@ class Crab extends Enemy{
 
 		return images;
 	}
+
 
 
 }

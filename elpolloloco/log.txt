@@ -113,5 +113,6 @@
 	17:30
 		Fixed enemy movement bug. Enemies didn't reach the far left end of the screen.
 
-
+	17:45 
+		Improved stomping collider for crabs.
 	

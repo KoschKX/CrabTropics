@@ -78,7 +78,7 @@ class Cannonball extends Enemy{
 	    	this.madeGroundContact=true;
 
 	    }else if(this.madeGroundContact){
-	    	//console.log(this.y);
+
 	    	this.toggleCollider(0,false);
 
 	    	this.hostile = false;
