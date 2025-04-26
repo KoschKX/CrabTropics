@@ -25,7 +25,10 @@ class Ship extends Enemy{
 	lastShot = 0;
 	maxShots = 2;
 
-	
+	hostile = false;
+
+	firing = true;
+
 	constructor(){
 		super();
 		this.init();
@@ -45,7 +48,6 @@ class Ship extends Enemy{
 
 	main(){
 		super.main();
-
 		this.cannonFire();
 	}
 	
@@ -55,7 +57,8 @@ class Ship extends Enemy{
 
 	cannonFire() {
 		if(!this.world || !this.world.level){ return; }
-		let world = this.world;
+		if(!this.firing){ return; }
+
 
 	 	const rDelay = this.randomInt(100,100000);
 	 	const now = Date.now();
@@ -92,8 +95,8 @@ class Ship extends Enemy{
 
   		shot.world = world; cball.world = world;
 
-  		world.level.effects.push(shot);
-  		world.level.enemies.push(cball);
+  		this.world.level.effects.push(shot);
+  		this.world.level.projectiles.push(cball);
 
   		this.lastShot = new Date().getTime();
 		  		

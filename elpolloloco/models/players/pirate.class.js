@@ -9,8 +9,8 @@ class Pirate extends Player{
 	groundOffset = -64;
 
 	boxes = [
-				[this.width*0.25, this.height*0.33, this.width*0.25, this.height*0.5, 'red'],
-				[this.width*0.25, this.height*0.75, this.width*0.25, this.height*0.1, 'yellow']
+				[this.width*0.25, this.height*0.33, this.width*0.25, this.height*0.5, 'red', true],
+				[this.width*0.25, this.height*0.75, this.width*0.25, this.height*0.1, 'yellow', true]
 			]
 
 	IMAGES_IDLE = [

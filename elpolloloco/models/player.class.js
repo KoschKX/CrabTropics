@@ -25,7 +25,7 @@ class Player extends Character{
 	handleControls(){
 		if(!this.world || ! this.world.keyboard){ return; }
 
-		if(this.dead){ return; }
+		if(this.dead){ this.deactivateColliders(); return; } else { this.activateColliders(); }
 
 		if(this.world.keyboard.LEFT){
     		this.moveLeft();
@@ -36,6 +36,10 @@ class Player extends Character{
 		if(this.world.keyboard.SPACE && !this.isAboveGround()){
 			this.jump();
 		}
+	}
+
+	drawCollider(ctx, idx){
+		if(!this.dead){ super.drawCollider(ctx, idx); }
 	}
 
 }

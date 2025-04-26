@@ -47,10 +47,23 @@ class World{
 
 	checkCollisions(){
 		setInterval(() => {
+			this.level.projectiles.forEach((projectile) => {
+				let colPA = this.player.isColliding(projectile,0,0);
+				if(colPA){
+					this.player.isHit();
+				}
+				this.level.enemies.forEach((enemy) => {
+					let colPB = projectile.isColliding(enemy,0,0);
+					if(colPB){
+						if(projectile instanceof Cannonball && projectile.hostile){
+							enemy.isHit();
+						}
+					}
+				});
+			});
 			this.level.enemies.forEach((enemy) => {
 				let colA = this.player.isColliding(enemy,0,0);
 				let colB = this.player.isColliding(enemy,1,1);
-
 				if(colB){
 					if(
 						this.player.falling && 
@@ -58,7 +71,7 @@ class World{
 						enemy instanceof Enemy
 					){
 
-						if(!this.player.dead){
+						if(!this.player.dead && enemy.hostile){
 							//if(!enemy.dead){
 								this.player.bounce(17.5, enemy.y-enemy.height);
 								enemy.isHit();
@@ -68,23 +81,12 @@ class World{
 					}
 				}else if(colA){
 					if(
-						(!this.player.hurt && !this.player.hurt && !this.player.invincible) && (!enemy.dead && !enemy.hurt) && 
 						( colA==4 || colA==2 ) && 
 						enemy instanceof Enemy
 					){
 						this.player.isHit();
 					}
 				}
-				/* else if(enemy instanceof Cannonball){
-					this.level.enemies.forEach((enemyB) => {
-						let colC = enemy.isColliding(enemyB,0,0);
-						if(colC){
-							enemyB.isHit();
-						}
-					});
-				}
-				*/
-				
 			});
 		}, 1000 / 60);
 	}
@@ -93,7 +95,6 @@ class World{
 		this.ctx.clearRect(0,0,this.cvs.width,this.cvs.height);
 
 		if(!this.player.img){ return false; }
-
 		
 		this.addToMap(this.level.backgroundA);
 		this.addObjectsToMap(this.level.clouds);
@@ -102,9 +103,7 @@ class World{
 
 		this.addObjectsToMap(this.level.enemies.filter(enemy => enemy.name === 'Ship'));
 
-
-		this.addObjectsToMap(this.level.enemies.filter(enemy => !enemy.falling && enemy.name === 'Cannonball'));
-
+		this.addObjectsToMap(this.level.projectiles.filter(projectile => !projectile.falling && projectile.name === 'Cannonball'));
 
 		this.addObjectsToMap(this.level.effects.filter(effect => effect.name === 'Explosion'));
 
@@ -112,13 +111,11 @@ class World{
 
 		this.addObjectsToMap(this.level.enemies.filter(enemy => enemy.dead && enemy.name === 'Crab'));
 
-
-		//this.ctx.drawImage(this.player.img, this.player.x, this.player.y-64, this.player.width, this.player.height);
 		this.addToMap(this.player);
 
 		this.addObjectsToMap(this.level.enemies.filter(enemy => !enemy.dead && enemy.name === 'Crab'));
 
-		this.addObjectsToMap(this.level.enemies.filter(enemy => enemy.falling && enemy.name === 'Cannonball'));
+		this.addObjectsToMap(this.level.projectiles.filter(projectile => projectile.falling && projectile.name === 'Cannonball'));
 
 		this.printStatsBar();
 

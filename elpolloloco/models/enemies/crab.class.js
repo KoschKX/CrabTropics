@@ -8,10 +8,11 @@ class Crab extends Enemy{
 	speed = 3; frameRate = 24;
 
 	boxes = [
-				[this.width*0.25, this.height*0.25, this.width*0.5, this.height*0.5, 'red'],
-				[this.width*0.1, this.height*0.1, this.width*0.75, this.height*0.25, 'yellow']
+				[this.width*0.25, this.height*0.25, this.width*0.5, this.height*0.5, 'red', true],
+				[this.width*0.1, this.height*0.1, this.width*0.75, this.height*0.25, 'yellow', true]
 			]
 
+	hostile = true;
 
 	IMAGES_MOVEA = [
 		'./img/crabA/MOVE_001.png',
@@ -78,6 +79,12 @@ class Crab extends Enemy{
 		
 		if(this.dead){
 			this.revive(3000);
+			
+		}
+		if(this.hurt || this.dead){
+			this.toggleCollider(0,false);
+		}else{
+			this.toggleCollider(0,true);
 		}
 	}
 

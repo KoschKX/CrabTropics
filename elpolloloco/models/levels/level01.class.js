@@ -15,6 +15,9 @@ const level01 = new Level(
 	new Background('./img/beach/oceanA.png', 0 , 0),
 	new Background('./img/beach/beachA.png', 0 , 0),
 	[
+		new Cannonball(),
+	],
+	[
 		new Explosion(),
 	],
 	350,

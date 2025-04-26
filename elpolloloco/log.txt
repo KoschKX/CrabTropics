@@ -104,4 +104,14 @@
 	13:00
 		Looking at cannonball logic now.
 
+	15:00
+		Aadd moving objects to garbage collection when 'destroyed'.
+		Fixed cannonball scaling and bouncing. Now there is a problem with allowing them to fall off the screen.
+
+	17:00
+		Refactored colliders. Added ability to toggle them on and off.
+
+		
+
+
 	

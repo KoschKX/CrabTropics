@@ -3,14 +3,14 @@ class Character extends MovableObject{
 	name = 'Character'; 
 
 	dead = false; hurt = false;
-	invincible = false; reviving = false;
+	invincible = false; hostile = false; reviving = false;
 	health = 1; starthealth = 1;
 	lastHit = 0; lastFlicker = 0;
 
 	useGravity = true; falling = false; jumping = false;
 
 	boxes = [
-				[0, 0, this.width, this.height, 'white'],
+				[0, 0, this.width, this.height, 'white', false],
 			]
 
 	constructor(){
@@ -28,7 +28,7 @@ class Character extends MovableObject{
 
 /* COLLISIONS */
 
-	getCollisionDirection(mo,boxA,boxB) {
+	getCollisionDirection(mo, boxA, boxB) {
 		const [bx, by, bw, bh] = this.boxes[boxA];
 		const [mx, my, mw, mh] = mo.boxes[boxB];
 
@@ -57,8 +57,10 @@ class Character extends MovableObject{
 	isColliding(mo,idxA,idxB) {
 		if(!this.world){ return; }
 		if(!this.boxes || !mo || !mo.boxes){ return; }
-
 		if(idxA>this.boxes.length-1 || idxB>mo.boxes.length-1){ return; }
+		if(!this.boxes[idxA][5] || !this.boxes[idxB][5]){ return; }
+
+		if((this.dead || this.invincible || !mo.hostile) && idxA==0){ return; }
 
 		let dir;
 		let isColliding = (
@@ -85,13 +87,16 @@ class Character extends MovableObject{
 		return dir;
 	}
 
-	drawCollider(ctx, idx){
-		if(!ctx || !this.boxes || this.boxes.length<idx){ return; }
-		ctx.beginPath();
-		ctx.lineWidth = "1";
-		ctx.strokeStyle = this.boxes[idx][4];
-		ctx.rect(this.boxes[idx][0], this.boxes[idx][1],this.boxes[idx][2],this.boxes[idx][3]);
-		ctx.stroke();
+	toggleCollider(idx, onOff){
+		if(!this.boxes || !this.boxes[idx]){ return; }
+		this.boxes[idx][5] = onOff;
+	}
+
+	activateColliders(){
+		this.boxes.forEach((box) => { box[5]=true;});
+	}
+	deactivateColliders(){
+		this.boxes.forEach((box) => { box[5]=false;});
 	}
 
 	drawColliders(ctx){
@@ -99,6 +104,24 @@ class Character extends MovableObject{
 			this.drawCollider(ctx, idx);
 		});
 	}
+
+	drawCollider(ctx, idx){
+		if(!ctx || !this.boxes || this.boxes.length<idx){ return; }
+		ctx.beginPath();
+		ctx.lineWidth = "1";
+			
+		if(!this.boxes[idx][5]){
+			ctx.setLineDash([3, 3]);
+			ctx.strokeStyle = 'white';
+		}else{
+			ctx.setLineDash([]);
+			ctx.strokeStyle = this.boxes[idx][4];
+		}
+		
+		ctx.rect(this.boxes[idx][0], this.boxes[idx][1],this.boxes[idx][2],this.boxes[idx][3]);
+		ctx.stroke();
+	}
+
 
 /* SPRITE */
 
@@ -150,22 +173,25 @@ class Character extends MovableObject{
 
 	handleGravity(){
 		if(!this.world){ return; }
-		if((this.isAboveGround() || this.isOnGround()) || this.speedY > 0){ 
+		if(this.isAboveGround() || this.isOnGround() || this.speedY > 0){ 
 			this.y -= this.speedY;
 			this.speedY -= this.acceleration;
+			
 			this.jumping = false;
+			
 			if(this.speedY > 0){
 				this.falling = false;
 			}else{
 				this.falling = true; 
 			}
+
 		}else{
 			this.falling = false;
 		}
 		if(this.isAboveGround()  || this.speedY == 0){
 			this.jumping = true;
 		}
-		if(!this.isAboveGround()){
+		if(this.useGround && !this.isAboveGround()){
 			this.y = this.world.ground + this.groundOffset;
 		}
 	}
@@ -236,12 +262,15 @@ class Character extends MovableObject{
 	    return Math.floor(eTime / intv) % 2 === 0;
 	}
 
-	setInvincible(delay){
+	setInvincible(delay, onOff){
 		if(!this.invincible){
 			setTimeout(() => {
 				this.invincible=false;
+				this.toggleCollider(1,true);
 			},delay);
 			this.invincible=true;
+
+			this.toggleCollider(0,false);
 		}
 	}
 

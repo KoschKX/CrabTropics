@@ -55,14 +55,9 @@ class Explosion extends MovableObject{
         	if(i < anim.length-1){
         		this.currImage++;
     		}else{
-	        	this.destroy();
+	        	world.level.effects = this.destroy(this, world.level.effects);
 	        }
 	    }
-	}
-
-	destroy(){
-		let toRemove = world.level.effects.find(obj => obj.stamp === this.stamp);
-		world.level.effects = world.level.effects.filter(obj => obj !== toRemove);
 	}
 
 	getImages(){

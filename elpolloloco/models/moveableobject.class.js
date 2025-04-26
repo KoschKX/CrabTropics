@@ -11,7 +11,7 @@ class MovableObject{
 	currImageSet = null; currOffsetSet = null;
 	img; cache; imageCache = [];
 
-	useGravity = false; falling = false; bouncing = false;
+	useGravity = false; falling = false; bouncing = false; useGround = true;
 
 	world; cvs; 
 
@@ -124,23 +124,26 @@ class MovableObject{
 
 	handleGravity(){
 		if(!this.world){ return; }
-		if((this.isAboveGround() || this.isOnGround()) || this.speedY > 0){ 
-			this.y -= this.speedY;
+		if(this.isAboveGround() || this.isOnGround() || this.speedY > 0){ 
+			this.y -= this.speedY; 
 			this.speedY -= this.acceleration;
+			
 			this.bouncing = false;
+			
 			if(this.speedY > 0){
 				this.falling = false;
 			}else{
 				this.falling = true; 
 			}
+
 		}else{
 			this.falling = false;
 		}
-		if(this.isAboveGround()  || this.speedY == 0){
+		if(this.isAboveGround() || this.speedY == 0){
 			this.bouncing = true;
 		}
-		if(!this.isAboveGround()){
-			this.y = this.ground;
+		if(this.useGround && !this.isAboveGround()){
+			this.y = this.world.ground + this.groundOffset;
 		}
 	}
 
@@ -163,6 +166,7 @@ class MovableObject{
 		//if(!this.isAboveGround()){
 			this.speedY = spd;
 			this.bouncing = true;
+			this.falling = false;
 			if(point){
 				this.y=point;
 			}
@@ -170,16 +174,14 @@ class MovableObject{
 	}
 
 	isAboveGround(){
-		if(!this.world){ return; }
-		//console.log(this.name+" : "+this.world.ground);
+		if(!this.world){ return false; }
 		return this.y < this.world.ground + this.groundOffset;
 	}
 
 	isOnGround(){
-		if(!this.world){ return; }
+		if(!this.world){ return false; }
 		return this.y == this.world.ground + this.groundOffset;
 	}
-
 
 /* UTILS */
 
@@ -192,5 +194,15 @@ class MovableObject{
 	}
 
 	getImages(){}
+
+	destroy(object, arr=[]){
+		if(!arr){ return; }
+		let removals = arr.find(obj => obj.stamp === object.stamp);
+		arr = arr.filter(obj => obj !== removals);
+		if(removals && world.debug){
+			console.log( 'Destroyed '+object.name);
+		}
+		return arr;
+	}
 
 }

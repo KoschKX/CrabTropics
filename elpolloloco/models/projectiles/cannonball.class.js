@@ -1,0 +1,121 @@
+class Cannonball extends Enemy{
+
+	name = 'Cannonball';
+
+	health = 10; starthealth = 10; 
+	frameRate = 24; useGravity = true; 
+	speed = 0.25; frameRate = 24;
+
+
+
+	scale = 1;
+	width = 5; height = 5;
+	maxWidth = 33; maxHeight = 33;
+	maxZoomWidth = 66; maxZoomHeight = 66;
+
+	scaleInterval;
+
+	IMAGES_ROLL = [
+		'./img/cannonballA/ROLL_001.png',
+	];
+	
+	frameRate = 24; 
+
+	boxes = [
+		[0, 0, this.width, this.height, 'red', true],
+	];
+
+	hostile = true;
+
+	madeGroundContact = false;
+
+	constructor(){
+		super();
+		this.init();
+	}
+	
+	init() {
+		super.init();
+
+		this.loadImage('./img/cannonballA/ROLL_001.png');
+		this.changeAnimation(this.IMAGES_ROLL);
+
+		clearInterval(this.scaleInterval); this.scaleInterval = setInterval(() => { this.handleScaling(); }, 1000 / 24 );
+
+		this.jump();
+	}
+
+	main(){
+		super.main();
+		
+		this.updateCollisionBoxes();
+
+		this.checkGroundHit();
+	}
+
+	jump(){
+		if(!this.isAboveGround()){
+			this.speedY = 20;
+			this.jumping = true;
+		}
+	}
+
+	checkGroundHit(){
+		if(!this.madeGroundContact&&this.isOnGround()){
+
+	    	this.bounce(5);
+
+	    	this.hostile = true;
+
+	    	this.useGround = false;
+	    	this.madeGroundContact=true;
+
+	    }else if(this.madeGroundContact){
+	    	//console.log(this.y);
+	    	this.toggleCollider(0,false);
+
+	    	this.hostile = false;
+
+	    	this.speedY-=0.1;
+	    	this.y-=this.speedY;
+	    }
+	    if(this.y>=this.world.cvs.height+this.height){
+	    	world.level.projectiles = this.destroy(this,world.level.projectiles);
+	    }
+	}
+
+	getImages(){
+		let images = [];
+
+		images = images.concat(this.IMAGES_ROLL);
+		
+		return images;
+	}
+
+
+	handleScaling() {
+	    
+	    let mxw ; let mxh;
+
+	    if(this.madeGroundContact){
+	    	mxw=this.maxZoomWidth; mxh=this.maxZoomHeight;
+	    	this.scale += 0.05;
+	    }else{
+	    	mxw=this.maxWidth; mxh=this.maxHeight;
+	    	this.scale += 0.01;
+	    }
+	    if(this.width * this.scale < mxw){
+	    	this.width *= this.scale;
+	    }
+	   	if(this.height * this.scale < mxh){
+	    	this.height *= this.scale;
+	    }
+	}
+
+
+	updateCollisionBoxes(){
+		this.boxes[0][2] = this.width;
+		this.boxes[0][3] = this.height;
+	}
+
+}
