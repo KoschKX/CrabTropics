@@ -81,6 +81,7 @@ class World{
 				}else if(colA){
 					if(colA==4 || colA==2  && enemy.hostile){
 						this.player.isHit();
+						this.player.setInvincible(1000);
 					}
 				}
 			});
@@ -191,6 +192,7 @@ class World{
 						enemy.isHit();
 						enemy.revive(3000);
 					});
+					this.player.setInvincible(1000);
 					this.player.revive();
 				}
 			}

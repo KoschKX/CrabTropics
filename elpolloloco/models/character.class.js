@@ -41,7 +41,6 @@ class Character extends MovableObject{
 		let tx = this.x; let ty = this.y;
 		let mx = mo.x; let my = mo.y;
 		*/
-		
 
 		const thisLeft = tx + tbx;
 		const thisRight = thisLeft + tbw;
@@ -174,7 +173,6 @@ class Character extends MovableObject{
 		    		}
 		    	}else{
 		    		if(i < anim.length-1){
-		    			this.setInvincible(1000);
 		    			this.hurt=false;
 		    		}
 		    	}
