@@ -2,11 +2,11 @@ class Cannonball extends Enemy{
 
 	name = 'Cannonball';
 
+	x = 120; y = 0;
+
 	health = 10; starthealth = 10; 
 	frameRate = 24; useGravity = true; 
 	speed = 0.25; frameRate = 24;
-
-
 
 	scale = 1;
 	width = 5; height = 5;

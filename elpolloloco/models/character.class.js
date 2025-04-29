@@ -29,27 +29,38 @@ class Character extends MovableObject{
 /* COLLISIONS */
 
 	getCollisionDirection(mo, boxA, boxB) {
-		const [bx, by, bw, bh] = this.boxes[boxA];
-		const [mx, my, mw, mh] = mo.boxes[boxB];
+		const [tbx, tby, tbw, tbh] = this.boxes[boxA];
+		const [mbx, mby, mbw, mbh] = mo.boxes[boxB];
 
-		const thisLeft = this.x + bx;
-		const thisRight = thisLeft + bw;
-		const thisTop = this.y + by;
-		const thisBottom = thisTop + bh;
+		/* ACCOUNT FOR OFFSETS */
+		
+		let offset = this.getOffset(); let moffset = mo.getOffset();
+		let tx = this.x - offset[0]; let ty = this.y - offset[1];
+		let mx = mo.x - moffset[0]; let my = mo.y - moffset[1];
+		/*
+		let tx = this.x; let ty = this.y;
+		let mx = mo.x; let my = mo.y;
+		*/
+		
 
-		const moLeft = mo.x + mx;
-		const moRight = moLeft + mw;
-		const moTop = mo.y + my;
-		const moBottom = moTop + mh;
+		const thisLeft = tx + tbx;
+		const thisRight = thisLeft + tbw;
+		const thisTop = ty + tby;
+		const thisBottom = thisTop + tbh;
+
+		const moLeft = mo.x + mbx;
+		const moRight = moLeft + mbw;
+		const moTop = mo.y + mby;
+		const moBottom = moTop + mbh;
 
 		const overlapX = Math.min(thisRight, moRight) - Math.max(thisLeft, moLeft);
 		const overlapY = Math.min(thisBottom, moBottom) - Math.max(thisTop, moTop);
 
 		if (overlapX < overlapY) {
-			if (this.x < mo.x) return 4; 
+			if (tx < mx) return 4; 
 			else return 2; 
 		} else {
-			if (this.y < mo.y) return 1; 
+			if (ty < my) return 1; 
 			else return 3; 
 		}
 	}
@@ -60,14 +71,23 @@ class Character extends MovableObject{
 		if(idxA>this.boxes.length-1 || idxB>mo.boxes.length-1){ return; }
 		if(!this.boxes[idxA][5] || !this.boxes[idxB][5]){ return; }
 
-		if((this.dead || this.invincible || !mo.hostile) && idxA==0){ return; }
+		if((this.dead || this.invincible || !mo.hostile || mo.dead || mo.hurt) && idxA==0){ return; }
+
+		// ACCOUNT FOR SPRITE OFFSETS
+		let offset = this.getOffset(); let moffset = mo.getOffset();
+		let tx = this.x - offset[0]; let ty = this.y - offset[1];
+		let mx = mo.x - moffset[0]; let my = mo.y - moffset[1];
+		/*
+		let tx = this.x; let ty = this.y;
+		let mx = mo.x; let my = mo.y;
+		*/
 
 		let dir;
 		let isColliding = (
-			this.x + this.boxes[idxA][0] < mo.x + mo.boxes[idxB][0] + mo.boxes[idxB][2] &&
-			this.x + this.boxes[idxA][0] + this.boxes[idxA][2] > mo.x + mo.boxes[idxB][0] &&
-			this.y + this.boxes[idxA][1] < mo.y + mo.boxes[idxB][1] + mo.boxes[idxB][3] &&
-			this.y + this.boxes[idxA][1] + this.boxes[idxA][3] > mo.y + mo.boxes[idxB][1]
+			tx + this.boxes[idxA][0] < mx + mo.boxes[idxB][0] + mo.boxes[idxB][2] &&
+			tx + this.boxes[idxA][0] + this.boxes[idxA][2] > mx + mo.boxes[idxB][0] &&
+			ty + this.boxes[idxA][1] < my + mo.boxes[idxB][1] + mo.boxes[idxB][3] &&
+			ty + this.boxes[idxA][1] + this.boxes[idxA][3] > my + mo.boxes[idxB][1]
 		);
 
 		if(isColliding){  
@@ -192,22 +212,6 @@ class Character extends MovableObject{
 			this.jumping = false;
 			this.y = this.world.ground + this.groundOffset;
 		}
-	}
-
-	moveLeft(){
-		if(!this.world){ return; }
-		if(this.x<0-(this.width*0.5)){ return; }
-		if(this.currDirection==1){ this.x-=this.width*0.25; }
-		this.x -= this.speed;
-        this.currDirection = 0;     
-	}
-
-	moveRight(){
-		if(!this.world){ return; }
-		if(this.x>this.world.cvs.width-(this.width*0.5)){ return; }
-		if(this.currDirection==0){ this.x+=this.width*0.25; }
-		this.x += this.speed;
-		this.currDirection = 1;     
 	}
 
 	jump(){

@@ -8,6 +8,7 @@ class World{
 
 	cvs;
 	ctx;
+	cam = [0,0]; 
 
 	debug = false;
 	cache = true;
@@ -38,6 +39,8 @@ class World{
 			}
 	    };
 
+	    this.resizeCanvas();
+
 	    this.main();
 	}
 
@@ -65,11 +68,7 @@ class World{
 				let colA = this.player.isColliding(enemy,0,0);
 				let colB = this.player.isColliding(enemy,1,1);
 				if(colB){
-					if(
-						this.player.falling && 
-						colB==1 && 
-						enemy instanceof Enemy
-					){
+					if(this.player.falling && colB==1){
 
 						if(!this.player.dead && enemy.hostile){
 							//if(!enemy.dead){
@@ -80,10 +79,7 @@ class World{
 						
 					}
 				}else if(colA){
-					if(
-						( colA==4 || colA==2 ) && 
-						enemy instanceof Enemy
-					){
+					if(colA==4 || colA==2  && enemy.hostile){
 						this.player.isHit();
 					}
 				}
@@ -92,10 +88,15 @@ class World{
 	}
 
 	draw() {
+
 		this.ctx.clearRect(0,0,this.cvs.width,this.cvs.height);
 
-		if(!this.player.img){ return false; }
-		
+		if(!this.player.img){ this.ctx.restore(); return false; }
+
+		this.ctx.save(); 
+
+		this.updateCamera();
+
 		this.addToMap(this.level.backgroundA);
 		this.addObjectsToMap(this.level.clouds);
 
@@ -117,15 +118,57 @@ class World{
 
 		this.addObjectsToMap(this.level.projectiles.filter(projectile => projectile.falling && projectile.name === 'Cannonball'));
 
-		this.printStatsBar();
+		this.ctx.restore();
 
+		this.printStatsBar();
 		this.checkDebugKey();
 
 		self=this;
 		requestAnimationFrame(function(){
 			self.draw();
 		});
+
+
 	}
+
+	updateCamera(){
+		let offX = this.player.width*0.5;
+		let offY = 0;
+
+		
+		let camX = -(this.player.x + offX) + (this.cvs.width * 0.5);
+		let camY = -(this.player.y + offY) + (this.cvs.height * 0.5);
+
+		// RESTRICT TO LEVEL BOUNDS
+		let minX = -(this.level.bounds[2] - this.cvs.width); 
+			let maxX = -this.level.bounds[0];                  
+			let minY = -(this.level.bounds[3] - this.cvs.height);
+			let maxY = -this.level.bounds[1];               
+
+			camX = Math.max(minX, Math.min(camX, maxX));
+			camY = Math.max(minY, Math.min(camY, maxY));
+
+		this.cam[0] = camX; this.cam[1] = camY;
+
+		this.ctx.setTransform(1, 0, 0, 1, 0, 0); 
+		this.ctx.translate(this.cam[0], this.cam[1]);
+	}
+
+	resizeCanvas() {
+	    
+		let cvsW = window.innerWidth;
+		let cvsH = window.innerHeight;
+
+		// RESTRICT TO LEVEL BOUNDS
+		if(cvsW>this.level.bounds[2]){cvsW=this.level.bounds[2];}
+		if(cvsH>this.level.bounds[3]){cvsH=this.level.bounds[3];}
+
+		this.cvs.width = cvsW;
+		this.cvs.height = cvsH;
+
+	    this.draw();
+	}
+
 
 	printStatsBar(){
 		
@@ -189,7 +232,8 @@ class World{
 			if(mo.invincible&&mo.flicker(1)){ return ;}
 	    
 	    this.ctx.save(); 
-	    mo.handleFlip(this.ctx);
+
+	    mo.draw(this.ctx);
 
 	    if(this.debug && mo instanceof Character){
 	    	mo.drawColliders(this.ctx);

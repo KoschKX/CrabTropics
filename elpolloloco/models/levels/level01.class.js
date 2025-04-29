@@ -20,6 +20,7 @@ const level01 = new Level(
 	[
 		new Explosion(),
 	],
+	[0,0,720,480], 
 	350,
 );
 

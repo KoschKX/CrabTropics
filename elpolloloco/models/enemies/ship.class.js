@@ -83,11 +83,8 @@ class Ship extends Enemy{
 	 		let shotCenterX = (shot.width * 0.5) + cannCenterX;
 	  		let shotCenterY = (shot.height * 0.1) + cannCenterY;
 
-	  		
-
-  		shot.x = shipCenterX - shotCenterX;
-  		shot.y = shipCenterY - shotCenterY;
-
+  			shot.x = shipCenterX - shotCenterX;
+  			shot.y = shipCenterY - shotCenterY;
 
   			let cball = new Cannonball();
   			cball.x = shot.x + (cball.x*0.5); cball.y = shot.y;

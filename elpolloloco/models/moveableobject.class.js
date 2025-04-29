@@ -13,7 +13,7 @@ class MovableObject{
 
 	useGravity = false; falling = false; bouncing = false; useGround = true;
 
-	world; cvs; 
+	world;
 
 	frameRate=60;
 
@@ -24,7 +24,10 @@ class MovableObject{
 	currImageSet=[''];
 	currOffsetSet=[''];
 
+	facingRight = true;
+
 	groundOffset = 0;
+	flipOffset = [0, 0];
 
 	stamp = 0;
 
@@ -65,14 +68,16 @@ class MovableObject{
 		return arr;
 	}
 
-	handleFlip(ctx){
+	draw(ctx){
 		if(!this.img){ return; }
+		let offX = 0;
+		if(this.facingRight){ offX = this.flipOffset[0]; }
 		if (this.currDirection == 0) {
-	        ctx.translate(this.x + this.width, this.y); 
+	        ctx.translate(this.x + this.width + offX, this.y); 
 	        ctx.scale(-1, 1); 
 	        ctx.drawImage(this.img, 0, 0, this.width, this.height); 
 	    } else {
-	        ctx.translate(this.x, this.y); 
+	        ctx.translate(this.x - offX, this.y); 
 	        ctx.drawImage(this.img, 0, 0, this.width, this.height); 
 	    }
 	}
@@ -120,6 +125,12 @@ class MovableObject{
 		}
 	}
 
+	getOffset(){
+		let offX = this.flipOffset[0];
+		let offY = this.flipOffset[1];
+		return [offX, offY];
+	}
+
 /* MOVEMENT */
 
 	handleGravity(){
@@ -131,7 +142,7 @@ class MovableObject{
 				this.falling = false;
 			}else{
 				this.falling = true; 
-			}
+			}dr
 		}else{
 			this.falling = false;
 		}
@@ -146,16 +157,15 @@ class MovableObject{
 	}
 
 	moveLeft(){
-		if(this.x<0-(this.width*0.5)){return;}
-		if(this.currDirection==1){ this.x-=this.width*0.25; }
+		if(!this.world){ return; }
+		if(this.x<this.world.level.bounds[0]-(this.width*0.5)){return;}
 		this.x -= this.speed;
         this.currDirection = 0;     
 	}
 
 	moveRight(){
 		if(!this.world){ return; }
-		if(this.x>this.world.cvs.width-(this.width*0.5)){return;}
-		if(this.currDirection==0){ this.x+=this.width*0.25; }
+		if(this.x>this.world.level.bounds[2]-(this.width)){return;}
 		this.x += this.speed;
 		this.currDirection = 1;     
 	}

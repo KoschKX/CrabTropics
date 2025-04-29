@@ -7,6 +7,7 @@ class Pirate extends Player{
 	speed = 3; frameRate = 24;
 
 	groundOffset = -64;
+	flipOffset = [-this.width*0.25, 0];
 
 	boxes = [
 				[this.width*0.25, this.height*0.33, this.width*0.25, this.height*0.5, 'red', true],

@@ -64,10 +64,10 @@ class Enemy extends Character{
 	    	this.moveRight();
 	    }
 
-	    if(this.currDirection===0&&this.x<0){
+	    if(this.currDirection===0&&this.x<this.world.level.bounds[0]){
 	    	this.currDirection=1;
 		}
-	    if(this.currDirection===1&&this.x>this.world.cvs.width-this.width){
+	    if(this.currDirection===1&&this.x>this.world.level.bounds[2]-this.width){
 	    	this.currDirection=0;
 		}
 

@@ -28,9 +28,11 @@ class Player extends Character{
 		if(this.dead){ this.deactivateColliders(); return; } else { this.activateColliders(); }
 
 		if(this.world.keyboard.LEFT){
+			this.facingRight=false;
     		this.moveLeft();
 		}
 		if(this.world.keyboard.RIGHT){
+			this.facingRight=true;
 			this.moveRight();
 		}
 		if(this.world.keyboard.SPACE && !this.isAboveGround()){

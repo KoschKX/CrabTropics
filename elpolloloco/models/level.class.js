@@ -10,9 +10,10 @@ class Level{
 	projectiles = [];
 	effects = [];
 
+	bounds = [0,0,0,0]
 	ground;
 
-	constructor(player, enemies, clouds, backgroundA, backgroundB, backgroundC, projectiles, effects, ground){
+	constructor(player, enemies, clouds, backgroundA, backgroundB, backgroundC, projectiles, effects, bounds, ground){
 		this.player = player;
 		this.enemies = enemies;
 		this.clouds = clouds;
@@ -21,6 +22,9 @@ class Level{
 		this.backgroundC = backgroundC;
 		this.projectiles = projectiles;
 		this.effects = effects;
+
+		// CLOCKWISE 
+		this.bounds = bounds;
 
 		this.ground = 410;
 	}

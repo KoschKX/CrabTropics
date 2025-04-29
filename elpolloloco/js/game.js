@@ -58,5 +58,29 @@ function init(){
                 break;          
         }
     });
+
+    document.querySelector('#left_btn').addEventListener('touchstart', (e) => {
+        keyboard.LEFT = true;
+        
+    });
+    document.querySelector('#left_btn').addEventListener('touchend', (e) => {
+        keyboard.LEFT = false;
+    });
+    document.querySelector('#right_btn').addEventListener('touchstart', (e) => {
+        keyboard.RIGHT = true;
+    });
+    document.querySelector('#right_btn').addEventListener('touchend', (e) => {
+        keyboard.RIGHT = false;
+    });
+    document.querySelector('#jump_btn').addEventListener('touchstart', (e) => {
+        keyboard.SPACE = true;
+    });
+    document.querySelector('#jump_btn').addEventListener('touchend', (e) => {
+        keyboard.SPACE = false;
+    });
+
+    window.addEventListener('resize', function(){
+            world.resizeCanvas();
+    });
 }
 

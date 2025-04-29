@@ -3,15 +3,13 @@ class Background extends MovableObject{
 	name = 'Background';
 	category = 'background';
 
-	width = 740;
-	height = 480;
+	x = 0; y = 0; width = 740; height = 480;
 	
 	constructor(imagePath,x,y){
 		super().loadImage(imagePath);
 		
 		this.x = x;
 		this.y = y;
-
 	}
 
 	fit(){

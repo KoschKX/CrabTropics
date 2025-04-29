@@ -90,10 +90,11 @@
 		Thinking of making a UML diagram to show the teacher.
 
 	19:00 
-		Best friend's husband wants changes to the invitations. Have to go back over there.
+		Break. Best friend's husband wants changes to the invitations. Have to go back over there.
 
 	22:00
 		Fixed the cannon explosion timing code using lastFired, like in the instruction video for the isHurt() code.
+		Updated the caching logic. Images won't flicker at all if they exist in the DOM.
 
 	23:00
 		Added cannon balls. For some reason they won't harm both the player and the enemies.
@@ -118,4 +119,17 @@
 
 	18:00
 		Center cannon ball when it scales.
+
+29. Apr, 2025
+	
+	15:00
+		Unsure how I should make the game responsive. 
+
+	17:00 
+		Implemented camera system. It didn't work right away for me, because the canvas context needed to be saved and restored due to the sprite flipping code.
+
+	18:30
+		Initial mobile developement. Need responsive buttons.
+
+
 	
