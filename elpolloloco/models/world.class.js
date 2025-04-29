@@ -54,6 +54,7 @@ class World{
 				let colPA = this.player.isColliding(projectile,0,0);
 				if(colPA){
 					this.player.isHit();
+					this.player.setInvincible(1000);
 				}
 				this.level.enemies.forEach((enemy) => {
 					let colPB = projectile.isColliding(enemy,0,0);

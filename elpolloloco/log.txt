@@ -133,4 +133,7 @@
 
 	21:00
 		Changed how invincibility is called.
+
+	21:30
+		Fixed stuttering on mobile, caused by long button presses.
 	

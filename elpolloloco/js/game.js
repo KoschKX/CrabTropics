@@ -59,24 +59,37 @@ function init(){
         }
     });
 
+
+    /* MOBILE */
+
     document.querySelector('#left_btn').addEventListener('touchstart', (e) => {
-        keyboard.LEFT = true;
-        
-    });
+        e.stopPropagation(); e.preventDefault();
+        if(!keyboard.LEFT){ keyboard.LEFT = true };
+    }, { passive: false });
     document.querySelector('#left_btn').addEventListener('touchend', (e) => {
-        keyboard.LEFT = false;
-    });
+        e.stopPropagation(); e.preventDefault();
+        if(keyboard.LEFT){ keyboard.LEFT = false };
+    }, { passive: false });
     document.querySelector('#right_btn').addEventListener('touchstart', (e) => {
-        keyboard.RIGHT = true;
-    });
+        e.stopPropagation(); e.preventDefault();
+        if(!keyboard.RIGHT){ keyboard.RIGHT = true };
+    }, { passive: false });
     document.querySelector('#right_btn').addEventListener('touchend', (e) => {
-        keyboard.RIGHT = false;
+        e.stopPropagation(); e.preventDefault();
+        if(keyboard.RIGHT){ keyboard.RIGHT = false };
     });
     document.querySelector('#jump_btn').addEventListener('touchstart', (e) => {
-        keyboard.SPACE = true;
-    });
+        e.stopPropagation(); e.preventDefault();
+        if(!keyboard.SPACE){ keyboard.SPACE = true };
+    }, { passive: false });
     document.querySelector('#jump_btn').addEventListener('touchend', (e) => {
-        keyboard.SPACE = false;
+        e.stopPropagation(); e.preventDefault();
+        if(keyboard.SPACE){ keyboard.SPACE = false };
+    }, { passive: false });
+
+    document.querySelector('#controls .button').addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
     });
 
     window.addEventListener('resize', function(){
