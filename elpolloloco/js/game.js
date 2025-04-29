@@ -14,21 +14,22 @@ function init(){
     world = new World(canvas,keyboard);
 
     window.addEventListener('keydown', (e) => {
+        if(keyboard.BLOCKED){ return; }
         switch (e.keyCode) {
             case 37:
-                keyboard.LEFT = true;
+                if(!keyboard.LEFT){ keyboard.LEFT = true; }
                 break;
             case 39: 
-                keyboard.RIGHT = true;
+                if(!keyboard.RIGHT){ keyboard.RIGHT = true; }
                 break;
             case 32: 
-                keyboard.SPACE = true;
+                if(!keyboard.SPACE){ keyboard.SPACE = true; }
                 break;
             case 13:
-                keyboard.ENTER = true;
+                if(!keyboard.ENTER){ keyboard.ENTER = true; }
                 break;
             case 9:
-                keyboard.TAB = true;
+                if(!keyboard.TAB){ keyboard.TAB = true; }
                     e.preventDefault();
             case 20: 
                 keyboard.CAPSLOCK = !keyboard.CAPSLOCK;
@@ -37,21 +38,22 @@ function init(){
     });
 
     window.addEventListener('keyup', (e) => {
+        if(keyboard.BLOCKED){ return; }
         switch (e.keyCode) {
             case 37:
-                keyboard.LEFT = false;
+                if(keyboard.LEFT){ keyboard.LEFT = false };
                 break;
             case 39:
-                keyboard.RIGHT = false;
+                if(keyboard.RIGHT){ keyboard.RIGHT = false; }
                 break;
             case 32:
-                keyboard.SPACE = false;
+                if(keyboard.SPACE){ keyboard.SPACE = false; }
                 break;
             case 13:
-                keyboard.ENTER = false;
+                if(keyboard.ENTER){ keyboard.ENTER = false; }
                 break;
             case 9:
-                keyboard.TAB = false;
+                if(keyboard.TAB){ keyboard.TAB = false; }
                     e.preventDefault();
             case 20: 
                 keyboard.CAPSLOCK = keyboard.CAPSLOCK;

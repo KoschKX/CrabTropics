@@ -136,4 +136,7 @@
 
 	21:30
 		Fixed stuttering on mobile, caused by long button presses.
+
+	22:00
+		Blocked immediate user input from continue screen.
 	

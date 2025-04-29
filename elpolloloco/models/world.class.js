@@ -185,8 +185,11 @@ class World{
 			this.ctx.textBaseline = "middle";
 
 			let cTime = (this.player.deadTime(true));
-			if(cTime<=10){
+			if(cTime==0){ this.keyboard.setBlocked(true); }
+			if(cTime<=11){
+				this.keyboard.setBlocked(false);
 				statusText='CONTINUE? '+(10-cTime);
+
 				if(this.keyboard.SPACE){
 					this.level.enemies.forEach((enemy) => {
 						enemy.health=1;
@@ -197,7 +200,7 @@ class World{
 					this.player.revive();
 				}
 			}
-			if(cTime>10){
+			if(cTime>11){
 				this.gameover=true;
 				statusText='GAME OVER';
 			}
