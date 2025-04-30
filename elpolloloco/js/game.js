@@ -2,6 +2,7 @@ let canvas;
 let world;
 let keyboard;
 let screen;
+let camera;
 
 document.addEventListener('DOMContentLoaded', function() {
     init();

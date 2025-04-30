@@ -142,4 +142,7 @@
 	
 30 Apr, 2025
 	16:00
-		Should be fully responsive now.
+		Should be fully responsive now. Added Screen class.
+
+	16:30
+		Added Camera and HUD classes.

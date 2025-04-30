@@ -37,15 +37,10 @@ class Screen{
     	document.querySelector(':root').style.setProperty('--app-width', cvsW + 'px');
     	document.querySelector(':root').style.setProperty('--app-height', cvsH +'px');
 
-        console.log("Window height:", window.innerHeight);
-		console.log("Document height:", document.documentElement.clientHeight);
-
         /* PIXEL SCALE */
 		this.cvs.style.width = cvsW + "px";
 		this.cvs.style.height = cvsH + "px";
-		document.querySelector('#ui').style.width = cvsW + "px";
-		document.querySelector('#ui').style.height = cvsH + "px";
-
+	
         if(this.world){this.world.draw();}
     }
 

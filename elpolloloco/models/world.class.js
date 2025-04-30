@@ -2,8 +2,9 @@ class World{
 	
 	level = level01; 
 	keyboard; screen;
-	cvs; ctx; cam = [0,0]; 
-	gameover = false; cache = true; debug = false;
+	cvs; ctx; cam; hud;
+	gameover = false; 
+	cache = true; debug = false;
 
 	constructor(cvs,scr,kbd){
 		this.cvs = cvs; 
@@ -15,6 +16,9 @@ class World{
 
 	    this.player = this.level.player;
 	    this.ground = this.level.ground;
+	    
+    	this.cam = new Camera(this);
+    	this.hud = new HUD(this);
 
 	    this.init();
 	}
@@ -30,7 +34,6 @@ class World{
 			    };
 			}
 	    };
-	    
 	    this.main();
 	}
 
@@ -82,7 +85,11 @@ class World{
 
 		this.ctx.save(); 
 
-		this.updateCamera();
+		this.cam.update(
+			[this.player.x, this.player.y], 
+			[this.player.width*0.5, 0],
+			this.level.bounds,
+			);
 
 		this.addToMap(this.level.backgroundA);
 		this.addObjectsToMap(this.level.clouds);
@@ -98,88 +105,13 @@ class World{
 
 		this.ctx.restore();
 
-		this.printStatsBar();
+		this.hud.print();
 		this.checkDebugKey();
 
 		self=this;
 		requestAnimationFrame(function(){
 			self.draw();
 		});
-	}
-
-	updateCamera(){
-		let offX = this.player.width*0.5;
-		let offY = 0;
-
-		
-		let camX = -(this.player.x + offX) + (this.cvs.width * 0.5);
-		let camY = -(this.player.y + offY) + (this.cvs.height * 0.5);
-
-		// RESTRICT TO LEVEL BOUNDS
-		let minX = -(this.level.bounds[2] - this.cvs.width); 
-			let maxX = -this.level.bounds[0];                  
-			let minY = -(this.level.bounds[3] - this.cvs.height);
-			let maxY = -this.level.bounds[1];               
-
-			camX = Math.max(minX, Math.min(camX, maxX));
-			camY = Math.max(minY, Math.min(camY, maxY));
-
-		this.cam[0] = camX; this.cam[1] = camY;
-
-		this.ctx.setTransform(1, 0, 0, 1, 0, 0); 
-		this.ctx.translate(this.cam[0], this.cam[1]);
-	}
-
-	printStatsBar(){
-		
-		let statusText = '';
-		if(this.player.dead){
-			this.ctx.font = "bold 60px Arial";
-			this.ctx.fillStyle = "white";   
-			this.ctx.strokeStyle = "black";  
-			this.ctx.lineWidth = 1;     
-
-			this.ctx.textAlign = "center"; 
-			this.ctx.textBaseline = "middle";
-
-			let cTime = (this.player.deadTime(true));
-			if(cTime==0){ this.keyboard.setBlocked(true); }
-			if(cTime<=11){
-				this.keyboard.setBlocked(false);
-				statusText='CONTINUE? '+(10-cTime);
-
-				if(this.keyboard.SPACE){
-					this.level.enemies.forEach((enemy) => {
-						enemy.health=1;
-						enemy.isHit();
-						enemy.revive(3000);
-					});
-					this.player.setInvincible(1000);
-					this.player.revive();
-				}
-			}
-			if(cTime>11){
-				this.gameover=true;
-				statusText='GAME OVER';
-			}
-			this.ctx.fillText(statusText, this.cvs.width*.5, this.cvs.height*.5);
-			this.ctx.strokeText(statusText, this.cvs.width*.5, this.cvs.height*.5);
-		}else{
-			this.ctx.font = "30px Arial";
-			this.ctx.fillStyle = "red"; 
-			this.ctx.strokeStyle = "white"; 
-			this.ctx.lineWidth = 1;  
-
-			this.ctx.textAlign = "left"; 
-			this.ctx.textBaseline = "middle";
-
-			for(let i = 0; i<this.player.health; i++){
-				statusText+='♥';
-			}
-			this.ctx.fillText(statusText, 20, 40);
-			this.ctx.strokeText(statusText, 20, 40);
-		}
-		
 	}
 
 	addObjectsToMap(objects){
@@ -203,5 +135,4 @@ class World{
 	checkDebugKey(){
 		this.debug = this.keyboard.CAPSLOCK
 	}
-
 }
