@@ -14,40 +14,7 @@ class Enemy extends Character{
 	}
 	main(){ super.main(); }
 
-	handleAnimation(){
-		this.hurt=this.isHurt();
-
-		if(this.dead||this.hurt){
-			switch(this.variant){
-				case 0:
-					this.changeAnimation(this.IMAGES_DIEA);
-					break;
-				case 1:
-					this.changeAnimation(this.IMAGES_DIEB);
-					break;
-				default:
-					break;
-			}
-		}else{
-			switch(this.variant){
-				case 0:
-					this.changeAnimation(this.IMAGES_MOVEA);
-					break;
-				case 1:
-					this.changeAnimation(this.IMAGES_MOVEB,this.IMAGES_MOVESB_OFFSETS);
-					break;
-				default:
-					break;
-			}
-		}
-
-		this.playAnimation(this.currImageSet);
-
-		if(this.currImageSet==this.IMAGES_MOVEB || this.currImageSet==this.IMAGES_MOVEA){
-			this.applyAnimationOffsets(this.currOffsetSet);
-		}
-
-	}
+	handleAnimation(){}
 
 	handleMovement(){
 		if(!this.world || this.dead){ return; }
