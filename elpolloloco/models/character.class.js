@@ -11,27 +11,19 @@ class Character extends MovableObject{
 
 	boxes = [[0, 0, this.width, this.height, 'white', false]]
 
-	constructor(){
-		super();
-	}
-	init() {
-		super.init();
-	}
-
-	main(){
-		super.main();
-	}
+	constructor() { super(); }
+		   init() { super.init(); }
+		   main() { super.main(); }
 
 /* COLLISIONS */
 
 	getCollisionDirection(mo, boxA, boxB) {
 		const [tbx, tby, tbw, tbh] = this.boxes[boxA];
 		const [mbx, mby, mbw, mbh] = mo.boxes[boxB];
-
-		/* ACCOUNT FOR OFFSETS */
-		let offset = this.getOffset(); let moffset = mo.getOffset();
-		let tx = this.x - offset[0]; let ty = this.y - offset[1];
-		let mx = mo.x - moffset[0]; let my = mo.y - moffset[1];
+		
+		let offset = this.getOffset(); let moffset = mo.getOffset();	//
+		let tx = this.x - offset[0]; let ty = this.y - offset[1]; 		// ACCOUNT FOR OFFSETS 
+		let mx = mo.x - moffset[0]; let my = mo.y - moffset[1];			//
 
 		const thisLeft = tx + tbx; const thisRight = thisLeft + tbw;
 		const thisTop  = ty + tby; const thisBottom = thisTop + tbh;
@@ -42,29 +34,19 @@ class Character extends MovableObject{
 		const overlapX = Math.min(thisRight, moRight) - Math.max(thisLeft, moLeft);
 		const overlapY = Math.min(thisBottom, moBottom) - Math.max(thisTop, moTop);
 
-		if (overlapX < overlapY) {
-			if (tx < mx) return 4; 
-			else return 2; 
-		} else {
-			if (ty < my) return 1; 
-			else return 3; 
-		}
+		return overlapX < overlapY ? (tx < mx ? 4 : 2) : (ty < my ? 1 : 3);
 	}
 
 	isColliding(mo,idxA,idxB) {
-		if(!this.world){ return; }
 		if(!this.boxes || !mo || !mo.boxes){ return; }
-		if(idxA>this.boxes.length-1 || idxB>mo.boxes.length-1){ return; }
-		if(!this.boxes[idxA][5] || !this.boxes[idxB][5]){ return; }
-
+		if(!this.boxes[idxA][5] || !this.boxes[idxB][5] || idxA>this.boxes.length-1 || idxB>mo.boxes.length-1 ){ return; }
 		if((this.dead || this.invincible || !mo.hostile || mo.dead || mo.hurt) && idxA==0){ return; }
 
-		// ACCOUNT FOR SPRITE OFFSETS
-		let offset = this.getOffset(); let moffset = mo.getOffset();
-		let tx = this.x - offset[0]; let ty = this.y - offset[1];
-		let mx = mo.x - moffset[0]; let my = mo.y - moffset[1];
+		let offset = this.getOffset(); let moffset = mo.getOffset();	//
+		let tx = this.x - offset[0]; let ty = this.y - offset[1]; 		// ACCOUNT FOR SPRITE OFFSETS
+		let mx = mo.x - moffset[0]; let my = mo.y - moffset[1];			//
 
-		let dir;
+		let dir = 0; 
 		let isColliding = (
 			tx + this.boxes[idxA][0] < mx + mo.boxes[idxB][0] + mo.boxes[idxB][2] &&
 			tx + this.boxes[idxA][0] + this.boxes[idxA][2] > mx + mo.boxes[idxB][0] &&
@@ -76,14 +58,10 @@ class Character extends MovableObject{
 			dir = this.getCollisionDirection(mo,idxA,idxB);
 			if(this.world.debug){
 				let tdir = '';
-				if(dir==1){ tdir = 'top'; }
-				if(dir==2){ tdir = 'right'; }
-				if(dir==3){ tdir = 'bottom'; }
-				if(dir==4){ tdir = 'left'; }
+				if(dir==1){ tdir = 'top'; } if(dir==2){ tdir = 'right'; }
+				if(dir==3){ tdir = 'bottom'; } if(dir==4){ tdir = 'left'; }
 				console.log('Collision with ['+this.name+':'+idxA+']['+mo.name+':'+idxB+']'+' : '+tdir);
 			}
-		}else{
-			dir=0; 
 		}
 
 		return dir;
@@ -100,77 +78,47 @@ class Character extends MovableObject{
 	deactivateColliders(){
 		this.boxes.forEach((box) => { box[5]=false;});
 	}
-
-	drawColliders(ctx){
-		this.boxes.forEach((enemy,idx) => {
-			this.drawCollider(ctx, idx);
-		});
-	}
-
 	drawCollider(ctx, idx){
 		if(!ctx || !this.boxes || this.boxes.length<idx){ return; }
 		ctx.beginPath();
 		ctx.lineWidth = "1";
-			
-		if(!this.boxes[idx][5]){
-			ctx.setLineDash([3, 3]);
-			ctx.strokeStyle = 'white';
-		}else{
-			ctx.setLineDash([]);
-			ctx.strokeStyle = this.boxes[idx][4];
-		}
-		
+		ctx.setLineDash(this.boxes[idx][5] ? [] : [3, 3]);
+		ctx.strokeStyle = this.boxes[idx][5] ? this.boxes[idx][4] : 'white';
 		ctx.rect(this.boxes[idx][0], this.boxes[idx][1],this.boxes[idx][2],this.boxes[idx][3]);
 		ctx.stroke();
 	}
-
+	drawColliders(ctx){
+		this.boxes.forEach((enemy, idx) => this.drawCollider(ctx, idx, enemy));
+	}
 
 /* SPRITE */
 
-	changeAnimation(anim,offs=null){
-		if(this.currImageSet!=anim){
-			this.currImageSet=anim;
-			this.loadImages(anim);	
-			if(offs){
-				this.currOffsetSet=offs;
-			}else{
-				this.currOffsetSet=null;
-			}
-		}
-	}
-
 	playAnimation(anim){
-		if(anim){
-	    	let i = this.currImage % anim.length;
-	        let path = anim[i];
-	        
-	        if(!this.imageCache[path]){ return; }
+		if(!anim || !this.img){ return; }
+    	let i = this.currImage % anim.length;
+        let path = anim[i]; if(!(path in this.imageCache)) return;
+        
+        this.img.src = this.imageCache[path];
 
-	        this.img.src = this.imageCache[path];
-
-	        if(this.hurt||this.invincible){
-	        	if(this.health==0){
-		        	if (i === anim.length - 1) this.hurt = false, this.dead = true;
-		    	}else{
-		    		if (i < anim.length - 1  ) this.hurt = false;
-		    	}
-	        }
-	        if(this.dead){
-	        	if (i < anim.length - 1) this.currImage++;
-	        }else{
-	        	this.currImage++;
-	        }
-	    }
+        if(this.hurt||this.invincible){
+        	if(this.health==0){
+	        	if (i === anim.length - 1) this.hurt = false, this.dead = true;
+	    	}else{
+	    		if (i < anim.length - 1  ) this.hurt = false;
+	    	}
+        }
+        if(this.dead){
+        	if (i < anim.length - 1) this.currImage++;
+        }else{
+        	this.currImage++;
+        }
 	}
 
 /* MOVEMENT */
 
 	jump(){
 		if(this.dead){ return; }
-		if(!this.isAboveGround()){
-			this.speedY = 20;
-			this.bouncing  = true;
-		}
+		if(!this.isAboveGround()){ this.speedY = 20; this.bouncing  = true;}
 	}
 
 /* STATUS */
@@ -187,7 +135,6 @@ class Character extends MovableObject{
 		return timepassed < 1;
 	}
 
-
 	deadTime(inSeconds) {
 		if (!this.dead){ return -1; }
 		let timepassed = new Date().getTime() - this.lastHit;
@@ -203,15 +150,13 @@ class Character extends MovableObject{
 	}
 
 	setInvincible(delay, onOff){
-		if(!this.invincible){
-			setTimeout(() => {
-				this.invincible=false;
-				this.toggleCollider(1,true);
-			},delay);
-			this.invincible=true;
-
-			this.toggleCollider(0,false);
-		}
+		if(this.invincible){ return; }
+		setTimeout(() => {
+			this.invincible=false;
+			this.toggleCollider(1,true);
+		},delay);
+		this.invincible=true;
+		this.toggleCollider(0,false);
 	}
 
 	isInvincible(){
@@ -221,14 +166,12 @@ class Character extends MovableObject{
 	}
 
 	revive(delay=0){
-		if(!this.reviving){
-			setTimeout(() => {
-				this.dead=false; this.hurt=false; this.health=this.starthealth;
-				this.reviving=false;
-			},delay);
-			this.reviving=true;
-		}
+		if(this.reviving){ return; }
+		setTimeout(() => {
+			this.dead = false; this.hurt = false; this.reviving=false;
+			this.health = this.starthealth;
+		},delay);
+		this.reviving=true;
 	}
-
 
 }

@@ -5,12 +5,13 @@ class Crab extends Enemy{
 	height = 64; width = 128;
 
 	frameRate = 24; useGravity = true; 
-	speed = 3; frameRate = 24;
+
+	speed = 3; 
 
 	boxes_fine = [
-				[this.width*0.25, this.height*0.25, this.width*0.5, this.height*0.5, 'red', true],
-				[this.width*0.1, this.height*0.1, this.width*0.75, this.height*0.25, 'yellow', true]
-			]
+					[this.width*0.25, this.height*0.25, this.width*0.5, this.height*0.5, 'red', true],
+					[this.width*0.1, this.height*0.1, this.width*0.75, this.height*0.25, 'yellow', true]
+				 ]
 	boxes_hurt = [
 					[this.width*0.25, this.height*0.25, this.width*0.5, this.height*0.5, 'red', true],
 					[this.width*0.1, this.height*0.2, this.width*0.75, this.height*0.25, 'yellow', true]
@@ -30,8 +31,7 @@ class Crab extends Enemy{
 		'./img/crabA/MOVE_007.png',
 		'./img/crabA/MOVE_008.png',
 		'./img/crabA/MOVE_009.png',
-	];
-	IMAGES_MOVESA_OFFSETS = [ 0, -2, -5, -5, 4, 0, 1, 2, 5 ];
+	]; IMAGES_MOVESA_OFFSETS = [ 0, -2, -5, -5, 4, 0, 1, 2, 5 ];
 
 	IMAGES_MOVEB = [
 		'./img/crabB/MOVE_001.png',
@@ -43,8 +43,7 @@ class Crab extends Enemy{
 		'./img/crabB/MOVE_007.png',
 		'./img/crabB/MOVE_008.png',
 		'./img/crabB/MOVE_009.png',
-	];
-	IMAGES_MOVESB_OFFSETS = [ 0, -2, -4, -6, -4, -2, 0, 2, 4 ];
+	]; IMAGES_MOVESB_OFFSETS = [ 0, -2, -4, -6, -4, -2, 0, 2, 4 ];
 
 	IMAGES_DIEA = [
 		'./img/crabA/DIE_001.png',
@@ -95,7 +94,6 @@ class Crab extends Enemy{
 		if(this.hurt || this.dead){
 			this.boxes = this.boxes_hurt;
 			this.toggleCollider(0,false);
-			
 		}else{
 			this.boxes = this.boxes_fine;
 			this.toggleCollider(0,true);
@@ -105,59 +103,30 @@ class Crab extends Enemy{
 
 	init() {
 		super.init();
-
-		switch(this.variant){
-			case 0:
-				this.loadImage('./img/crabA/MOVE_000.png');
-				this.changeAnimation(this.IMAGES_MOVEA,this.IMAGES_MOVESA_OFFSETS);
-				break;
-			case 1:
-				this.loadImage('./img/crabB/MOVE_000.png');
-				this.changeAnimation(this.IMAGES_MOVEB,this.IMAGES_MOVESB_OFFSETS);
-				break;
-			default:
-				console.log('Variant doesn\'t exist');
-				break;
-		}
-
-		this.loadImage(this.currImageSet[0]);
-		this.changeAnimation(this.currImageSet, this.currOffsetSet);
-
+		this.loadImage(this. IMAGES_BLANK);
 		this.currImageSet = this.IMAGES_IDLE;
-		this.loadImages(this.currImageSet);
 	}
 
 	handleAnimation(){
-		if(!this.world){ return; }
+		const variantData = {
+		  0: { die: this.IMAGES_DIEA, move: this.IMAGES_MOVEA, offsets: this.IMAGES_MOVESA_OFFSETS },
+		  1: { die: this.IMAGES_DIEB, move: this.IMAGES_MOVEB, offsets: this.IMAGES_MOVESB_OFFSETS }
+		}[this.variant];
 
-		if(this.dead||this.hurt){
-			switch(this.variant){
-				case 0:
-					this.changeAnimation(this.IMAGES_DIEA);
-					break;
-				case 1:
-					this.changeAnimation(this.IMAGES_DIEB);
-					break;
-				default:
-					break;
-			}
-		}else{
-			switch(this.variant){
-				case 0:
-					this.changeAnimation(this.IMAGES_MOVEA);
-					break;
-				case 1:
-					this.changeAnimation(this.IMAGES_MOVEB,this.IMAGES_MOVESB_OFFSETS);
-					break;
-				default:
-					break;
-			}
+		if (variantData) {
+		  const { move, die, offsets } = variantData;
+		  this.changeAnimation(this.dead || this.hurt ? die : move, this.dead || this.hurt ? undefined : offsets);
+		} else {
+		  console.log('Variant doesn\'t exist');
 		}
+
 		this.playAnimation(this.currImageSet);
 
-		if(this.currImageSet==this.IMAGES_MOVEB || this.currImageSet==this.IMAGES_MOVEA){
+		if (   this.currImageSet == this.IMAGES_MOVEB 
+			|| this.currImageSet == this.IMAGES_MOVEA
+		){
 			this.applyAnimationOffsets(this.currOffsetSet);
-		}
+		}	
 
 	}
 

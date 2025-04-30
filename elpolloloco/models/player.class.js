@@ -13,14 +13,11 @@ class Player extends Character{
 
 	ctrlInterval;
 
-	init(){
+	init() {
 		super.init();
 		clearInterval(this.ctrlInterval); this.ctrlInterval = setInterval(() => { this.handleControls(); }, 1000 / 60 );
 	}
-
-	main(){
-		super.main();
-	}
+	main() { super.main(); }
 
 	handleControls(){
 		if(!this.world || ! this.world.keyboard){ return; }

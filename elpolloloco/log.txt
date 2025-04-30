@@ -152,3 +152,6 @@
 
 	18:00
 		Fixed CSS bug when switching to Fullscreen.
+
+	18:30
+		Reduced Code some more.

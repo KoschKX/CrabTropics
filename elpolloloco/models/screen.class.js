@@ -19,10 +19,6 @@ class Screen{
 
     resizeCanvas() {
     	let gameRect = document.querySelector('#game').getBoundingClientRect();
-
-    	//console.log(gameRect);
-    	//let cvsW = gameRect.width; let cvsH = gameRect.height;
-    	//let cvsW = window.innerWidth; let cvsH = window.innerHeight;
        	let cvsW = document.documentElement.clientWidth; let cvsH = document.documentElement.clientHeight;
 
         // RESTRICT TO LEVEL BOUNDS

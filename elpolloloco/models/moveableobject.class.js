@@ -6,8 +6,10 @@ class MovableObject{
 	speed = 1; speedY = 0; acceleration =1;
 	currDirection = 1; currImage = 0;
 
+	IMAGES_BLANK = ['./img/blank.png'];
+
 	currImageSet=['']; currOffsetSet = null;
-	img; cache; imageCache = []; imagesLib = [];
+	img; cache; imageCache = []; imagesLib = [this.IMAGES_BLANK];
 	flipOffset = [0, 0];
 	
 	frameRate=60; gvtyInterval; animInterval; mainInterval;
@@ -70,11 +72,10 @@ class MovableObject{
 	}
 
 	changeAnimation(anim,offs=null){
-		if(this.currImageSet!=anim){
-			this.currImageSet=anim;
-			this.loadImages(anim);	
-			this.currOffsetSet = offs || null;
-		}
+		if(this.currImageSet==anim){ return; }
+		this.currImageSet=anim;
+		this.loadImages(anim);	
+		this.currOffsetSet = offs || null;
 	}
 
 	playAnimation(anim){
@@ -86,20 +87,17 @@ class MovableObject{
 	}
 
 	applyAnimationOffsets(oset){
-		if(oset){
-			let i = this.currImage % this.currImageSet.length;
-			let off = oset[i];
-			let fscale = 100/this.width;
-			let foff = off*fscale;
-			if (this.currDirection === 0) this.x += foff;
-			if (this.currDirection === 1) this.x -= foff;
-		}
+		if(!oset){ return; }
+		let i = this.currImage % this.currImageSet.length;
+		let off = oset[i];
+		let fscale = 100/this.width;
+		let foff = off*fscale;
+		if (this.currDirection === 0) this.x += foff;
+		if (this.currDirection === 1) this.x -= foff;
 	}
 
 	getOffset(){
-		let offX = this.flipOffset[0];
-		let offY = this.flipOffset[1];
-		return [offX, offY];
+		return [this.flipOffset[0], this.flipOffset[1]];
 	}
 
 /* MOVEMENT */
@@ -118,30 +116,27 @@ class MovableObject{
 			this.y = this.world.ground + this.groundOffset;
 		}
 	}
-
-	moveLeft(){
-		if(!this.world){ return; }
-		if(this.x<this.world.level.bounds[0]-(this.width*0.5)){return;}
-		this.x -= this.speed; this.currDirection = 0;     
-	}
-
-	moveRight(){
-		if(!this.world){ return; }
-		if(this.x>this.world.level.bounds[2]-(this.width)){return;}
-		this.x += this.speed; this.currDirection = 1;     
-	}
-
 	bounce(spd,point){
 		this.speedY = spd;
 		this.bouncing = true; this.falling = false;
 		if(point) this.y = point;
 	}
 
+	moveLeft(){
+		if(!this.world){ return; }
+		if(this.x<this.world.level.bounds[0]-(this.width*0.5)){return;}
+		this.x -= this.speed; this.currDirection = 0;     
+	}
+	moveRight(){
+		if(!this.world){ return; }
+		if(this.x>this.world.level.bounds[2]-(this.width)){return;}
+		this.x += this.speed; this.currDirection = 1;     
+	}
+
 	isAboveGround(){
 		if(!this.world){ return false; }
 		return this.y < this.world.ground + this.groundOffset;
 	}
-
 	isOnGround(){
 		if(!this.world){ return false; }
 		return this.y == this.world.ground + this.groundOffset;

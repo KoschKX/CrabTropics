@@ -10,13 +10,9 @@ class Enemy extends Character{
 
 	init() {
 		super.init();
-		//console.log('test');
 		clearInterval(this.mvmtInterval); this.mvmtInterval = setInterval(() => { this.handleMovement(); }, 1000 / 60 );
 	}
-
-	main(){
-		super.main();
-	}
+	main(){ super.main(); }
 
 	handleAnimation(){
 		this.hurt=this.isHurt();
@@ -54,23 +50,11 @@ class Enemy extends Character{
 	}
 
 	handleMovement(){
-		if(!this.world){ return; }
-		if(this.dead){ return; }
-
-	    if(this.currDirection===0){
-	    	this.moveLeft();
-	    }
-	    if(this.currDirection===1){
-	    	this.moveRight();
-	    }
-
-	    if(this.currDirection===0&&this.x<this.world.level.bounds[0]){
-	    	this.currDirection=1;
-		}
-	    if(this.currDirection===1&&this.x>this.world.level.bounds[2]-this.width){
-	    	this.currDirection=0;
-		}
-
+		if(!this.world || this.dead){ return; }
+		this.currDirection === 0 && this.moveLeft();
+	    this.currDirection === 1 && this.moveRight();
+	    this.currDirection === 0 && this.x < this.world.level.bounds[0] && (this.currDirection = 1);
+	    this.currDirection === 1 && this.x > this.world.level.bounds[2] - this.width && (this.currDirection = 0);
 	}
 
 }
