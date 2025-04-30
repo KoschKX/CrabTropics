@@ -7,17 +7,13 @@ class Character extends MovableObject{
 	health = 1; starthealth = 1;
 	lastHit = 0; lastFlicker = 0;
 
-	useGravity = true; falling = false; jumping = false;
+	useGravity = true; falling = false; bounding = false;
 
-	boxes = [
-				[0, 0, this.width, this.height, 'white', false],
-			]
+	boxes = [[0, 0, this.width, this.height, 'white', false]]
 
 	constructor(){
 		super();
 	}
-
-
 	init() {
 		super.init();
 	}
@@ -33,24 +29,15 @@ class Character extends MovableObject{
 		const [mbx, mby, mbw, mbh] = mo.boxes[boxB];
 
 		/* ACCOUNT FOR OFFSETS */
-		
 		let offset = this.getOffset(); let moffset = mo.getOffset();
 		let tx = this.x - offset[0]; let ty = this.y - offset[1];
 		let mx = mo.x - moffset[0]; let my = mo.y - moffset[1];
-		/*
-		let tx = this.x; let ty = this.y;
-		let mx = mo.x; let my = mo.y;
-		*/
 
-		const thisLeft = tx + tbx;
-		const thisRight = thisLeft + tbw;
-		const thisTop = ty + tby;
-		const thisBottom = thisTop + tbh;
+		const thisLeft = tx + tbx; const thisRight = thisLeft + tbw;
+		const thisTop  = ty + tby; const thisBottom = thisTop + tbh;
 
-		const moLeft = mo.x + mbx;
-		const moRight = moLeft + mbw;
-		const moTop = mo.y + mby;
-		const moBottom = moTop + mbh;
+		const moLeft = mo.x + mbx; const moRight = moLeft + mbw;
+		const moTop  = mo.y + mby;  const moBottom = moTop + mbh;
 
 		const overlapX = Math.min(thisRight, moRight) - Math.max(thisLeft, moLeft);
 		const overlapY = Math.min(thisBottom, moBottom) - Math.max(thisTop, moTop);
@@ -76,10 +63,6 @@ class Character extends MovableObject{
 		let offset = this.getOffset(); let moffset = mo.getOffset();
 		let tx = this.x - offset[0]; let ty = this.y - offset[1];
 		let mx = mo.x - moffset[0]; let my = mo.y - moffset[1];
-		/*
-		let tx = this.x; let ty = this.y;
-		let mx = mo.x; let my = mo.y;
-		*/
 
 		let dir;
 		let isColliding = (
@@ -167,20 +150,13 @@ class Character extends MovableObject{
 
 	        if(this.hurt||this.invincible){
 	        	if(this.health==0){
-		        	if(i == anim.length-1){
-		    			this.hurt=false;
-		        		this.dead=true;
-		    		}
+		        	if (i === anim.length - 1) this.hurt = false, this.dead = true;
 		    	}else{
-		    		if(i < anim.length-1){
-		    			this.hurt=false;
-		    		}
+		    		if (i < anim.length - 1  ) this.hurt = false;
 		    	}
 	        }
 	        if(this.dead){
-	        	if(i < anim.length-1){
-	        		this.currImage++;
-	    		}
+	        	if (i < anim.length - 1) this.currImage++;
 	        }else{
 	        	this.currImage++;
 	        }
@@ -189,52 +165,20 @@ class Character extends MovableObject{
 
 /* MOVEMENT */
 
-	handleGravity(){
-		if(!this.world){ return; }
-		if(this.isAboveGround() || this.speedY > 0){ 
-			this.y -= this.speedY;
-			this.speedY -= this.acceleration;
-			if(this.speedY > 0){
-				this.falling = false;
-			}else{
-				this.falling = true; 
-			}
-		}else{
-			this.falling = false;
-		}
-		if(this.isAboveGround()  || this.speedY == 0){
-			this.jumping = true;
-		}
-		if(this.useGround && !this.isAboveGround()){
-			this.falling = false;
-			this.jumping = false;
-			this.y = this.world.ground + this.groundOffset;
-		}
-	}
-
 	jump(){
 		if(this.dead){ return; }
 		if(!this.isAboveGround()){
 			this.speedY = 20;
-			this.jumping = true;
+			this.bouncing  = true;
 		}
 	}
 
 /* STATUS */
 
 	isHit(){
-		if(!this.hurt){
-			this.hurt=true;
-			this.health--;
-			if(this.health < 0){
-				this.health = 0;
-			} else {
-				this.lastHit = new Date().getTime();
-			}
-			if(this.health==0){
-				//this.dead = true;
-			}
-		}
+		if(this.hurt){ return; }
+		this.hurt=true;   this.health--;
+		this.health < 0 ? this.health = 0 : this.lastHit = Date.now();
 	}
 
 	isHurt(){
@@ -245,15 +189,11 @@ class Character extends MovableObject{
 
 
 	deadTime(inSeconds) {
-		if (this.dead) {
-			let timepassed = new Date().getTime() - this.lastHit;
-			timepassed = timepassed / 1000; 
-			if(inSeconds){
-				timepassed = timepassed.toFixed(0);
-			}
-			return timepassed;
-		}
-		return -1;
+		if (!this.dead){ return -1; }
+		let timepassed = new Date().getTime() - this.lastHit;
+		timepassed = timepassed / 1000; 
+		inSeconds && (timepassed = timepassed.toFixed(0));
+		return timepassed;
 	}
 
 	flicker(intv){

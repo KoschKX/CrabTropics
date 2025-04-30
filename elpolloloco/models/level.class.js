@@ -37,12 +37,12 @@ class Level{
 	}
 
 	preload(){
-		this.cacheImages(this.player.getImages());
-	    this.enemies.forEach((enemy) => { this.cacheImages(enemy.getImages()); });
+		this.cacheImages(concat(this.player.imagesLib));
+	    this.enemies.forEach((enemy) => { this.cacheImages(concat(enemy.imagesLib)); });
 
 	    let self = this;
-	    this.effects.forEach((effect) => { this.cacheImages(effect.getImages()); self.effects=[]; });
-	    this.projectiles.forEach((projectile) => { this.cacheImages(projectile.getImages()); self.projectiles=[]; });
+	    this.effects.forEach((effect) => { this.cacheImages(concat(effect.imagesLib)); self.effects=[]; });
+	    this.projectiles.forEach((projectile) => { this.cacheImages(concat(projectile.imagesLib)); self.projectiles=[]; });
 	}
 
 	cacheImages(images) {

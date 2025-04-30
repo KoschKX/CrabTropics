@@ -39,7 +39,7 @@ class Cloud extends MovableObject{
 	}
 
 	reset(start){
-		this.x = this.random(this.randx[0], this.randx[1]); this.y = this.random(this.randy[0], this.randy[1]); this.speed = this.random(0.15,0.25);
+		this.x = random(this.randx[0], this.randx[1]); this.y = random(this.randy[0], this.randy[1]); this.speed = random(0.15,0.25);
 		if(!start){ this.x += 720; }
 	}
 

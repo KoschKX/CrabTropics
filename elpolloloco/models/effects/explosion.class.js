@@ -29,7 +29,7 @@ class Explosion extends MovableObject{
 	init() {
 		super.init();
 
-		this.speed = this.random(0.25, 0.5); this.originalspeed = this.speed;
+		this.speed = random(0.25, 0.5); this.originalspeed = this.speed;
 
 		this.loadImage('./img/explosionA/EXPLODE_001.png');
 		this.changeAnimation(this.IMAGES_EXPLODE);
@@ -55,7 +55,7 @@ class Explosion extends MovableObject{
         	if(i < anim.length-1){
         		this.currImage++;
     		}else{
-	        	world.level.effects = this.destroy(this, world.level.effects);
+	        	world.level.effects = destroy(this, world.level.effects);
 	        }
 	    }
 	}
@@ -67,6 +67,5 @@ class Explosion extends MovableObject{
 
 		return images;
 	}
-
 
 }

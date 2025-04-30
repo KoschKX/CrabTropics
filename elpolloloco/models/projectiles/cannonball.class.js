@@ -2,7 +2,7 @@ class Cannonball extends Enemy{
 
 	name = 'Cannonball';
 
-	x = 120; y = 0;
+	x = 120; y = 0; groundOffset = 36;
 
 	health = 10; starthealth = 10; 
 	frameRate = 24; useGravity = true; 
@@ -13,23 +13,22 @@ class Cannonball extends Enemy{
 	maxWidth = 33; maxHeight = 33;
 	maxZoomWidth = 66; maxZoomHeight = 66;
 
-	scaleInterval;
-
 	IMAGES_ROLL = [
 		'./img/cannonballA/ROLL_001.png',
 	];
 	
+	imagesLib = [
+		this.IMAGES_ROLL,
+	]
+	
 	frameRate = 24; 
 
-	boxes = [
-		[0, 0, this.width, this.height, 'red', true],
-	];
+	boxes = [[0, 0, this.width, this.height, 'red', true]];
 
 	hostile = true;
 
 	madeGroundContact = false;
-
-	groundOffset = 36;
+	scaleInterval;
 
 	constructor(){
 		super();
@@ -82,18 +81,9 @@ class Cannonball extends Enemy{
 	    	this.y-=this.speedY;
 	    }
 	    if(this.y>=this.world.cvs.height+this.height){
-	    	world.level.projectiles = this.destroy(this,world.level.projectiles);
+	    	world.level.projectiles = destroy(this,world.level.projectiles);
 	    }
 	}
-
-	getImages(){
-		let images = [];
-
-		images = images.concat(this.IMAGES_ROLL);
-		
-		return images;
-	}
-
 
 	handleScaling() {
 	    let mxw, mxh;

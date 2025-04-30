@@ -81,37 +81,42 @@ function init(){
     ['touchstart','mousedown'].forEach(eventType => {
         document.querySelector('#left_btn').addEventListener(eventType, (e) => {
             e.stopPropagation(); e.preventDefault();
-            if(!keyboard.LEFT){ keyboard.LEFT = true };
+            if(!keyboard.LEFT){ keyboard.LEFT = true; };
         }, { passive: false });
     });
     ['touchend','mouseup'].forEach(eventType => {
         document.querySelector('#left_btn').addEventListener(eventType, (e) => {
             e.stopPropagation(); e.preventDefault();
-            if(keyboard.LEFT){ keyboard.LEFT = false };
+            if(keyboard.LEFT){ keyboard.LEFT = false; };
         }, { passive: false });
     });
     ['touchstart','mousedown'].forEach(eventType => {
         document.querySelector('#right_btn').addEventListener(eventType, (e) => {
             e.stopPropagation(); e.preventDefault();
-            if(!keyboard.RIGHT){ keyboard.RIGHT = true };
+            if(!keyboard.RIGHT){ keyboard.RIGHT = true; };
         }, { passive: false });
     });
     ['touchend','mouseup'].forEach(eventType => {
         document.querySelector('#right_btn').addEventListener(eventType, (e) => {
             e.stopPropagation(); e.preventDefault();
-            if(keyboard.RIGHT){ keyboard.RIGHT = false };
+            if(keyboard.RIGHT){ keyboard.RIGHT = false; };
         }, { passive: false });
     });
     ['touchstart','mousedown'].forEach(eventType => {
         document.querySelector('#jump_btn').addEventListener(eventType, (e) => {
             e.stopPropagation(); e.preventDefault();
-            if(!keyboard.SPACE){ keyboard.SPACE = true };
+            if(!keyboard.SPACE){ keyboard.SPACE = true; };
         }, { passive: false });
     });
     ['touchend','mouseup'].forEach(eventType => {
         document.querySelector('#jump_btn').addEventListener(eventType, (e) => {
             e.stopPropagation(); e.preventDefault();
-            if(keyboard.SPACE){ keyboard.SPACE = false };
+           if(keyboard.SPACE){ keyboard.SPACE = false; };
+        }, { passive: false });
+    });
+    ['click','mouseup'].forEach(eventType => {
+       document.querySelector('body').addEventListener(eventType, (e) => {
+            keyboard.LEFT = false; keyboard.RIGHT = false; keyboard.SPACE = false;
         }, { passive: false });
     });
 

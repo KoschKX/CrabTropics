@@ -1,42 +1,29 @@
 class MovableObject{
 
-	name = ''; 
+	name = ''; stamp = 0; world;
 
-	x = 120; y = 350; 
-	width = 128; height = 128;
+	x = 120; y = 350; width = 128; height = 128;
 	speed = 1; speedY = 0; acceleration =1;
-	
 	currDirection = 1; currImage = 0;
 
-	currImageSet = null; currOffsetSet = null;
-	img; cache; imageCache = [];
-
-	useGravity = false; falling = false; bouncing = false; useGround = true;
-
-	world;
-
+	currImageSet=['']; currOffsetSet = null;
+	img; cache; imageCache = []; imagesLib = [];
+	flipOffset = [0, 0];
+	
 	frameRate=60;
 
-	gvtyInterval;
-	animInterval;
-	mainInterval;
+	gvtyInterval; animInterval; mainInterval;
 
-	currImageSet=[''];
-	currOffsetSet=[''];
+	groundOffset = 0; 
 
-	facingRight = true;
-
-	groundOffset = 0;
-	flipOffset = [0, 0];
-
-	stamp = 0;
+	facingRight = true; useGravity = false; 
+	falling = false; bouncing = false; useGround = true; 
 
 	constructor(world){
 		if(world){
 			this.world = world;
 			this.ground = world.ground;
 		}
-
 		this.stamp = new Date();
 	}
 
@@ -90,24 +77,16 @@ class MovableObject{
 		if(this.currImageSet!=anim){
 			this.currImageSet=anim;
 			this.loadImages(anim);	
-			if(offs){
-				this.currOffsetSet=offs;
-			}else{
-				this.currOffsetSet=null;
-			}
+			this.currOffsetSet = offs || null;
 		}
 	}
 
 	playAnimation(anim){
-		if(anim){
-	    	let i = this.currImage % anim.length;
-	        let path = anim[i];
-	        this.img.src = this.imageCache[path];
-	        this.currImage++;
-	        if(this.currOffsetSet){
-				this.applyAnimationOffsets(this.currOffsetSet);
-			}
-	    }
+    	let i = this.currImage % anim.length;
+        let path = anim[i];
+        this.img.src = this.imageCache[path];
+        this.currImage++;
+        this.currOffsetSet && this.applyAnimationOffsets(this.currOffsetSet);
 	}
 
 	applyAnimationOffsets(oset){
@@ -116,12 +95,8 @@ class MovableObject{
 			let off = oset[i];
 			let fscale = 100/this.width;
 			let foff = off*fscale;
-			if(this.currDirection===0){
-				this.x+=foff;
-			}
-			if(this.currDirection===1){
-				this.x-=foff;
-			}
+			if (this.currDirection === 0) this.x += foff;
+			if (this.currDirection === 1) this.x -= foff;
 		}
 	}
 
@@ -134,24 +109,16 @@ class MovableObject{
 /* MOVEMENT */
 
 	handleGravity(){
-		if(!this.world){ return; }
 		if(this.isAboveGround() || this.speedY > 0){ 
 			this.y -= this.speedY;
 			this.speedY -= this.acceleration;
-			if(this.speedY > 0){
-				this.falling = false;
-			}else{
-				this.falling = true; 
-			}dr
+			this.falling = this.speedY > 0 ? false : true;
 		}else{
 			this.falling = false;
 		}
-		if(this.isAboveGround()  || this.speedY == 0){
-			this.bouncing = true;
-		}
+		if (this.isAboveGround() || this.speedY === 0) this.bouncing = true;
 		if(this.useGround && !this.isAboveGround()){
-			this.falling = false;
-			this.bouncing = false;
+			this.falling = false; this.bouncing = false;
 			this.y = this.world.ground + this.groundOffset;
 		}
 	}
@@ -159,26 +126,19 @@ class MovableObject{
 	moveLeft(){
 		if(!this.world){ return; }
 		if(this.x<this.world.level.bounds[0]-(this.width*0.5)){return;}
-		this.x -= this.speed;
-        this.currDirection = 0;     
+		this.x -= this.speed; this.currDirection = 0;     
 	}
 
 	moveRight(){
 		if(!this.world){ return; }
 		if(this.x>this.world.level.bounds[2]-(this.width)){return;}
-		this.x += this.speed;
-		this.currDirection = 1;     
+		this.x += this.speed; this.currDirection = 1;     
 	}
 
 	bounce(spd,point){
-		//if(!this.isAboveGround()){
-			this.speedY = spd;
-			this.bouncing = true;
-			this.falling = false;
-			if(point){
-				this.y=point;
-			}
-		//}
+		this.speedY = spd;
+		this.bouncing = true; this.falling = false;
+		if(point) this.y = point;
 	}
 
 	isAboveGround(){
@@ -189,28 +149,6 @@ class MovableObject{
 	isOnGround(){
 		if(!this.world){ return false; }
 		return this.y == this.world.ground + this.groundOffset;
-	}
-
-/* UTILS */
-
-	random(min, max) {
-	  return min + Math.random() * (max - min);
-	}
-	
-	randomInt(min, max) {
-	  return Math.floor(Math.random() * (max - min + 1)) + min;
-	}
-
-	getImages(){}
-
-	destroy(object, arr=[]){
-		if(!arr){ return; }
-		let removals = arr.find(obj => obj.stamp === object.stamp);
-		arr = arr.filter(obj => obj !== removals);
-		if(removals && world.debug){
-			console.log( 'Destroyed '+object.name);
-		}
-		return arr;
 	}
 
 }

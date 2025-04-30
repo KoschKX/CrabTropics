@@ -22,10 +22,10 @@ class HUD{
 
             let cTime =(this.world.player.deadTime(true));
             if(cTime==0){ this.world.keyboard.setBlocked(true); }
-            if(cTime<=11){
-               this.world.keyboard.setBlocked(false);
+            if(cTime<=10){
+                this.world.keyboard.setBlocked(false);
                 statusText='CONTINUE? '+(10-cTime);
-
+                
                 if(this.world.keyboard.SPACE){
                     this.world.level.enemies.forEach((enemy) => {
                         enemy.health=1;
@@ -36,7 +36,7 @@ class HUD{
                     this.world.player.revive();
                 }
             }
-            if(cTime>11){
+            if(cTime>10){
                 this.world.gameover=true;
                 statusText='GAME OVER';
             }

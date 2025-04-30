@@ -11,16 +11,17 @@ class Ship extends Enemy{
 	IMAGES_FLOAT = [
 		'./img/ship/FLOAT_001.png',
 	];
+
+	imagesLib = [
+		this.IMAGES_FLOAT,
+	]
 	
 	frameRate = 24; 
 
 	explosions = [];
 	cballs = [];
 
-	cannonLocs = [
-					[  33, 0.0 ],
-					[ -33, 0.0 ],
-				 ];
+	cannonLocs = [[  33, 0.0 ], [ -33, 0.0 ],];
 
 	lastShot = 0;
 	maxShots = 2;
@@ -38,9 +39,9 @@ class Ship extends Enemy{
 		super.init();
 
 		this.height = 128; this.width = 128
-		this.x = 200 + Math.random() * 500; this.y = 156;
+		this.x = 200 + random(0,  500); this.y = 156;
 
-		this.speed = this.random(0.25, 0.5); this.originalspeed = this.speed;
+		this.speed = random(0.25, 0.5); this.originalspeed = this.speed;
 
 		this.loadImage('./img/ship/FLOAT_001.png');
 		this.changeAnimation(this.IMAGES_FLOAT);
@@ -60,7 +61,7 @@ class Ship extends Enemy{
 		if(!this.firing){ return; }
 
 
-	 	const rDelay = this.randomInt(100,100000);
+	 	const rDelay = randomInt(100,100000);
 	 	const now = Date.now();
 
   		this.explosions = this.world.level.effects.filter(effect => effect.name === 'Explosion');
@@ -69,10 +70,10 @@ class Ship extends Enemy{
   			return;
   		}
 
-	  		let cann = this.randomInt(0, this.cannonLocs.length-1);
+	  		let cann = randomInt(0, this.cannonLocs.length-1);
 
 		  	let shot = new Explosion();
-	  			shot.scale = this.random(0.25, 0.1);
+	  			shot.scale = random(0.25, 0.1);
 
 	  		let shipCenterX = this.x + (this.width*0.5);
 	  		let shipCenterY = this.y + (this.height*0.5);
@@ -98,14 +99,4 @@ class Ship extends Enemy{
   		this.lastShot = new Date().getTime();
 		  		
 	}
-
-	getImages(){
-		let images = [];
-
-		images = images.concat(this.IMAGES_FLOAT);
-		
-		return images;
-	}
-
-
 }

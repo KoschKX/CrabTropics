@@ -89,7 +89,7 @@ class World{
 			[this.player.x, this.player.y], 
 			[this.player.width*0.5, 0],
 			this.level.bounds,
-			);
+		);
 
 		this.addToMap(this.level.backgroundA);
 		this.addObjectsToMap(this.level.clouds);

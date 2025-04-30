@@ -61,6 +61,10 @@ class Pirate extends Player{
 		'./img/pirate/DIE_006.png',
 	];
 
+	imagesLib = [
+		this.IMAGES_IDLE, this.IMAGES_WALK, this.IMAGES_JUMP, 
+		this.IMAGES_HURT, this.IMAGES_DIE,
+	]
 
 	constructor(){
 		super();
@@ -97,7 +101,7 @@ class Pirate extends Player{
 		}else if(this.hurt && !this.invincible){
 			this.changeAnimation(this.IMAGES_HURT);
 		}else{
-			if(this.jumping){
+			if(this.bouncing){
 				this.changeAnimation(this.IMAGES_JUMP);
 	    	}else{
 	    		if(this.world.keyboard.RIGHT || this.world.keyboard.LEFT){
@@ -108,18 +112,6 @@ class Pirate extends Player{
 			}
 		}
 		this.playAnimation(this.currImageSet);
-	}
-
-	getImages(){
-		let images = [];
-
-		images = images.concat(this.IMAGES_IDLE);
-		images = images.concat(this.IMAGES_WALK);
-		images = images.concat(this.IMAGES_JUMP);
-		images = images.concat(this.IMAGES_HURT);
-		images = images.concat(this.IMAGES_DIE);
-
-		return images;
 	}
 
 }

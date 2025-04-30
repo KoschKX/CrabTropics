@@ -70,12 +70,17 @@ class Crab extends Enemy{
 		'./img/crabB/DIE_009.png',
 	];
 
+	imagesLib = [
+		this.IMAGES_MOVEA, this.IMAGES_MOVEB,
+		this.IMAGES_DIEA, this.IMAGES_DIEB,
+	]
+
 	constructor(variant){
 		super();
 		this.variant=variant;
 		
-		this.x = 200 + Math.random() * 500; this.y += 64;  
-		this.speed = this.random(0.5, 1); this.originalspeed = this.speed;
+		this.x = 200 + random(0,  500); this.y += 64;  
+		this.speed = random(0.5, 1); this.originalspeed = this.speed;
 
 		this.init();
 	}
@@ -155,18 +160,5 @@ class Crab extends Enemy{
 		}
 
 	}
-
-	getImages(){
-		let images = [];
-		
-		images = images.concat(this.IMAGES_MOVEA);
-		images = images.concat(this.IMAGES_MOVEB);
-		images = images.concat(this.IMAGES_DIEA);
-		images = images.concat(this.IMAGES_DIEB);
-
-		return images;
-	}
-
-
 
 }
