@@ -10,9 +10,7 @@ class MovableObject{
 	img; cache; imageCache = []; imagesLib = [];
 	flipOffset = [0, 0];
 	
-	frameRate=60;
-
-	gvtyInterval; animInterval; mainInterval;
+	frameRate=60; gvtyInterval; animInterval; mainInterval;
 
 	groundOffset = 0; 
 
@@ -40,16 +38,14 @@ class MovableObject{
 /* SPRITE */
 
 	loadImage(path){
-		this.img = new Image(); 
-		this.img.src = path;
+		this.img = new Image(); this.img.src = path;
 	}
 
 	loadImages(arr){
 		if(!arr){ return; }
 		arr.forEach((path) => {
 			if(!path || path==''){ return; }
-			const img = new Image(); 
-			img.src = path;
+			const img = new Image();  img.src = path;
 			this.imageCache[path] = path;
 		});
 		return arr;

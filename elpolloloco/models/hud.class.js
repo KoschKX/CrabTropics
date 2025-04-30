@@ -25,7 +25,7 @@ class HUD{
             if(cTime<=10){
                 this.world.keyboard.setBlocked(false);
                 statusText='CONTINUE? '+(10-cTime);
-                
+
                 if(this.world.keyboard.SPACE){
                     this.world.level.enemies.forEach((enemy) => {
                         enemy.health=1;
@@ -51,9 +51,8 @@ class HUD{
             this.ctx.textAlign = "left"; 
             this.ctx.textBaseline = "middle";
 
-            for(let i = 0; i<this.world.player.health; i++){
-                statusText+='♥';
-            }
+            statusText += '♥'.repeat(this.world.player.health);
+            
             this.ctx.fillText(statusText, 20, 40);
             this.ctx.strokeText(statusText, 20, 40);
         }
