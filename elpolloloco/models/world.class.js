@@ -1,28 +1,20 @@
 class World{
 	
-	level = level01;
+	level = level01; 
+	keyboard; screen;
+	cvs; ctx; cam = [0,0]; 
+	gameover = false; cache = true; debug = false;
 
-	keyboard;
-	ground;
-	gameover = false;
-
-	cvs;
-	ctx;
-	cam = [0,0]; 
-
-	debug = false;
-	cache = true;
-
-	constructor(cvs, keyboard){
+	constructor(cvs,scr,kbd){
+		this.cvs = cvs; 
 		this.ctx = cvs.getContext('2d');
-    	this.cvs = cvs;
-	    this.keyboard = keyboard;
+    	this.screen = scr; 
+    	this.keyboard = kbd;
+	    
+	    this.level.setWorld(this); this.level.preload();
 
-	    this.level.setWorld(this);
-	    this.level.preload();
-
-	    this.ground = this.level.ground;
 	    this.player = this.level.player;
+	    this.ground = this.level.ground;
 
 	    this.init();
 	}
@@ -38,9 +30,7 @@ class World{
 			    };
 			}
 	    };
-
-	    this.resizeCanvas();
-
+	    
 	    this.main();
 	}
 
@@ -70,14 +60,10 @@ class World{
 				let colB = this.player.isColliding(enemy,1,1);
 				if(colB){
 					if(this.player.falling && colB==1){
-
 						if(!this.player.dead && enemy.hostile){
-							//if(!enemy.dead){
-								this.player.bounce(17.5, enemy.y-enemy.height);
-								enemy.isHit();
-							//}
+							this.player.bounce(17.5, enemy.y-enemy.height);
+							enemy.isHit();
 						}
-						
 					}
 				}else if(colA){
 					if(colA==4 || colA==2  && enemy.hostile){
@@ -90,7 +76,6 @@ class World{
 	}
 
 	draw() {
-
 		this.ctx.clearRect(0,0,this.cvs.width,this.cvs.height);
 
 		if(!this.player.img){ this.ctx.restore(); return false; }
@@ -101,23 +86,14 @@ class World{
 
 		this.addToMap(this.level.backgroundA);
 		this.addObjectsToMap(this.level.clouds);
-
 		this.addToMap(this.level.backgroundB);
-
 		this.addObjectsToMap(this.level.enemies.filter(enemy => enemy.name === 'Ship'));
-
 		this.addObjectsToMap(this.level.projectiles.filter(projectile => !projectile.falling && projectile.name === 'Cannonball'));
-
 		this.addObjectsToMap(this.level.effects.filter(effect => effect.name === 'Explosion'));
-
 		this.addToMap(this.level.backgroundC);
-
 		this.addObjectsToMap(this.level.enemies.filter(enemy => enemy.dead && enemy.name === 'Crab'));
-
 		this.addToMap(this.player);
-
 		this.addObjectsToMap(this.level.enemies.filter(enemy => !enemy.dead && enemy.name === 'Crab'));
-
 		this.addObjectsToMap(this.level.projectiles.filter(projectile => projectile.falling && projectile.name === 'Cannonball'));
 
 		this.ctx.restore();
@@ -129,8 +105,6 @@ class World{
 		requestAnimationFrame(function(){
 			self.draw();
 		});
-
-
 	}
 
 	updateCamera(){
@@ -155,22 +129,6 @@ class World{
 		this.ctx.setTransform(1, 0, 0, 1, 0, 0); 
 		this.ctx.translate(this.cam[0], this.cam[1]);
 	}
-
-	resizeCanvas() {
-	    
-		let cvsW = window.innerWidth;
-		let cvsH = window.innerHeight;
-
-		// RESTRICT TO LEVEL BOUNDS
-		if(cvsW>this.level.bounds[2]){cvsW=this.level.bounds[2];}
-		if(cvsH>this.level.bounds[3]){cvsH=this.level.bounds[3];}
-
-		this.cvs.width = cvsW;
-		this.cvs.height = cvsH;
-
-	    this.draw();
-	}
-
 
 	printStatsBar(){
 		
@@ -225,33 +183,25 @@ class World{
 	}
 
 	addObjectsToMap(objects){
-		objects.forEach(obj => {
-			this.addToMap(obj);
-		});
+		objects.forEach(obj => { this.addToMap(obj); });
 	}
 
 	addToMap(mo) {
-		
-		//mo.world=this;
 
 		// FLICKER IF INVINCIBLE 
 			if(mo.invincible&&mo.flicker(1)){ return ;}
 	    
 	    this.ctx.save(); 
-
 	    mo.draw(this.ctx);
 
 	    if(this.debug && mo instanceof Character){
 	    	mo.drawColliders(this.ctx);
 	    }
 	    this.ctx.restore(); 
-	   
 	}
 
 	checkDebugKey(){
 		this.debug = this.keyboard.CAPSLOCK
 	}
-
-
 
 }

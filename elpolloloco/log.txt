@@ -140,3 +140,6 @@
 	22:00
 		Blocked immediate user input from continue screen.
 	
+30 Apr, 2025
+	16:00
+		Should be fully responsive now.

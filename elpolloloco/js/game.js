@@ -1,6 +1,7 @@
 let canvas;
 let world;
-let keyboard
+let keyboard;
+let screen;
 
 document.addEventListener('DOMContentLoaded', function() {
     init();
@@ -8,10 +9,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function init(){
     
-    keyboard = new Keyboard();
-
     canvas = document.getElementById('canvas');
-    world = new World(canvas,keyboard);
+    screen = new Screen(canvas); 
+    keyboard = new Keyboard();
+    world = new World(canvas,screen,keyboard);
+    screen.setWorld(world);
+    screen.resizeCanvas(world);
 
     window.addEventListener('keydown', (e) => {
         if(keyboard.BLOCKED){ return; }
@@ -36,7 +39,6 @@ function init(){
                 break;
         }
     });
-
     window.addEventListener('keyup', (e) => {
         if(keyboard.BLOCKED){ return; }
         switch (e.keyCode) {
@@ -61,41 +63,59 @@ function init(){
         }
     });
 
-
-    /* MOBILE */
-
-    document.querySelector('#left_btn').addEventListener('touchstart', (e) => {
-        e.stopPropagation(); e.preventDefault();
-        if(!keyboard.LEFT){ keyboard.LEFT = true };
-    }, { passive: false });
-    document.querySelector('#left_btn').addEventListener('touchend', (e) => {
-        e.stopPropagation(); e.preventDefault();
-        if(keyboard.LEFT){ keyboard.LEFT = false };
-    }, { passive: false });
-    document.querySelector('#right_btn').addEventListener('touchstart', (e) => {
-        e.stopPropagation(); e.preventDefault();
-        if(!keyboard.RIGHT){ keyboard.RIGHT = true };
-    }, { passive: false });
-    document.querySelector('#right_btn').addEventListener('touchend', (e) => {
-        e.stopPropagation(); e.preventDefault();
-        if(keyboard.RIGHT){ keyboard.RIGHT = false };
-    });
-    document.querySelector('#jump_btn').addEventListener('touchstart', (e) => {
-        e.stopPropagation(); e.preventDefault();
-        if(!keyboard.SPACE){ keyboard.SPACE = true };
-    }, { passive: false });
-    document.querySelector('#jump_btn').addEventListener('touchend', (e) => {
-        e.stopPropagation(); e.preventDefault();
-        if(keyboard.SPACE){ keyboard.SPACE = false };
-    }, { passive: false });
-
-    document.querySelector('#controls .button').addEventListener('pointerdown', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-    });
+    /* WINDOW RESIZE */
 
     window.addEventListener('resize', function(){
-            world.resizeCanvas();
+        screen.resizeCanvas(world);
+    });
+
+    ['click'].forEach(eventType => {
+        document.querySelector('#full_screen').addEventListener(eventType, (e) => {
+            e.stopPropagation(); e.preventDefault();
+            if( document.fullscreenElement){ screen.exitFullscreen(); }else{ screen.enterFullscreen(); }
+        }, { passive: false });
+    });
+
+    /* MOBILE */
+    ['touchstart','mousedown'].forEach(eventType => {
+        document.querySelector('#left_btn').addEventListener(eventType, (e) => {
+            e.stopPropagation(); e.preventDefault();
+            if(!keyboard.LEFT){ keyboard.LEFT = true };
+        }, { passive: false });
+    });
+    ['touchend','mouseup'].forEach(eventType => {
+        document.querySelector('#left_btn').addEventListener(eventType, (e) => {
+            e.stopPropagation(); e.preventDefault();
+            if(keyboard.LEFT){ keyboard.LEFT = false };
+        }, { passive: false });
+    });
+    ['touchstart','mousedown'].forEach(eventType => {
+        document.querySelector('#right_btn').addEventListener(eventType, (e) => {
+            e.stopPropagation(); e.preventDefault();
+            if(!keyboard.RIGHT){ keyboard.RIGHT = true };
+        }, { passive: false });
+    });
+    ['touchend','mouseup'].forEach(eventType => {
+        document.querySelector('#right_btn').addEventListener(eventType, (e) => {
+            e.stopPropagation(); e.preventDefault();
+            if(keyboard.RIGHT){ keyboard.RIGHT = false };
+        }, { passive: false });
+    });
+    ['touchstart','mousedown'].forEach(eventType => {
+        document.querySelector('#jump_btn').addEventListener(eventType, (e) => {
+            e.stopPropagation(); e.preventDefault();
+            if(!keyboard.SPACE){ keyboard.SPACE = true };
+        }, { passive: false });
+    });
+    ['touchend','mouseup'].forEach(eventType => {
+        document.querySelector('#jump_btn').addEventListener(eventType, (e) => {
+            e.stopPropagation(); e.preventDefault();
+            if(keyboard.SPACE){ keyboard.SPACE = false };
+        }, { passive: false });
+    });
+
+    document.querySelector('#controls .button').addEventListener('pointerdown', (e) => {
+       // e.preventDefault(); e.stopPropagation();
     });
 }
 

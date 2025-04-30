@@ -26,23 +26,32 @@
     <script src="models/world.class.js"></script>
     <script src="models/level.class.js"></script>
     <script src="models/levels/level01.class.js"></script>
-    
+        
+    <script src="models/screen.class.js"></script>
     <script src="models/keyboard.class.js"></script>
 
     <script src="js/game.js"></script>
 </head>
 <body>
-    <h1>Pirate Man</h1>
     <div id="game">
         <canvas id="canvas" width="720" height="480"></canvas>
+        <div id="ui">
+            <div id="menu">
+                <div id="full_screen" class="button">□</div>
+            </div>
+            <div id="controls">
+                <div class="left">
+                    <div id="left_btn" class="button">◄</div>
+                    <div id="right_btn" class="button">►</div>
+                </div>
+                <div class="right">
+                    <div id="jump_btn" class="button">▲</div>
+                    <div id="crouch_btn" class="button" style="display: none;">▼</div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div id="controls">
-        <div id="left_btn" class="button">◄</div>
-        <div id="right_btn" class="button">►</div>
-        <div class="spacer"></div>
-        <div id="jump_btn" class="button">▲</div>
-        <div id="crouch_btn" class="button" style="display: none;">▼</div>
-    </div>
+
     <div id="cache"></div>
 </body>
 </html>
