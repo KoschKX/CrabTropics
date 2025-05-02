@@ -155,3 +155,7 @@
 
 	18:30
 		Reduced Code some more.
+
+02 May, 2025
+	16:30:
+		Added Title screen and Loading screen. Refactored Keyboard class.
