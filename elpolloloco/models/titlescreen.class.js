@@ -15,9 +15,9 @@ class Titlescreen{
 	selected = 0;
 	menuChanged = false;
 
-	constructor(cvs,scr,kbd){
+	constructor(cvs,scr,kbd,aud){
 		this.cvs = cvs;  this.ctx = cvs.getContext('2d');
-    	this.screen = scr; this.keyboard = kbd;
+    	this.screen = scr; this.keyboard = kbd; this.audio = aud;
     	this.background = new Background('./img/ui/background.jpg', 0 , 0);
 		this.init();
 	}
@@ -27,7 +27,7 @@ class Titlescreen{
 		let self = this;
 		this.loadImage(this.background.imagePath, function(){
 		    clearInterval(self.drawInterval); self.drawInterval = setInterval(() => { self.draw(); }, 1000 / 60 );
-		    clearInterval(self.ctlInterval); self.ctlInterval = setInterval(() => { self.main(); }, 1000 / 60 );
+		    clearInterval(self.ctlInterval); self.ctlInterval = setInterval(() => { self.main(); }, 1000 / 60 );			
 		});
 
 		this.screen.showMenu(); this.screen.showControls();
@@ -40,6 +40,11 @@ class Titlescreen{
     	
     	this.selected = Math.max(0, Math.min(this.selected, this.menuItems.length - 1));
 
+    	if(this.menuChanged){
+    		this.audio.playSound('ocean',1.0, false, true);
+			this.audio.playSound('royalty_free',0.5, false, true);
+    	}
+
     	if( !this.menuChanged && (this.keyboard.ENTER || this.keyboard.SPACE) ){ 
     		if (typeof this[this.menuFuncs[this.selected]] === 'function') {
     			this[this.menuFuncs[this.selected]](); this.menuChanged = true; this.selfDestruct(); 
@@ -50,11 +55,13 @@ class Titlescreen{
 	selfDestruct(){ 
 		clearInterval(this.drawInterval); clearInterval(this.ctlInterval); 
 		this.ctx.clearRect(0,0,this.cvs.width,this.cvs.height);
+		this.audio.stopSound('ocean');
+		this.audio.stopSound('royalty_free');
 		this.screen.hideControls();
 	}
 
 	start(){
-    	this.world = new World(this.cvs,this.screen,this.keyboard);
+    	this.world = new World(this.cvs,this.screen,this.keyboard,this.audio);
     	bounds = level01.bounds;
     	this.world.load(level01);
     	this.screen.setWorld(this.world);

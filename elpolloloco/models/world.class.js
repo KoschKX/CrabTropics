@@ -1,18 +1,16 @@
 class World{
 
 	cvs; ctx; cam; hud;
-	keyboard; screen; loadicon;
+	keyboard; screen; audio; loadicon;
 	gameover = false; 
 	cache = true; debug = false;
 
 	level;
 
-	constructor(cvs,scr,kbd){
+	constructor(cvs,scr,kbd,aud){
 		this.cvs = cvs;  this.ctx = cvs.getContext('2d');
-    	this.screen = scr; this.keyboard = kbd;
-
+    	this.screen = scr; this.keyboard = kbd; this.audio = aud;
     	this.loadicon = new Loadicon(canvas);
-	    
     	this.cam = new Camera(this);
     	this.hud = new HUD(this);
 	}

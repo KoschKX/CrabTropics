@@ -98,6 +98,8 @@ class Ship extends Enemy{
   		this.world.level.effects.push(shot);
   		this.world.level.projectiles.push(cball);
 
+  		this.world.audio.playSound(['cannon_fireA','cannon_fireB','cannon_fireC'])
+
   		this.lastShot = new Date().getTime();
 		  		
 	}

@@ -41,4 +41,23 @@ class Player extends Character{
 		if(!this.dead){ super.drawCollider(ctx, idx); }
 	}
 
+	isHit(){
+		super.isHit();
+		if(this.health==0){
+			this.world.audio.playSound('pirate_dieA',1.0, false);
+		}else{
+			this.world.audio.playSound(['pirate_hitA', 'pirate_hitB', 'pirate_hitC'],1.0, false);
+		}
+	}
+
+	bounce(spd,point){
+		super.bounce(spd,point);
+		this.world.audio.playSound('jump');
+	}
+
+	jump(){
+		super.jump();
+		this.world.audio.playSound('jump');
+	}
+
 }

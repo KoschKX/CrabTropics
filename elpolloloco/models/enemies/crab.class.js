@@ -77,6 +77,21 @@ class Crab extends Enemy{
 
 	}
 
+	isHit(){
+		super.isHit();
+		this.world.audio.playSound(['crab_hitA','crab_hitB','crab_hitC']);
+	}
+
+	moveLeft(){
+		super.moveLeft();
+		this.world.audio.playSound('crab_walkA', 0.5, false);
+	}
+
+	moveRight(){
+		super.moveRight();
+		this.world.audio.playSound('crab_walkA', 0.5, false);
+	}
+
 	init() {
 		super.init();
 		this.loadImage(this. IMAGES_BLANK);

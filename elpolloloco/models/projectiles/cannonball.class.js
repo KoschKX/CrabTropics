@@ -63,6 +63,9 @@ class Cannonball extends Enemy{
 
     	if(this.falling){
     		this.hostile = true;
+
+    		this.world.audio.playSound(['cannon_whizzA','cannon_whizzB','cannon_whizzC'], 0.25, false);
+
     	}else{
     		this.hostile = false;
     	}
@@ -73,6 +76,8 @@ class Cannonball extends Enemy{
 
 	    	this.useGround = false;
 	    	this.madeGroundContact=true;
+
+	    	this.world.audio.playSound(['cannon_thudA','cannon_thudB','cannon_thudC'], 0.4, false);
 
 	    }else if(this.madeGroundContact){
 

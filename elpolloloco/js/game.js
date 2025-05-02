@@ -2,6 +2,7 @@ let canvas;
 let world;
 let keyboard;
 let screen;
+let audio;
 let camera;
 let bounds;
 
@@ -20,9 +21,11 @@ function init(){
     
     keyboard = new Keyboard();
 
+    audio = new Audiomanager();
+
     bounds = [0,0,canvas.width,canvas.height];
 
-    titlescreen = new Titlescreen(canvas, screen, keyboard);
+    titlescreen = new Titlescreen(canvas, screen, keyboard, audio);
 
     window.addEventListener('keydown', (e) => {
         keyboard.keyDown(e.keyCode);
