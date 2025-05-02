@@ -30,18 +30,30 @@ class Audiomanager{
 		this.init();
 	}
 
-	preload(callback){
-
-	}
-
 	init(){
 		this.populateSoundLib();
+		this.preload();
 	}
 
     populateSoundLib() {
         this.SOUND_BANK.forEach((soundPath) => {
             const label = soundPath.split('/').pop().split('.')[0];
             this.sounds[label] = new Audio(soundPath);
+        });
+    }
+
+    preload(callback) {
+        let loadedCount = 0;
+        const total = this.SOUND_BANK.length;
+        this.SOUND_BANK.forEach((path) => {
+            const label = path.split('/').pop().split('.')[0];
+            const audio = new Audio(path);
+            audio.preload = 'auto';
+            audio.addEventListener('canplaythrough', () => {
+                loadedCount++; if (loadedCount === total && callback && typeof callback === 'function') { callback(); }
+            }, { once: true });
+            audio.load(); 
+            this.sounds[label] = audio;
         });
     }
 
@@ -95,6 +107,6 @@ class Audiomanager{
 	        }
  		}	
     }
-    
+
 
 }
