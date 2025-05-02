@@ -35,9 +35,14 @@ class Titlescreen{
 		if( !this.keyboard.LEFT && !this.keyboard.RIGHT && !this.keyboard.DOWN && !this.keyboard.UP ) { this.menuChanged = false; }
 		if( !this.menuChanged && (this.keyboard.RIGHT || this.keyboard.DOWN)) { this.selected += 1; this.menuChanged = true; }
 		if( !this.menuChanged && (this.keyboard.LEFT || this.keyboard.UP))   { this.selected -= 1; this.menuChanged = true; }
+    	
     	this.selected = Math.max(0, Math.min(this.selected, this.menuItems.length - 1));
 
-    	if( !this.menuChanged && this.keyboard.ENTER ){ this[this.menuFuncs[this.selected]](); this.menuChanged = true; this.selfDestruct(); }
+    	if( !this.menuChanged && (this.keyboard.ENTER || this.keyboard.SPACE) ){ 
+    		if (typeof this[this.menuFuncs[this.selected]] === 'function') {
+    			this[this.menuFuncs[this.selected]](); this.menuChanged = true; this.selfDestruct(); 
+    		}
+    	}
 	}
 
 	selfDestruct(){ 
