@@ -123,9 +123,12 @@ class Titlescreen{
 	    	}else{
 	    		this.ctx.fillStyle = "white";  
 	    	}
-	        if(idx === this.selected){ item = "★  " + item + "  ★";}
-	        this.ctx.fillText(item, x, lineY);
-	        this.ctx.strokeText(item, x, lineY);
+
+	    	let mtext = item.replace('//','');
+	        if(idx === this.selected){ mtext = "★  " +mtext + "  ★"; }
+
+	        this.ctx.fillText(mtext, x, lineY);
+	        this.ctx.strokeText(mtext, x, lineY);
 	    });
 	}
 
