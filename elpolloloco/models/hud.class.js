@@ -15,7 +15,7 @@ class HUD{
             this.ctx.font = "bold "+wpct+"px Arial";
             this.ctx.fillStyle = "white";   
             this.ctx.strokeStyle = "black";  
-            this.ctx.lineWidth = 1;     
+            this.ctx.lineWidth = 2;     
 
             this.ctx.textAlign = "center"; 
             this.ctx.textBaseline = "middle";
