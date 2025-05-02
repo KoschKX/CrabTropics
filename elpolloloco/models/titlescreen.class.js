@@ -40,11 +40,6 @@ class Titlescreen{
     	
     	this.selected = Math.max(0, Math.min(this.selected, this.menuItems.length - 1));
 
-    	if(this.menuChanged){
-    		this.audio.playSound('ocean',1.0, false, true);
-			this.audio.playSound('royalty_free',0.5, false, true);
-    	}
-
     	if( !this.menuChanged && (this.keyboard.ENTER || this.keyboard.SPACE) ){ 
     		if (typeof this[this.menuFuncs[this.selected]] === 'function') {
     			this[this.menuFuncs[this.selected]](); this.menuChanged = true; this.selfDestruct(); 
@@ -55,8 +50,10 @@ class Titlescreen{
 	selfDestruct(){ 
 		clearInterval(this.drawInterval); clearInterval(this.ctlInterval); 
 		this.ctx.clearRect(0,0,this.cvs.width,this.cvs.height);
-		this.audio.stopSound('ocean');
-		this.audio.stopSound('royalty_free');
+		
+		this.audio.playSound('ocean',1.0, false, true);
+		this.audio.playSound('royalty_free',0.33, false, true);
+
 		this.screen.hideControls();
 	}
 

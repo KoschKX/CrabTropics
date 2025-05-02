@@ -64,20 +64,37 @@ class Audiomanager{
         }
     }
 
+    setSoundVolume(name, vol = 1.0) {
+ 		let sound;
+ 		if (Array.isArray(name)) {
+ 			name.forEach((nm) => { 
+ 				nm.volume = vol;
+ 			});
+ 		}else{
+ 			sound = this.sounds[name];
+ 			if (sound) {
+				sound.volume = vol;
+	        }
+ 		}	
+        
+    }
+
     stopSound(name) {
  		let sound; let rndsnd;
  		if (Array.isArray(name)) {
  			name.forEach((nm) => { 
- 				sound.pause(); 
- 				sound.currentTime = 0; 
+ 				nm.pause(); 
+ 				nm.currentTime = 0; 
  			});
  		}else{
  			sound = this.sounds[name];
+	        if (sound) {
+		 		sound.pause(); 
+				sound.currentTime = 0;
+
+	        }
  		}	
-        if (sound) {
-	 		sound.pause(); 
-			sound.currentTime = 0;
-        }
     }
+    
 
 }
