@@ -52,7 +52,7 @@ class Titlescreen{
 		this.ctx.clearRect(0,0,this.cvs.width,this.cvs.height);
 		
 		this.audio.playSound('ocean',1.0, false, true);
-		this.audio.playSound('royalty_free',0.33, false, true);
+		this.audio.playSound('royalty_free',0.4, false, true);
 
 		this.screen.hideControls();
 	}
