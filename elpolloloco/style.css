@@ -77,7 +77,7 @@ canvas{
 
         opacity: 0;
         pointer-events: none;
-        transition: opacity 1s;
+        transition: opacity 0.5s;
     }
     #menu.show {
         opacity: 1;
@@ -96,7 +96,7 @@ canvas{
 
         opacity: 0;
         pointer-events: none;
-        transition: opacity 1s;
+        transition: opacity 0.5s;
     }
     #controls .left,
     #controls .right{

@@ -16,7 +16,7 @@ function init(){
     canvas = document.getElementById('canvas');
 
     screen = new Screen(canvas); 
-    screen.showMenu(); screen.showControls();
+    screen.showMenu();
     
     keyboard = new Keyboard();
 

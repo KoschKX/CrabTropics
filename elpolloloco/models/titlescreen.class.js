@@ -29,6 +29,8 @@ class Titlescreen{
 		    clearInterval(self.drawInterval); self.drawInterval = setInterval(() => { self.draw(); }, 1000 / 60 );
 		    clearInterval(self.ctlInterval); self.ctlInterval = setInterval(() => { self.main(); }, 1000 / 60 );
 		});
+
+		this.screen.showMenu(); this.screen.showControls();
 	}
 
 	main(){
@@ -48,6 +50,7 @@ class Titlescreen{
 	selfDestruct(){ 
 		clearInterval(this.drawInterval); clearInterval(this.ctlInterval); 
 		this.ctx.clearRect(0,0,this.cvs.width,this.cvs.height);
+		this.screen.hideControls();
 	}
 
 	start(){
