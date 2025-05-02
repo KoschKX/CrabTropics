@@ -15,50 +15,32 @@ class Pirate extends Player{
 			]
 
 	IMAGES_IDLE = [
-		'./img/pirate/IDLE_000.png',
-		'./img/pirate/IDLE_001.png',
-		'./img/pirate/IDLE_002.png',
-		'./img/pirate/IDLE_003.png',
-		'./img/pirate/IDLE_004.png',
-		'./img/pirate/IDLE_005.png',
+		'./img/pirate/IDLE_000.png', './img/pirate/IDLE_001.png', './img/pirate/IDLE_002.png',
+		'./img/pirate/IDLE_003.png', './img/pirate/IDLE_004.png', './img/pirate/IDLE_005.png',
 		'./img/pirate/IDLE_006.png',
 	];
 
 	IMAGES_WALK = [
-		'./img/pirate/WALK_000.png',
-		'./img/pirate/WALK_001.png',
-		'./img/pirate/WALK_002.png',
-		'./img/pirate/WALK_003.png',
-		'./img/pirate/WALK_004.png',
-		'./img/pirate/WALK_005.png',
+		'./img/pirate/WALK_000.png', './img/pirate/WALK_001.png', './img/pirate/WALK_002.png',
+		'./img/pirate/WALK_003.png', './img/pirate/WALK_004.png', './img/pirate/WALK_005.png',
 		'./img/pirate/WALK_006.png',
 	];
 
 	IMAGES_JUMP = [
-		'./img/pirate/JUMP_001.png',
-		'./img/pirate/JUMP_002.png',
-		'./img/pirate/JUMP_003.png',
-		'./img/pirate/JUMP_004.png',
-		'./img/pirate/JUMP_005.png',
-		'./img/pirate/JUMP_006.png',
+		'./img/pirate/JUMP_001.png', './img/pirate/JUMP_002.png', './img/pirate/JUMP_003.png',
+		'./img/pirate/JUMP_004.png', './img/pirate/JUMP_005.png', './img/pirate/JUMP_006.png',
 	];
 
 	IMAGES_HURT = [
-		'./img/pirate/HURT_001.png',
-		'./img/pirate/HURT_002.png',
-		'./img/pirate/HURT_003.png',
+		'./img/pirate/HURT_001.png', './img/pirate/HURT_002.png', './img/pirate/HURT_003.png',
 		//'./img/pirate/HURT_004.png',
 		//'./img/pirate/HURT_005.png',
 		//'./img/pirate/HURT_006.png',
 	];
 
 	IMAGES_DIE = [
-		'./img/pirate/DIE_001.png',
-		'./img/pirate/DIE_002.png',
-		'./img/pirate/DIE_003.png',
-		'./img/pirate/DIE_004.png',
-		'./img/pirate/DIE_005.png',
-		'./img/pirate/DIE_006.png',
+		'./img/pirate/DIE_001.png', './img/pirate/DIE_002.png', './img/pirate/DIE_003.png',
+		'./img/pirate/DIE_004.png', './img/pirate/DIE_005.png', './img/pirate/DIE_006.png',
 	];
 
 	imagesLib = [
@@ -68,7 +50,6 @@ class Pirate extends Player{
 
 	constructor(){
 		super();
-		this.init();
 	}
 
 	init() {

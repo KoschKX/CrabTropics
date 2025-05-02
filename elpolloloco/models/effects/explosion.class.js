@@ -8,22 +8,18 @@ class Explosion extends MovableObject{
 	scale = 1;
 
 	IMAGES_EXPLODE = [
-		'./img/explosionA/EXPLODE_001.png',
-		'./img/explosionA/EXPLODE_002.png',
-		'./img/explosionA/EXPLODE_003.png',
-		'./img/explosionA/EXPLODE_004.png',
-		'./img/explosionA/EXPLODE_005.png',
-		'./img/explosionA/EXPLODE_006.png',
-		'./img/explosionA/EXPLODE_007.png',
-		'./img/explosionA/EXPLODE_008.png',
-		'./img/explosionA/EXPLODE_009.png',
+		'./img/explosionA/EXPLODE_001.png', './img/explosionA/EXPLODE_002.png', './img/explosionA/EXPLODE_003.png',
+		'./img/explosionA/EXPLODE_004.png', './img/explosionA/EXPLODE_005.png', './img/explosionA/EXPLODE_006.png',
+		'./img/explosionA/EXPLODE_007.png', './img/explosionA/EXPLODE_008.png', './img/explosionA/EXPLODE_009.png',
 	];
 	
 	frameRate = 24; 
 	
-	constructor(){
+	constructor(immediate = false){
 		super();
-		this.init();
+		if(immediate){
+			this.init();
+		}
 	}
 	
 	init() {
@@ -44,20 +40,19 @@ class Explosion extends MovableObject{
 	}
 
 	playAnimation(anim){
-		if(anim){
-	    	let i = this.currImage % anim.length;
-	        let path = anim[i];
-	        
-	        if(!this.imageCache[path]){ return; }
+		if( !this.world || !anim ){ return; }
+		let i = this.currImage % anim.length;
+        let path = anim[i];
+        
+        if(!this.imageCache[path]){ return; }
 
-	        this.img.src = this.imageCache[path];
+        this.img.src = this.imageCache[path];
 
-        	if(i < anim.length-1){
-        		this.currImage++;
-    		}else{
-	        	world.level.effects = destroy(this, world.level.effects);
-	        }
-	    }
+    	if(i < anim.length-1){
+    		this.currImage++;
+		}else{
+        	this.world.level.effects = destroy(this, this.world.level.effects, this.world);
+        }
 	}
 
 	getImages(){

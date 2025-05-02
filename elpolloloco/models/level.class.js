@@ -13,6 +13,11 @@ class Level{
 	bounds = [0,0,0,0]
 	ground;
 
+	loadedCallback;
+	totalAssets = 0;
+	loadedAssets = 0;
+	loaded = false;
+
 	constructor(player, enemies, clouds, backgroundA, backgroundB, backgroundC, projectiles, effects, bounds, ground){
 		this.player = player;
 		this.enemies = enemies;
@@ -22,10 +27,7 @@ class Level{
 		this.backgroundC = backgroundC;
 		this.projectiles = projectiles;
 		this.effects = effects;
-
-		// CLOCKWISE 
 		this.bounds = bounds;
-
 		this.ground = 410;
 	}
 
@@ -36,24 +38,55 @@ class Level{
 		this.projectiles.forEach((projectile) => { projectile.world = this.world; });
 	}
 
-	preload(){
-		this.cacheImages(concat(this.player.imagesLib));
-	    this.enemies.forEach((enemy) => { this.cacheImages(concat(enemy.imagesLib)); });
+	preload(callback){
+
+		this.loadedCallback = callback;
+
+		this.cacheImages( concat(this.player.imagesLib) ); 
+	    this.enemies.forEach((enemy) => { this.cacheImages( concat(enemy.imagesLib) ); });
 
 	    let self = this;
-	    this.effects.forEach((effect) => { this.cacheImages(concat(effect.imagesLib)); self.effects=[]; });
-	    this.projectiles.forEach((projectile) => { this.cacheImages(concat(projectile.imagesLib)); self.projectiles=[]; });
+	    this.effects.forEach((effect) => { this.cacheImages( concat(effect.imagesLib) ); self.effects=[]; });
+	    this.projectiles.forEach((projectile) => { this.cacheImages( concat(projectile.imagesLib) ); self.projectiles=[]; });
+	}
+
+	init(){
+		if(!this.loaded){ return; }
+		this.enemies.forEach((enemy) => { enemy.init(); });
+	    this.projectiles.forEach((projectile) => { projectile.init(); });
+		this.effects.forEach((effect) => { effect.init(); });
+		this.player.init();
+
+		if(this.loadedCallback && typeof this.loadedCallback === 'function') {
+			let self = this;
+			setTimeout(function(){
+				self.loadedCallback();
+			}, 1000);
+		}
 	}
 
 	cacheImages(images) {
 		if(!images){ return; }
+		let self = this;
 		let cacheDiv = document.querySelector('#cache');
 		if (cacheDiv) {;
 			images.forEach(function(image) {
 				let checkCache = document.querySelector('#cache img[src="' + image + '"]');
 				if (!checkCache) {
-					cacheDiv.innerHTML += '<img src="' + image + '" />';
+					let cachedImage = new Image();
+					cachedImage.src = image;
+					cacheDiv.appendChild(cachedImage);
+					cachedImage.onload = function(){
+						self.loadedAssets += 1;
+						if(self.loadedAssets === self.totalAssets){
+							self.loaded = true;
+							self.init();
+						}
+						cachedImage.onload = null;
+					};
+					self.totalAssets += 1;
 				}
+				
 			});
 		}	
 	}

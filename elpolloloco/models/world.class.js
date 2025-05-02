@@ -1,26 +1,20 @@
 class World{
-	
-	level = level01; 
-	keyboard; screen;
+
 	cvs; ctx; cam; hud;
+	keyboard; screen; loadicon;
 	gameover = false; 
 	cache = true; debug = false;
 
-	constructor(cvs,scr,kbd){
-		this.cvs = cvs; 
-		this.ctx = cvs.getContext('2d');
-    	this.screen = scr; 
-    	this.keyboard = kbd;
-	    
-	    this.level.setWorld(this); this.level.preload();
+	level;
 
-	    this.player = this.level.player;
-	    this.ground = this.level.ground;
+	constructor(cvs,scr,kbd){
+		this.cvs = cvs;  this.ctx = cvs.getContext('2d');
+    	this.screen = scr; this.keyboard = kbd;
+
+    	this.loadicon = new Loadicon(canvas);
 	    
     	this.cam = new Camera(this);
     	this.hud = new HUD(this);
-
-	    this.init();
 	}
 
 	init(){
@@ -28,10 +22,7 @@ class World{
     		this.draw();
     	}else{
     		if(this.player.img){
-		    	this.player.img.onload = () => {
-			        this.draw();
-			        this.player.img.onload = null;
-			    };
+		    	this.player.img.onload = () => { this.draw(); this.player.img.onload = null; };
 			}
 	    };
 	    this.main();
@@ -39,6 +30,19 @@ class World{
 
 	main(){
 		this.checkCollisions();
+	}
+
+	load(level){
+		this.level = level;
+
+		this.player = this.level.player;
+	    this.ground = this.level.ground;
+
+		this.level.setWorld(this); 
+		this.level.preload(function(){
+			this.world.init();
+			this.world.screen.showControls();
+		}); 
 	}
 
 	checkCollisions(){

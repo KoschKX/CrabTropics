@@ -30,9 +30,11 @@ class Cannonball extends Enemy{
 	madeGroundContact = false;
 	scaleInterval;
 
-	constructor(){
+	constructor(immediate = false){
 		super();
-		this.init();
+		if(immediate){
+			this.init();
+		}
 	}
 	
 	init() {
@@ -57,6 +59,7 @@ class Cannonball extends Enemy{
 	}
 
 	checkGroundHit(){
+		if(!this.world || !this.world.level) { return; }
 
     	if(this.falling){
     		this.hostile = true;
@@ -81,7 +84,7 @@ class Cannonball extends Enemy{
 	    	this.y-=this.speedY;
 	    }
 	    if(this.y>=this.world.cvs.height+this.height){
-	    	world.level.projectiles = destroy(this,world.level.projectiles);
+	    	this.world.level.projectiles = destroy(this,this.world.level.projectiles, this.world);
 	    }
 	}
 

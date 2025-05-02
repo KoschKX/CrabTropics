@@ -6,7 +6,7 @@ function randomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function destroy(object, arr=[]){
+function destroy(object, arr=[], world){
     if(!arr){ return; }
     let removals = arr.find(obj => obj.stamp === object.stamp);
     arr = arr.filter(obj => obj !== removals);

@@ -103,6 +103,7 @@ class MovableObject{
 /* MOVEMENT */
 
 	handleGravity(){
+		if(!this.world){ return; }
 		if(this.isAboveGround() || this.speedY > 0){ 
 			this.y -= this.speedY;
 			this.speedY -= this.acceleration;

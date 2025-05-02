@@ -9,10 +9,10 @@ class HUD{
 	}
 
     print(world){
-        
         let statusText = '';
         if(this.world.player.dead){
-            this.ctx.font = "bold 60px Arial";
+            let wpct = this.cvs.width * 0.1;
+            this.ctx.font = "bold "+wpct+"px Arial";
             this.ctx.fillStyle = "white";   
             this.ctx.strokeStyle = "black";  
             this.ctx.lineWidth = 1;     
@@ -40,8 +40,8 @@ class HUD{
                 this.world.gameover=true;
                 statusText='GAME OVER';
             }
-            this.ctx.fillText(statusText, this.cvs.width*.5, this.cvs.height*.5);
-            this.ctx.strokeText(statusText, this.cvs.width*.5, this.cvs.height*.5);
+            this.ctx.fillText(statusText, this.cvs.width * 0.5, this.cvs.height * 0.5);
+            this.ctx.strokeText(statusText, this.cvs.width * 0.5, this.cvs.height * 0.5);
         }else{
             this.ctx.font = "30px Arial";
             this.ctx.fillStyle = "red"; 

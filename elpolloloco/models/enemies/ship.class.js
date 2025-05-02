@@ -32,7 +32,7 @@ class Ship extends Enemy{
 
 	constructor(){
 		super();
-		this.init();
+		//this.init();
 	}
 	
 	init() {
@@ -50,6 +50,8 @@ class Ship extends Enemy{
 	main(){
 		super.main();
 		this.cannonFire();
+
+
 	}
 	
 	handleAnimation(){
@@ -57,9 +59,9 @@ class Ship extends Enemy{
 	}
 
 	cannonFire() {
+
 		if(!this.world || !this.world.level){ return; }
 		if(!this.firing){ return; }
-
 
 	 	const rDelay = randomInt(100,100000);
 	 	const now = Date.now();
@@ -72,7 +74,7 @@ class Ship extends Enemy{
 
 	  		let cann = randomInt(0, this.cannonLocs.length-1);
 
-		  	let shot = new Explosion();
+		  	let shot = new Explosion(true);
 	  			shot.scale = random(0.25, 0.1);
 
 	  		let shipCenterX = this.x + (this.width*0.5);
@@ -87,11 +89,11 @@ class Ship extends Enemy{
   			shot.x = shipCenterX - shotCenterX;
   			shot.y = shipCenterY - shotCenterY;
 
-  			let cball = new Cannonball();
+  			let cball = new Cannonball(true);
   			cball.x = shot.x + (cball.x*0.5); cball.y = shot.y;
   			
 
-  		shot.world = world; cball.world = world;
+  		shot.world = this.world; cball.world = this.world;
 
   		this.world.level.effects.push(shot);
   		this.world.level.projectiles.push(cball);

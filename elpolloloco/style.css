@@ -9,6 +9,10 @@ body{
     align-items: center;
     justify-content: center;
     margin: 0;
+
+    /* background: url(./img/ui/background.jpg); */
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 body *{
@@ -70,6 +74,14 @@ canvas{
         width: calc(100% - 1em);
         padding: 0.5em;
         z-index: 999;
+
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 1s;
+    }
+    #menu.show {
+        opacity: 1;
+        pointer-events: auto;
     }
 
 /* CONTROLS */
@@ -81,6 +93,10 @@ canvas{
         width: 100%;
         padding: 1em;
         width: calc(100% - 2em);
+
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 1s;
     }
     #controls .left,
     #controls .right{
@@ -113,6 +129,10 @@ canvas{
     	max-width: 100px;
         max-height: 100px;
 
+    }
+    #controls.show {
+        opacity: 1;
+        pointer-events: auto;
     }
 
     /* FIX BUTTON STUTTERING */

@@ -22,51 +22,27 @@ class Crab extends Enemy{
 	hostile = true;
 
 	IMAGES_MOVEA = [
-		'./img/crabA/MOVE_001.png',
-		'./img/crabA/MOVE_002.png',
-		'./img/crabA/MOVE_003.png',
-		'./img/crabA/MOVE_004.png',
-		'./img/crabA/MOVE_005.png',
-		'./img/crabA/MOVE_006.png',
-		'./img/crabA/MOVE_007.png',
-		'./img/crabA/MOVE_008.png',
-		'./img/crabA/MOVE_009.png',
+		'./img/crabA/MOVE_001.png', './img/crabA/MOVE_002.png', './img/crabA/MOVE_003.png',
+		'./img/crabA/MOVE_004.png', './img/crabA/MOVE_005.png', './img/crabA/MOVE_006.png',
+		'./img/crabA/MOVE_007.png', './img/crabA/MOVE_008.png', './img/crabA/MOVE_009.png',
 	]; IMAGES_MOVESA_OFFSETS = [ 0, -2, -5, -5, 4, 0, 1, 2, 5 ];
 
 	IMAGES_MOVEB = [
-		'./img/crabB/MOVE_001.png',
-		'./img/crabB/MOVE_002.png',
-		'./img/crabB/MOVE_003.png',
-		'./img/crabB/MOVE_004.png',
-		'./img/crabB/MOVE_005.png',
-		'./img/crabB/MOVE_006.png',
-		'./img/crabB/MOVE_007.png',
-		'./img/crabB/MOVE_008.png',
-		'./img/crabB/MOVE_009.png',
+		'./img/crabB/MOVE_001.png', './img/crabB/MOVE_002.png', './img/crabB/MOVE_003.png',
+		'./img/crabB/MOVE_004.png', './img/crabB/MOVE_005.png', './img/crabB/MOVE_006.png',
+		'./img/crabB/MOVE_007.png', './img/crabB/MOVE_008.png', './img/crabB/MOVE_009.png',
 	]; IMAGES_MOVESB_OFFSETS = [ 0, -2, -4, -6, -4, -2, 0, 2, 4 ];
 
 	IMAGES_DIEA = [
-		'./img/crabA/DIE_001.png',
-		'./img/crabA/DIE_002.png',
-		'./img/crabA/DIE_003.png',
-		'./img/crabA/DIE_004.png',
-		'./img/crabA/DIE_005.png',
-		'./img/crabA/DIE_006.png',
-		'./img/crabA/DIE_007.png',
-		'./img/crabA/DIE_008.png',
-		'./img/crabA/DIE_009.png',
+		'./img/crabA/DIE_001.png', './img/crabA/DIE_002.png', './img/crabA/DIE_003.png',
+		'./img/crabA/DIE_004.png', './img/crabA/DIE_005.png', './img/crabA/DIE_006.png',
+		'./img/crabA/DIE_007.png', './img/crabA/DIE_008.png', './img/crabA/DIE_009.png',
 	];
 
 	IMAGES_DIEB = [
-		'./img/crabB/DIE_001.png',
-		'./img/crabB/DIE_002.png',
-		'./img/crabB/DIE_003.png',
-		'./img/crabB/DIE_004.png',
-		'./img/crabB/DIE_005.png',
-		'./img/crabB/DIE_006.png',
-		'./img/crabB/DIE_007.png',
-		'./img/crabB/DIE_008.png',
-		'./img/crabB/DIE_009.png',
+		'./img/crabB/DIE_001.png', './img/crabB/DIE_002.png', './img/crabB/DIE_003.png',
+		'./img/crabB/DIE_004.png', './img/crabB/DIE_005.png', './img/crabB/DIE_006.png',
+		'./img/crabB/DIE_007.png', './img/crabB/DIE_008.png', './img/crabB/DIE_009.png',
 	];
 
 	imagesLib = [
@@ -81,7 +57,7 @@ class Crab extends Enemy{
 		this.x = 200 + random(0,  500); this.y += 64;  
 		this.speed = random(0.5, 1); this.originalspeed = this.speed;
 
-		this.init();
+		//this.init();
 	}
 
 	main(){

@@ -5,6 +5,8 @@ class Screen{
 	constructor(canvas, world){
 		this.cvs = canvas; this.world = world;
 		this.ctx = canvas.getContext('2d');
+
+        this.resizeCanvas();
 	}
 
 	setWorld(world){ this.world = world; }
@@ -21,15 +23,18 @@ class Screen{
     	let gameRect = document.querySelector('#game').getBoundingClientRect();
        	let cvsW = document.documentElement.clientWidth; let cvsH = document.documentElement.clientHeight;
 
-        // RESTRICT TO LEVEL BOUNDS
+        let bounds = [0, 0, this.cvs.width, this.cvs.height];
+        
         if(this.world && this.world.level){
-            if(cvsW>this.world.level.bounds[2]){cvsW=this.world.level.bounds[2];}
-            if(cvsH>this.world.level.bounds[3]){cvsH=this.world.level.bounds[3];}
-            this.cvs.width = cvsW; this.cvs.height = cvsH;
-        }else{
-        	this.cvs.width = cvsW; this.cvs.height = cvsH;
+            bounds = this.world.level.bounds
         }
 
+        // RESTRICT TO LEVEL BOUNDS
+        if(cvsW>bounds[2]){cvsW=bounds[2];}
+        if(cvsH>bounds[3]){cvsH=bounds[3];}
+        
+        this.cvs.width = cvsW; this.cvs.height = cvsH;
+        
     	document.querySelector(':root').style.setProperty('--app-width', cvsW + 'px');
     	document.querySelector(':root').style.setProperty('--app-height', cvsH +'px');
 
@@ -37,7 +42,21 @@ class Screen{
 		this.cvs.style.width = cvsW + "px";
 		this.cvs.style.height = cvsH + "px";
 	
-        if(this.world){this.world.draw();}
+        //if(this.world){this.world.draw();}
+    }
+
+    hideMenu(){
+        document.querySelector('#menu').classList.remove('show');    
+    }
+    showMenu(){
+        document.querySelector('#menu').classList.add('show');    
+    }
+
+    hideControls(){
+        document.querySelector('#controls').classList.remove('show');    
+    }
+    showControls(){
+        document.querySelector('#controls').classList.add('show');    
     }
 
 }
