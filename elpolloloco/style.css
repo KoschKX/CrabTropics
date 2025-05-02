@@ -1,3 +1,17 @@
+/* FONTS */
+
+@font-face {
+    font-family: 'Reggae'; 
+    src: url('fonts/reggae.woff2') format('woff2'),
+         url('fonts/reggae.woff') format('woff'),
+         url('fonts/reggae.tff') format('ttf'),
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+/* LAYOUT */
+
 html,body{
 	background: black;
 	height: 100%;

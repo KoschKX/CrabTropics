@@ -82,10 +82,10 @@ class Titlescreen{
 	}
 
 	drawTitle(x,y){
-		let wpct = this.cvs.width * 0.115;
-		this.ctx.font = "bold "+wpct+"px Arial";
-        this.ctx.fillStyle = "white";   
-        this.ctx.strokeStyle = "black";  
+		let wpct = this.cvs.width * 0.1;
+		this.ctx.font = "bold "+wpct+"px Reggae";
+        this.ctx.fillStyle = "red";   
+        this.ctx.strokeStyle = "#f0b94d";  
         this.ctx.lineWidth = 1;     
 
         this.ctx.textAlign = "center"; 
