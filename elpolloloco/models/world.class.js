@@ -93,17 +93,19 @@ class World{
 
 		this.addObjectsToMap(this.level.backgrounds.filter(background => background.layer === 0));
 		this.addObjectsToMap(this.level.clouds);
-		this.addObjectsToMap(this.level.backgrounds.filter(background => background.layer === 1));
-		this.addObjectsToMap(this.level.enemies.filter(enemy => enemy.name === 'Ship'));
-		
-		this.addObjectsToMap(this.level.backgrounds.filter(background => background.layer === 2));
 
+		this.addObjectsToMap(this.level.backgrounds.filter(background => background.layer === 1));
+
+		this.addObjectsToMap(this.level.enemies.filter(enemy => enemy.name === 'Ship'));
 		this.addObjectsToMap(this.level.projectiles.filter(projectile => !projectile.falling && projectile.name === 'Cannonball'));
 		this.addObjectsToMap(this.level.effects.filter(effect => effect.name === 'Explosion'));
+		
+		this.addObjectsToMap(this.level.backgrounds.filter(background => background.layer === 2));
 		
 		this.addObjectsToMap(this.level.enemies.filter(enemy => enemy.dead && enemy.name === 'Crab'));
 		this.addToMap(this.player);
 		this.addObjectsToMap(this.level.enemies.filter(enemy => !enemy.dead && enemy.name === 'Crab'));
+		
 		this.addObjectsToMap(this.level.projectiles.filter(projectile => projectile.falling && projectile.name === 'Cannonball'));
 
 		this.ctx.restore();
