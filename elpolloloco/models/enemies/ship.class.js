@@ -52,7 +52,6 @@ class Ship extends Enemy{
 	init() {
 		super.init();
 
-		
 		this.x = 200 + random(0,  500); this.y = 110;
 
 		this.speed = random(0.25, 0.5); this.originalspeed = this.speed;

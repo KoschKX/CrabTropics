@@ -9,13 +9,18 @@ class Character extends MovableObject{
 
 	useGravity = true; falling = false; bounding = false;
 
-	boxes = [[0, 0, this.width, this.height, 'white', false]]
+	boxes = []
 
 	constructor() { super(); }
-		   init() { super.init(); }
+		   init() { super.init(); this.initCollisionBoxes(); }
 		   main() { super.main(); }
 
 /* COLLISIONS */
+
+	initCollisionBoxes(){
+		if(this.boxes.length){ return; }
+		this.boxes = [[0, 0, this.width, this.height, 'white', false]]
+	}
 
 	getCollisionDirection(mo, boxA, boxB) {
 		const [tbx, tby, tbw, tbh] = this.boxes[boxA];
