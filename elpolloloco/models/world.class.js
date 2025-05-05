@@ -76,7 +76,7 @@ class World{
 						}
 					}
 				}else if(colA){
-					if(colA==4 || colA==2  && enemy.hostile){
+					if(colA!=3  && enemy.hostile){
 						this.player.isHit(true);
 					}
 				}

@@ -108,6 +108,8 @@ class Pirate extends Player{
 	main(){
 		super.main();
 		this.xMarkSpotting();
+
+		console.log(this.invincible);
 	}
 
 	cache(){
