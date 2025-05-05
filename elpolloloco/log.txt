@@ -194,3 +194,6 @@
 
 	19:15
 		Fixed collision bug after crabs revive.
+
+	22:30
+		Crabs now take 3 hits to kill. Stomp smoke effect on death.

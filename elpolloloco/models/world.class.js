@@ -71,7 +71,7 @@ class World{
 				if(colB){
 					if(this.player.falling && colB==1){
 						if(!this.player.dead && enemy.hostile){
-							this.player.bounce(17.5, enemy.y-enemy.height);
+							if(enemy.health>0){ this.player.bounce(17.5, enemy.y-enemy.height); }
 							enemy.isHit();
 						}
 					}
