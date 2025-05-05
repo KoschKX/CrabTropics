@@ -4,8 +4,8 @@ class Character extends MovableObject{
 
 	dead = false; hurt = false;
 	invincible = false; willInvincible = false; hostile = false; reviving = false; flickering = false;
-	health = 1; starthealth = 1;
-	lastHit = 0; lastFlicker = 0;
+	health = 1; starthealth = 1; reviveTimout;
+	lastHit = 0; lastFlicker = 0; 
 
 	useGravity = true; falling = false; bounding = false;
 
@@ -176,11 +176,14 @@ class Character extends MovableObject{
 		return timepassed < 1;
 	}
 
-	revive(delay=0){
+	revive(delay=0, callback){
 		if(this.reviving){ return; }
-		setTimeout(() => {
+		clearInterval(this.reviveTimout);
+		this.reviveTimout = setTimeout(() => {
 			this.dead = false; this.hurt = false; this.reviving=false;
 			this.health = this.starthealth;
+			clearInterval(this.reviveTimout);
+			if(callback){ callback(); }
 		},delay);
 		this.reviving=true;
 	}

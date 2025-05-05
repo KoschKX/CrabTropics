@@ -76,7 +76,7 @@ class World{
 						}
 					}
 				}else if(colA){
-					if(colA!=1 && colA!=3  && enemy.hostile){
+					if(!((this.player.falling || this.player.bouncing) && colA==1) && enemy.hostile){
 						this.player.isHit(true);
 					}
 				}
@@ -113,6 +113,8 @@ class World{
 		this.addObjectsToMap(this.level.enemies.filter(enemy => enemy.dead && enemy.name === 'Crab'));
 		this.addToMap(this.player);
 		this.addObjectsToMap(this.level.enemies.filter(enemy => !enemy.dead && enemy.name === 'Crab'));
+
+		this.addObjectsToMap(this.level.effects.filter(effect => effect.name === 'Stomp'));
 		
 		this.addObjectsToMap(this.level.projectiles.filter(projectile => projectile.falling && projectile.name === 'Cannonball'));
 

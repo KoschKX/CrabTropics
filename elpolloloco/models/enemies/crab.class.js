@@ -2,6 +2,8 @@ class Crab extends Enemy{
 
 	name = 'Crab';
 
+	health = 3;
+
 	height = 64; width = 192; groundOffset = 0;
 
 	frameRate = 24; useGravity = true; 
@@ -42,7 +44,8 @@ class Crab extends Enemy{
 		// './img/crabA/YELLOW_DIE_001.png', './img/crabA/YELLOW_DIE_002.png', './img/crabA/YELLOW_DIE_003.png',
 		'./img/crabA/YELLOW_DIE_004.png', './img/crabA/YELLOW_DIE_005.png', './img/crabA/YELLOW_DIE_006.png',
 		'./img/crabA/YELLOW_DIE_007.png', './img/crabA/YELLOW_DIE_008.png', './img/crabA/YELLOW_DIE_009.png',
-		'./img/crabA/YELLOW_DIE_010.png', './img/crabA/YELLOW_DIE_011.png', './img/crabA/YELLOW_DIE_012.png',
+		'./img/crabA/YELLOW_DIE_010.png', './img/crabA/YELLOW_DIE_011.png', './img/crabA/YELLOW_DIE_012.png', 
+		'*norepeat'
 	];
 
 	IMAGES_DIEB = [
@@ -50,6 +53,7 @@ class Crab extends Enemy{
 		'./img/crabB/RED_DIE_004.png', './img/crabB/RED_DIE_005.png', './img/crabB/RED_DIE_006.png',
 		'./img/crabB/RED_DIE_007.png', './img/crabB/RED_DIE_008.png', './img/crabB/RED_DIE_009.png',
 		'./img/crabB/RED_DIE_010.png', './img/crabB/RED_DIE_011.png', './img/crabB/RED_DIE_012.png',
+		'*norepeat'
 	];
 
 	imagesLib = [
@@ -67,12 +71,20 @@ class Crab extends Enemy{
 		//this.init();
 	}
 
+	stomp;
+
 	main(){
 		super.main();
 		
-		if(this.dead){
+		if(this.invincible && !this.dead){
+			this.static = true; 
 			this.revive(3000);
-			
+		}
+		if(this.dead){
+			let self = this;
+			setTimeout(function(){
+				self.die();
+			}, 1000);
 		}
 		if(this.hurt || this.dead){
 			this.boxes = this.boxes_hurt;
@@ -85,8 +97,17 @@ class Crab extends Enemy{
 	}
 
 	isHit(){
-		super.isHit();
+		//if(this.invincible){ return; }
+		if(this.health==0){ return; }
+		super.isHit(); 
+		this.currImage=0; this.invincible = true; this.static = true;
 		this.world.audio.playSound(['crab_hitA','crab_hitB','crab_hitC']);
+	}
+	revive(delay){
+		super.revive(delay, function(){
+			self.static = false; self.invincible = false;
+		});
+		let self = this;
 	}
 
 	moveLeft(){
@@ -107,13 +128,13 @@ class Crab extends Enemy{
 
 	handleAnimation(){
 		const variantData = {
-		  0: { die: this.IMAGES_DIEA, move: this.IMAGES_MOVEA, offsets: this.IMAGES_MOVESA_OFFSETS },
-		  1: { die: this.IMAGES_DIEB, move: this.IMAGES_MOVEB, offsets: this.IMAGES_MOVESB_OFFSETS }
+		  0: { invincible: this.IMAGES_DIEA, move: this.IMAGES_MOVEA, offsets: this.IMAGES_MOVESA_OFFSETS },
+		  1: { invincible: this.IMAGES_DIEB, move: this.IMAGES_MOVEB, offsets: this.IMAGES_MOVESB_OFFSETS }
 		}[this.variant];
 
 		if (variantData) {
-		  const { move, die, offsets } = variantData;
-		  this.changeAnimation(this.dead || this.hurt ? die : move, this.dead || this.hurt ? undefined : offsets);
+		  const { move, invincible, offsets } = variantData;
+		  this.changeAnimation((this.invincible || this.dead) || this.hurt ? invincible : move, (this.invincible || this.dead) || this.hurt ? undefined : offsets);
 		} else {
 		  console.log('Variant doesn\'t exist');
 		}
@@ -125,7 +146,18 @@ class Crab extends Enemy{
 		){
 			this.applyAnimationOffsets(this.currOffsetSet);
 		}	
+	}
 
+	die(){
+		if(this.stomp) { return; }
+		this.stomp = new Stomp(true);
+		this.stomp.world = this.world;
+		this.stomp.x = (this.x + (this.width - this.stomp.width) * 0.5);
+		this.stomp.y = (this.y + (this.height - this.stomp.height) * 0.5) - 20;
+		this.world.level.effects.push(this.stomp);
+
+		this.world.level.enemies = destroy(this, this.world.level.enemies, this.world);
+		this.destroy();
 	}
 
 }

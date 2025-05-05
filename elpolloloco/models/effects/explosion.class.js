@@ -32,7 +32,7 @@ class Explosion extends MovableObject{
 
 		this.speed = random(0.25, 0.5); this.originalspeed = this.speed;
 
-		this.loadImage('./img/explosionA/EXPLODE_001.png');
+		this.loadImage(this.IMAGES_EXPLODE[0]);
 		this.changeAnimation(this.IMAGES_EXPLODE);
 	}
 
@@ -58,14 +58,6 @@ class Explosion extends MovableObject{
 		}else{
         	this.destroy();
         }
-	}
-
-	getImages(){
-		let images = [];
-		
-		images = images.concat(this.IMAGES_EXPLODE);
-
-		return images;
 	}
 
 }

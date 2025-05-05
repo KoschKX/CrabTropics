@@ -23,6 +23,7 @@ const level01 = new Level(
 	],
 	[
 		new Explosion(),
+		new Stomp(),
 	],
 	[0,0,720,480], 
 	350,
