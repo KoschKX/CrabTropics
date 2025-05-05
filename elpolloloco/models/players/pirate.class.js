@@ -108,8 +108,6 @@ class Pirate extends Player{
 	main(){
 		super.main();
 		this.xMarkSpotting();
-
-		console.log(this.invincible);
 	}
 
 	cache(){
@@ -182,7 +180,7 @@ class Pirate extends Player{
 
   		this.world.level.projectiles.push(mark);
 
-  		this.world.audio.playSound('xmark_appearA');
+  		this.world.audio.playSound('xmark_appearA', 0.5);
 
   		this.lastMark = new Date().getTime();
 		  		
