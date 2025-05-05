@@ -187,5 +187,10 @@
 
 05. May, 2025
 	16:30
-		Updated destroy functions for Cannon balls and Explosions. THey were still ticking.
-		
+		Updated destroy functions for Cannon balls and Explosions. They were still ticking.
+
+	17:00
+		Started the digging system.
+
+	19:15
+		Fixed collision bug after crabs revive.
