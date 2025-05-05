@@ -35,7 +35,7 @@ class Ship extends Enemy{
 	explosions = [];
 	cballs = [];
 
-	cannonLocs = [[  33, 0.2 ], [ -33, 0.2 ],];
+	cannonLocs = [[  33, -165 ], [ -33, -165 ],];
 
 	lastShot = 0;
 	maxShots = 2;
@@ -95,7 +95,7 @@ class Ship extends Enemy{
 	  		let cannCenterY = this.cannonLocs[cann][1] * (100/this.height);
 
 	 		let shotCenterX = (shot.width * 0.5) + cannCenterX;
-	  		let shotCenterY = (shot.height * 0.1) + cannCenterY;
+	  		let shotCenterY = (shot.height * 0.5) + cannCenterY;
 
   			shot.x = shipCenterX - shotCenterX;
   			shot.y = shipCenterY - shotCenterY;

@@ -15,8 +15,8 @@ class Crab extends Enemy{
 				 ]
 	boxes_hurt = [
 					[this.width*0.25, this.height*0.46, this.width*0.50, this.height*0.48, 'red', true],
-					[this.width*0.15, this.height*0.25, this.width*0.7, this.height*0.20, 'yellow', true]
-					//[this.width*0.33, this.height*0.25, this.width*0.34, this.height*0.20, 'yellow', true]
+					//[this.width*0.15, this.height*0.25, this.width*0.7, this.height*0.20, 'yellow', true]
+					[this.width*0.37, this.height*0.25, this.width*0.25, this.height*0.20, 'yellow', true]
 				 ]
 
 	boxes=this.boxes_fine;
@@ -39,14 +39,14 @@ class Crab extends Enemy{
 	]; // IMAGES_MOVESB_OFFSETS = [ 0, -2, -4, -6, -4, -2, 0, 2, 4 ];
 
 	IMAGES_DIEA = [
-		'./img/crabA/YELLOW_DIE_001.png', './img/crabA/YELLOW_DIE_002.png', './img/crabA/YELLOW_DIE_003.png',
+		// './img/crabA/YELLOW_DIE_001.png', './img/crabA/YELLOW_DIE_002.png', './img/crabA/YELLOW_DIE_003.png',
 		'./img/crabA/YELLOW_DIE_004.png', './img/crabA/YELLOW_DIE_005.png', './img/crabA/YELLOW_DIE_006.png',
 		'./img/crabA/YELLOW_DIE_007.png', './img/crabA/YELLOW_DIE_008.png', './img/crabA/YELLOW_DIE_009.png',
 		'./img/crabA/YELLOW_DIE_010.png', './img/crabA/YELLOW_DIE_011.png', './img/crabA/YELLOW_DIE_012.png',
 	];
 
 	IMAGES_DIEB = [
-		'./img/crabB/RED_DIE_001.png', './img/crabB/RED_DIE_002.png', './img/crabB/RED_DIE_003.png',
+		// './img/crabB/RED_DIE_001.png', './img/crabB/RED_DIE_002.png', './img/crabB/RED_DIE_003.png',
 		'./img/crabB/RED_DIE_004.png', './img/crabB/RED_DIE_005.png', './img/crabB/RED_DIE_006.png',
 		'./img/crabB/RED_DIE_007.png', './img/crabB/RED_DIE_008.png', './img/crabB/RED_DIE_009.png',
 		'./img/crabB/RED_DIE_010.png', './img/crabB/RED_DIE_011.png', './img/crabB/RED_DIE_012.png',
