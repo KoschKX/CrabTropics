@@ -178,12 +178,12 @@ class Character extends MovableObject{
 
 	revive(delay=0, callback){
 		if(this.reviving){ return; }
-		clearInterval(this.reviveTimout);
+		clearTimeout(this.reviveTimout);
 		this.reviveTimout = setTimeout(() => {
 			this.dead = false; this.hurt = false; this.reviving=false;
 			this.health = this.starthealth;
-			clearInterval(this.reviveTimout);
-			if(callback){ callback(); }
+			clearTimeout(this.reviveTimout);
+			if(callback){ callback();}
 		},delay);
 		this.reviving=true;
 	}

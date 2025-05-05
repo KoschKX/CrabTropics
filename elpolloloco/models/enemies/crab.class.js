@@ -78,7 +78,9 @@ class Crab extends Enemy{
 		
 		if(this.invincible && !this.dead){
 			this.static = true; 
-			this.revive(3000);
+			let self = this; this.revive(3000, function(){
+				self.static = false; self.invincible = false;  self.hostile = true;
+			});
 		}
 		if(this.dead){
 			let self = this;
@@ -93,21 +95,13 @@ class Crab extends Enemy{
 			this.boxes = this.boxes_fine;
 			this.toggleCollider(0,true);
 		}
-
 	}
 
 	isHit(){
-		//if(this.invincible){ return; }
-		if(this.health==0){ return; }
 		super.isHit(); 
-		this.currImage=0; this.invincible = true; this.static = true;
+		this.currImage=0; this.invincible = true; this.static = true; this.hostile=false;
 		this.world.audio.playSound(['crab_hitA','crab_hitB','crab_hitC']);
-	}
-	revive(delay){
-		super.revive(delay, function(){
-			self.static = false; self.invincible = false;
-		});
-		let self = this;
+		clearTimeout(this.reviveTimout);
 	}
 
 	moveLeft(){

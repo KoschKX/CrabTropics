@@ -154,6 +154,12 @@ class Pirate extends Player{
 		this.currImage = 0;
 		this.digging=true; this.static=true; this.invincible = true;
 		this.currXmark=xmark;
+		
+		let hole = new ShovelHole(true);
+	  	hole.x = xmark.x; hole.y = xmark.y;
+	  	hole.world = this.world;
+	  	this.world.level.projectiles.push(hole);
+	  	this.world.audio.playSound('shovel_digA', 0.5);
 	}
 
 	xMarkSpotting() {
@@ -164,7 +170,7 @@ class Pirate extends Player{
 	 	const rDelay = randomInt(100,100000);
 	 	const now = Date.now();
 
-  		this.xmarks = this.world.level.projectiles.filter(rojectile => rojectile.name === 'XMark');
+  		this.xmarks = this.world.level.projectiles.filter(projectile => projectile.name === 'XMark');
 
   		if(now - this.lastMark < rDelay || this.xmarks.length>=this.maxMarks){ 
   			return;

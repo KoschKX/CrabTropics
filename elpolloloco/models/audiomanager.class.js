@@ -21,6 +21,7 @@ class Audiomanager{
 		'./audio/cannon_thudB.mp3',
 		'./audio/cannon_thudC.mp3',
 		'./audio/xmark_appearA.mp3',
+		'./audio/shovel_digA.mp3',
 		'./audio/ocean.mp3',
 		'./audio/royalty_free.mp3'
 	]
