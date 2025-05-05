@@ -41,8 +41,8 @@ class Player extends Character{
 		if(!this.dead){ super.drawCollider(ctx, idx); }
 	}
 
-	isHit(){
-		super.isHit();
+	isHit(makeInvincible){
+		super.isHit(makeInvincible);
 		if(this.health==0){
 			this.world.audio.playSound('pirate_dieA',1.0, false);
 		}else{

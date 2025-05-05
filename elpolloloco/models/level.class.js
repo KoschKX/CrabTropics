@@ -18,13 +18,11 @@ class Level{
 	loadedAssets = 0;
 	loaded = false;
 
-	constructor(player, enemies, clouds, backgroundA, backgroundB, backgroundC, projectiles, effects, bounds, ground){
+	constructor(player, enemies, clouds, backgrounds, projectiles, effects, bounds, ground){
 		this.player = player;
 		this.enemies = enemies;
 		this.clouds = clouds;
-		this.backgroundA = backgroundA;
-		this.backgroundB = backgroundB;
-		this.backgroundC = backgroundC;
+		this.backgrounds = backgrounds;
 		this.projectiles = projectiles;
 		this.effects = effects;
 		this.bounds = bounds;
@@ -45,6 +43,8 @@ class Level{
 		this.cacheImages( concat(this.player.imagesLib) ); 
 	    this.enemies.forEach((enemy) => { this.cacheImages( concat(enemy.imagesLib) ); });
 
+	    this.backgrounds.forEach((background) => { this.cacheImages( concat(background.imagesLib) ); });
+
 	    let self = this;
 	    this.effects.forEach((effect) => { this.cacheImages( concat(effect.imagesLib) ); self.effects=[]; });
 	    this.projectiles.forEach((projectile) => { this.cacheImages( concat(projectile.imagesLib) ); self.projectiles=[]; });
@@ -53,6 +53,7 @@ class Level{
 	init(){
 		if(!this.loaded){ return; }
 		this.enemies.forEach((enemy) => { enemy.init(); });
+		this.backgrounds.forEach((background) => { background.init(); });
 	    this.projectiles.forEach((projectile) => { projectile.init(); });
 		this.effects.forEach((effect) => { effect.init(); });
 		this.player.init();
@@ -71,6 +72,9 @@ class Level{
 		let cacheDiv = document.querySelector('#cache');
 		if (cacheDiv) {;
 			images.forEach(function(image) {
+
+				if(image.startsWith('*')){self.loadedAssets += 1; return;}
+
 				let checkCache = document.querySelector('#cache img[src="' + image + '"]');
 				if (!checkCache) {
 					let cachedImage = new Image();

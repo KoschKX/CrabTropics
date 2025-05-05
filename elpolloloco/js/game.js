@@ -28,9 +28,11 @@ function init(){
     titlescreen = new Titlescreen(canvas, screen, keyboard, audio);
 
     window.addEventListener('keydown', (e) => {
+        if(e.key=='Tab'){ e.preventDefault(); }
         keyboard.keyDown(e.keyCode);
     });
     window.addEventListener('keyup', (e) => {
+        if(e.key=='Tab'){ e.preventDefault(); }
         keyboard.keyUp(e.keyCode);
     });
 

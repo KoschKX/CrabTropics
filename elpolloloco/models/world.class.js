@@ -48,8 +48,7 @@ class World{
 			this.level.projectiles.forEach((projectile) => {
 				let colPA = this.player.isColliding(projectile,0,0);
 				if(colPA){
-					this.player.isHit();
-					this.player.setInvincible(1000);
+					this.player.isHit(true);
 				}
 				this.level.enemies.forEach((enemy) => {
 					let colPB = projectile.isColliding(enemy,0,0);
@@ -72,8 +71,7 @@ class World{
 					}
 				}else if(colA){
 					if(colA==4 || colA==2  && enemy.hostile){
-						this.player.isHit();
-						this.player.setInvincible(1000);
+						this.player.isHit(true);
 					}
 				}
 			});
@@ -93,13 +91,16 @@ class World{
 			this.level.bounds,
 		);
 
-		this.addToMap(this.level.backgroundA);
+		this.addObjectsToMap(this.level.backgrounds.filter(background => background.layer === 0));
 		this.addObjectsToMap(this.level.clouds);
-		this.addToMap(this.level.backgroundB);
+		this.addObjectsToMap(this.level.backgrounds.filter(background => background.layer === 1));
 		this.addObjectsToMap(this.level.enemies.filter(enemy => enemy.name === 'Ship'));
+		
+		this.addObjectsToMap(this.level.backgrounds.filter(background => background.layer === 2));
+
 		this.addObjectsToMap(this.level.projectiles.filter(projectile => !projectile.falling && projectile.name === 'Cannonball'));
 		this.addObjectsToMap(this.level.effects.filter(effect => effect.name === 'Explosion'));
-		this.addToMap(this.level.backgroundC);
+		
 		this.addObjectsToMap(this.level.enemies.filter(enemy => enemy.dead && enemy.name === 'Crab'));
 		this.addToMap(this.player);
 		this.addObjectsToMap(this.level.enemies.filter(enemy => !enemy.dead && enemy.name === 'Crab'));

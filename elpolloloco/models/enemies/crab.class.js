@@ -2,7 +2,7 @@ class Crab extends Enemy{
 
 	name = 'Crab';
 
-	height = 64; width = 128;
+	height = 64; width = 192; groundOffset = 0;
 
 	frameRate = 24; useGravity = true; 
 
@@ -22,27 +22,32 @@ class Crab extends Enemy{
 	hostile = true;
 
 	IMAGES_MOVEA = [
-		'./img/crabA/MOVE_001.png', './img/crabA/MOVE_002.png', './img/crabA/MOVE_003.png',
-		'./img/crabA/MOVE_004.png', './img/crabA/MOVE_005.png', './img/crabA/MOVE_006.png',
-		'./img/crabA/MOVE_007.png', './img/crabA/MOVE_008.png', './img/crabA/MOVE_009.png',
-	]; IMAGES_MOVESA_OFFSETS = [ 0, -2, -5, -5, 4, 0, 1, 2, 5 ];
+		'./img/crabA/YELLOW_MOVE_001.png', './img/crabA/YELLOW_MOVE_002.png', './img/crabA/YELLOW_MOVE_003.png',
+		'./img/crabA/YELLOW_MOVE_004.png', './img/crabA/YELLOW_MOVE_005.png', './img/crabA/YELLOW_MOVE_006.png',
+		'./img/crabA/YELLOW_MOVE_007.png', './img/crabA/YELLOW_MOVE_008.png', './img/crabA/YELLOW_MOVE_009.png', 
+		'./img/crabA/YELLOW_MOVE_010.png', './img/crabA/YELLOW_MOVE_011.png', './img/crabA/YELLOW_MOVE_012.png',
+	]; //IMAGES_MOVESA_OFFSETS = [ 0, -2, -5, -5, 4, 0, 1, 2, 5 ];
+
 
 	IMAGES_MOVEB = [
-		'./img/crabB/MOVE_001.png', './img/crabB/MOVE_002.png', './img/crabB/MOVE_003.png',
-		'./img/crabB/MOVE_004.png', './img/crabB/MOVE_005.png', './img/crabB/MOVE_006.png',
-		'./img/crabB/MOVE_007.png', './img/crabB/MOVE_008.png', './img/crabB/MOVE_009.png',
-	]; IMAGES_MOVESB_OFFSETS = [ 0, -2, -4, -6, -4, -2, 0, 2, 4 ];
+		'./img/crabB/RED_MOVE_001.png', './img/crabB/RED_MOVE_002.png', './img/crabB/RED_MOVE_003.png',
+		'./img/crabB/RED_MOVE_004.png', './img/crabB/RED_MOVE_005.png', './img/crabB/RED_MOVE_006.png',
+		'./img/crabB/RED_MOVE_007.png', './img/crabB/RED_MOVE_008.png', './img/crabB/RED_MOVE_009.png', 
+		'./img/crabB/RED_MOVE_010.png', './img/crabB/RED_MOVE_011.png', './img/crabB/RED_MOVE_012.png',
+	]; // IMAGES_MOVESB_OFFSETS = [ 0, -2, -4, -6, -4, -2, 0, 2, 4 ];
 
 	IMAGES_DIEA = [
-		'./img/crabA/DIE_001.png', './img/crabA/DIE_002.png', './img/crabA/DIE_003.png',
-		'./img/crabA/DIE_004.png', './img/crabA/DIE_005.png', './img/crabA/DIE_006.png',
-		'./img/crabA/DIE_007.png', './img/crabA/DIE_008.png', './img/crabA/DIE_009.png',
+		'./img/crabA/YELLOW_DIE_001.png', './img/crabA/YELLOW_DIE_002.png', './img/crabA/YELLOW_DIE_003.png',
+		'./img/crabA/YELLOW_DIE_004.png', './img/crabA/YELLOW_DIE_005.png', './img/crabA/YELLOW_DIE_006.png',
+		'./img/crabA/YELLOW_DIE_007.png', './img/crabA/YELLOW_DIE_008.png', './img/crabA/YELLOW_DIE_009.png',
+		'./img/crabA/YELLOW_DIE_010.png', './img/crabA/YELLOW_DIE_011.png', './img/crabA/YELLOW_DIE_012.png',
 	];
 
 	IMAGES_DIEB = [
-		'./img/crabB/DIE_001.png', './img/crabB/DIE_002.png', './img/crabB/DIE_003.png',
-		'./img/crabB/DIE_004.png', './img/crabB/DIE_005.png', './img/crabB/DIE_006.png',
-		'./img/crabB/DIE_007.png', './img/crabB/DIE_008.png', './img/crabB/DIE_009.png',
+		'./img/crabB/RED_DIE_001.png', './img/crabB/RED_DIE_002.png', './img/crabB/RED_DIE_003.png',
+		'./img/crabB/RED_DIE_004.png', './img/crabB/RED_DIE_005.png', './img/crabB/RED_DIE_006.png',
+		'./img/crabB/RED_DIE_007.png', './img/crabB/RED_DIE_008.png', './img/crabB/RED_DIE_009.png',
+		'./img/crabB/RED_DIE_010.png', './img/crabB/RED_DIE_011.png', './img/crabB/RED_DIE_012.png',
 	];
 
 	imagesLib = [
@@ -54,7 +59,7 @@ class Crab extends Enemy{
 		super();
 		this.variant=variant;
 		
-		this.x = 200 + random(0,  500); this.y += 64;  
+		this.x = 200 + random(0,  500); this.y = 64;  
 		this.speed = random(0.5, 1); this.originalspeed = this.speed;
 
 		//this.init();

@@ -3,7 +3,7 @@ class Character extends MovableObject{
 	name = 'Character'; 
 
 	dead = false; hurt = false;
-	invincible = false; hostile = false; reviving = false;
+	invincible = false; willInvincible = false; hostile = false; reviving = false;
 	health = 1; starthealth = 1;
 	lastHit = 0; lastFlicker = 0;
 
@@ -96,9 +96,7 @@ class Character extends MovableObject{
 	playAnimation(anim){
 		if(!anim || !this.img){ return; }
     	let i = this.currImage % anim.length;
-        let path = anim[i]; if(!(path in this.imageCache)) return;
-        
-        this.img.src = this.imageCache[path];
+        let path = anim[i]; 
 
         if(this.hurt||this.invincible){
         	if(this.health==0){
@@ -107,11 +105,19 @@ class Character extends MovableObject{
 	    		if (i < anim.length - 1  ) this.hurt = false;
 	    	}
         }
+        if(!this.invincible&&this.hurt&&this.willInvincible){
+        	if (i === anim.length - 1) this.setInvincible(1000);
+        	this.willInvincible = false;
+        }
         if(this.dead){
         	if (i < anim.length - 1) this.currImage++;
         }else{
         	this.currImage++;
         }
+
+        if(!(path in this.imageCache) || path=="*norepeat") { this.currImage = anim.length - 1; return; } ;
+
+        this.img.src = this.imageCache[path];
 	}
 
 /* MOVEMENT */
@@ -123,10 +129,11 @@ class Character extends MovableObject{
 
 /* STATUS */
 
-	isHit(){
-		if(this.hurt){ return; }
+	isHit(makeInvincible){
+		if(this.hurt || this.willInvincible){ return; }
 		this.hurt=true;   this.health--;
 		this.health < 0 ? this.health = 0 : this.lastHit = Date.now();
+		if(makeInvincible){ this.willInvincible = true; }
 	}
 
 	isHurt(){
@@ -152,11 +159,9 @@ class Character extends MovableObject{
 	setInvincible(delay, onOff){
 		if(this.invincible){ return; }
 		setTimeout(() => {
-			this.invincible=false;
-			this.toggleCollider(1,true);
+			this.invincible=false; this.toggleCollider(1,true);
 		},delay);
-		this.invincible=true;
-		this.toggleCollider(0,false);
+		this.invincible=true; this.toggleCollider(0,false);
 	}
 
 	isInvincible(){

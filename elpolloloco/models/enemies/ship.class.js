@@ -4,19 +4,31 @@ class Ship extends Enemy{
 
 	health = 10; starthealth = 10; 
 	frameRate = 24; useGravity = false; 
-	speed = 0.25; frameRate = 24;
+	speed = 0.25; frameRate = 10;
 
 	scale = 1;
 
 	IMAGES_FLOAT = [
-		'./img/ship/FLOAT_001.png',
+		'./img/ship/FLOAT_001.png', './img/ship/FLOAT_002.png', './img/ship/FLOAT_003.png', './img/ship/FLOAT_004.png', 
+		'./img/ship/FLOAT_005.png', './img/ship/FLOAT_006.png', './img/ship/FLOAT_007.png', 
+
+		'./img/ship/FLOAT_006.png', './img/ship/FLOAT_005.png', './img/ship/FLOAT_004.png', './img/ship/FLOAT_003.png', './img/ship/FLOAT_002.png',
+
+		// './img/ship/FLOAT_008.png',
+		// './img/ship/FLOAT_009.png', './img/ship/FLOAT_010.png', './img/ship/FLOAT_011.png', './img/ship/FLOAT_012.png',
+
+		// './img/ship/FLOAT_013.png', './img/ship/FLOAT_014.png', './img/ship/FLOAT_015.png', './img/ship/FLOAT_016.png', 
+		// './img/ship/FLOAT_017.png', './img/ship/FLOAT_018.png', './img/ship/FLOAT_019.png', 
+
+		// './img/ship/FLOAT_020.png', 
+		// './img/ship/FLOAT_021.png', './img/ship/FLOAT_022.png', './img/ship/FLOAT_023.png', './img/ship/FLOAT_024.png',
+
+		// './img/ship/FLOAT_018.png', './img/ship/FLOAT_017.png', './img/ship/FLOAT_016.png', './img/ship/FLOAT_015.png', './img/ship/FLOAT_014.png',
 	];
 
 	imagesLib = [
 		this.IMAGES_FLOAT,
 	]
-	
-	frameRate = 24; 
 
 	explosions = [];
 	cballs = [];
@@ -38,8 +50,8 @@ class Ship extends Enemy{
 	init() {
 		super.init();
 
-		this.height = 128; this.width = 128
-		this.x = 200 + random(0,  500); this.y = 156;
+		this.height = 200; this.width = 200
+		this.x = 200 + random(0,  500); this.y = 110;
 
 		this.speed = random(0.25, 0.5); this.originalspeed = this.speed;
 
@@ -50,8 +62,6 @@ class Ship extends Enemy{
 	main(){
 		super.main();
 		this.cannonFire();
-
-
 	}
 	
 	handleAnimation(){

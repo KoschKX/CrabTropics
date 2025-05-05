@@ -8,7 +8,7 @@ class MovableObject{
 
 	IMAGES_BLANK = ['./img/blank.png'];
 
-	currImageSet=['']; currOffsetSet = null;
+	currImageSet=['']; currOffsetSet = null; noRepeat=[];
 	img; cache; imageCache = []; imagesLib = [this.IMAGES_BLANK];
 	flipOffset = [0, 0];
 	
@@ -46,8 +46,8 @@ class MovableObject{
 	loadImages(arr){
 		if(!arr){ return; }
 		arr.forEach((path) => {
-			if(!path || path==''){ return; }
-			const img = new Image();  img.src = path;
+			if(!path || path=='' || this.imageCache?.[path]){ return; };
+			if(!path.startsWith('*')){ const img = new Image();  img.src = path; }
 			this.imageCache[path] = path;
 		});
 		return arr;
@@ -74,16 +74,23 @@ class MovableObject{
 	changeAnimation(anim,offs=null){
 		if(this.currImageSet==anim){ return; }
 		this.currImageSet=anim;
+		this.currImage = 0;
 		this.loadImages(anim);	
 		this.currOffsetSet = offs || null;
 	}
 
 	playAnimation(anim){
-    	let i = this.currImage % anim.length;
+		if(!anim || !this.img){ return; }
+    	let i = this.currImage % anim.length; 
         let path = anim[i];
-        this.img.src = this.imageCache[path];
+        
         this.currImage++;
         this.currOffsetSet && this.applyAnimationOffsets(this.currOffsetSet);
+        
+        if(!(path in this.imageCache) || path=="*norepeat") return;
+
+        this.img.src = this.imageCache[path];
+
 	}
 
 	applyAnimationOffsets(oset){
@@ -98,6 +105,11 @@ class MovableObject{
 
 	getOffset(){
 		return [this.flipOffset[0], this.flipOffset[1]];
+	}
+
+	getAnimName(path){
+		if (typeof path !== 'string'){return '';}
+		return path.split('/').pop().split('.')[0].split('_')[0];
 	}
 
 /* MOVEMENT */
@@ -119,7 +131,7 @@ class MovableObject{
 	}
 	bounce(spd,point){
 		this.speedY = spd;
-		this.bouncing = true; this.falling = false;
+		this.bouncing = true; this.falling = false; this.currImage = 0;
 		if(point) this.y = point;
 	}
 

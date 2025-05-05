@@ -7,41 +7,74 @@ class Pirate extends Player{
 	speed = 3; frameRate = 24;
 
 	groundOffset = -64;
-	flipOffset = [-this.width*0.25, 0];
+	//flipOffset = [-this.width*0.25, 0];
 
 	boxes = [
-				[this.width*0.25, this.height*0.33, this.width*0.25, this.height*0.5, 'red', true],
-				[this.width*0.25, this.height*0.75, this.width*0.25, this.height*0.1, 'yellow', true]
+				[this.width*0.33, this.height*0.25, this.width*0.36, this.height*0.5, 'red', true],
+				[this.width*0.33, this.height*0.75, this.width*0.36, this.height*0.1, 'yellow', true]
 			]
 
+
 	IMAGES_IDLE = [
-		'./img/pirate/IDLE_000.png', './img/pirate/IDLE_001.png', './img/pirate/IDLE_002.png',
-		'./img/pirate/IDLE_003.png', './img/pirate/IDLE_004.png', './img/pirate/IDLE_005.png',
-		'./img/pirate/IDLE_006.png',
+		'./img/kit/IDLE_001.png', './img/kit/IDLE_001.png', 
+		'./img/kit/IDLE_002.png', './img/kit/IDLE_002.png', 
+		'./img/kit/IDLE_003.png', './img/kit/IDLE_003.png',
+		'./img/kit/IDLE_004.png', './img/kit/IDLE_004.png',
+		'./img/kit/IDLE_005.png', './img/kit/IDLE_005.png',
+		'./img/kit/IDLE_006.png', './img/kit/IDLE_006.png',
+		'./img/kit/IDLE_007.png', './img/kit/IDLE_007.png',
+		'./img/kit/IDLE_006.png', './img/kit/IDLE_006.png', 
+		'./img/kit/IDLE_005.png', './img/kit/IDLE_005.png', 
+		'./img/kit/IDLE_004.png', './img/kit/IDLE_004.png', 
+		'./img/kit/IDLE_003.png', './img/kit/IDLE_003.png',
+		'./img/kit/IDLE_002.png', './img/kit/IDLE_002.png',
 	];
 
 	IMAGES_WALK = [
-		'./img/pirate/WALK_000.png', './img/pirate/WALK_001.png', './img/pirate/WALK_002.png',
-		'./img/pirate/WALK_003.png', './img/pirate/WALK_004.png', './img/pirate/WALK_005.png',
-		'./img/pirate/WALK_006.png',
+		'./img/kit/RUN_001.png',
+		'./img/kit/RUN_002.png',
+		'./img/kit/RUN_003.png',
+		'./img/kit/RUN_004.png',
+		'./img/kit/RUN_005.png',
+		'./img/kit/RUN_006.png',
+		'./img/kit/RUN_007.png',
+		'./img/kit/RUN_008.png',
+		'./img/kit/RUN_009.png',
+		'./img/kit/RUN_010.png',
+		'./img/kit/RUN_011.png',
+		'./img/kit/RUN_012.png',
+		'./img/kit/RUN_013.png',
+		'./img/kit/RUN_014.png',
 	];
 
 	IMAGES_JUMP = [
-		'./img/pirate/JUMP_001.png', './img/pirate/JUMP_002.png', './img/pirate/JUMP_003.png',
-		'./img/pirate/JUMP_004.png', './img/pirate/JUMP_005.png', './img/pirate/JUMP_006.png',
+		'./img/kit/JUMP_001.png', './img/kit/JUMP_001.png',
+		'./img/kit/JUMP_002.png', './img/kit/JUMP_002.png',
+		'./img/kit/JUMP_003.png', './img/kit/JUMP_004.png',
+		'./img/kit/JUMP_005.png', './img/kit/JUMP_006.png',
+		'./img/kit/JUMP_007.png',
+		'*norepeat',
 	];
 
 	IMAGES_HURT = [
-		'./img/pirate/HURT_001.png', './img/pirate/HURT_002.png', './img/pirate/HURT_003.png',
+		'./img/kit/JUMP_001.png', './img/kit/JUMP_001.png','./img/kit/JUMP_002.png',
+		'./img/kit/JUMP_003.png', './img/kit/JUMP_004.png',
+		//'./img/pirate/HURT_001.png', './img/pirate/HURT_002.png', './img/pirate/HURT_003.png',
 		//'./img/pirate/HURT_004.png',
 		//'./img/pirate/HURT_005.png',
 		//'./img/pirate/HURT_006.png',
 	];
 
 	IMAGES_DIE = [
-		'./img/pirate/DIE_001.png', './img/pirate/DIE_002.png', './img/pirate/DIE_003.png',
-		'./img/pirate/DIE_004.png', './img/pirate/DIE_005.png', './img/pirate/DIE_006.png',
+		'./img/kit/DIE_001.png', './img/kit/DIE_002.png', './img/kit/DIE_003.png',
+		'./img/kit/DIE_004.png', './img/kit/DIE_005.png', './img/kit/DIE_006.png',
+		'./img/kit/DIE_007.png', './img/kit/DIE_008.png', './img/kit/DIE_009.png',
+		'./img/kit/DIE_010.png', './img/kit/DIE_011.png', './img/kit/DIE_012.png',
+		'./img/kit/DIE_013.png', './img/kit/DIE_014.png', './img/kit/DIE_015.png',
+		'./img/kit/DIE_016.png',
 	];
+
+	noRepeat = ['JUMP'];
 
 	imagesLib = [
 		this.IMAGES_IDLE, this.IMAGES_WALK, this.IMAGES_JUMP, 
@@ -54,7 +87,7 @@ class Pirate extends Player{
 
 	init() {
 		super.init();
-		this.loadImage('./img/pirate/IDLE_000.png');
+		this.loadImage('./img/kit/IDLE_001.png');
 		this.currImageSet = this.IMAGES_IDLE;
 		this.loadImages(this.currImageSet);
 	}

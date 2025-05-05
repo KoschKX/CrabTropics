@@ -1,12 +1,9 @@
 class Titlescreen{
 
 	cvs; ctx;
-	keyboard; screen;
+	keyboard; screen; background;
 
-	background;
-
-	drawInterval;
-	ctlInterval;
+	drawInterval; tlInterval;
 
 	menuItems = ['Start', '//Settings'];
 	menuFuncs = ['start', 'settings'];
@@ -15,10 +12,12 @@ class Titlescreen{
 	selected = 0;
 	menuChanged = false;
 
+	
+
 	constructor(cvs,scr,kbd,aud){
 		this.cvs = cvs;  this.ctx = cvs.getContext('2d');
     	this.screen = scr; this.keyboard = kbd; this.audio = aud;
-    	this.background = new Background('./img/ui/background.jpg', 0 , 0);
+    	this.background = new Background('./img/ui/background2.jpg', 0 , 0);
 		this.init();
 	}
 
@@ -30,6 +29,14 @@ class Titlescreen{
 		    clearInterval(self.ctlInterval); self.ctlInterval = setInterval(() => { self.main(); }, 1000 / 60 );			
 		});
 
+		const vid = document.createElement('video');
+		vid.id = 'title_video'; vid.classList.add('bg_video');
+		vid.src = './mov/beachC_looped.mp4';
+		vid.preload = 'auto'; vid.autoplay = true; vid.muted = true; vid.loop = true; vid.playsInline = true;
+
+		document.querySelector('body').appendChild(vid);
+		this.video = document.getElementById('title_video');
+		this.video.addEventListener('loadeddata', () => { this.video.width = this.cvs.width; this.video.height = this.cvs.height;  });
 		this.screen.showMenu(); this.screen.showControls();
 	}
 
@@ -50,11 +57,10 @@ class Titlescreen{
 	selfDestruct(){ 
 		clearInterval(this.drawInterval); clearInterval(this.ctlInterval); 
 		this.ctx.clearRect(0,0,this.cvs.width,this.cvs.height);
-		
 		this.audio.playSound('ocean',1.0, false, true);
 		this.audio.playSound('royalty_free',0.4, false, true);
-
 		this.screen.hideControls();
+		this.video.remove();
 	}
 
 	start(){
@@ -76,9 +82,15 @@ class Titlescreen{
 
 	draw(){
 		this.ctx.clearRect(0,0,this.cvs.width,this.cvs.height);
-		this.addToMap(this.background);
+		// this.addToMap(this.background);
+		this.drawVideo();
 		this.drawTitle(this.cvs.width * 0.5, this.cvs.height * 0.33);
 		this.drawMenus(this.cvs.width * 0.5, this.cvs.height * 0.6);
+	}
+
+	drawVideo(){
+		if (this.video.currentTime >= this.video.duration - 0.2) { this.video.currentTime = 0; this.video.play(); }
+		this.ctx.drawImage(this.video, 0, 0, this.cvs.width, this.cvs.height);
 	}
 
 	drawTitle(x,y){

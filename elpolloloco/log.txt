@@ -156,7 +156,7 @@
 	18:30
 		Reduced Code some more.
 
-02 May, 2025
+02. May, 2025
 	16:30:
 		Added Title screen and Loading screen. Refactored Keyboard class.
 
@@ -165,3 +165,23 @@
 
 	21:00	
 		Changed Title Font.
+
+04. May, 2025
+	13:00
+		These graphics are really terrible. Looking in my asset library. I have 2 crabs. One doesn't have a dying animation. Doing it in blender.
+
+	14:00 
+		Making a beach animation in NightCafe creator. Very difficult to get one that loops well.
+
+	16:30
+		Made a reggae cat in Creator. The animations sort of work, but they have a white background. Using my Stable Diffusion server to speed up the process.
+
+	18:00
+		Same for the pirate ship...
+
+	19:00
+		Using a different beach animation for the title screen, now.
+
+	20:30
+		Updating all the code to use the new graphics. Found some bugs.
+		
