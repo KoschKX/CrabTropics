@@ -9,6 +9,9 @@ class Pirate extends Player{
 	groundOffset = -64;
 	//flipOffset = [-this.width*0.25, 0];
 
+	digging = false;
+	currXmark;
+
 	boxes = [
 				[this.width*0.33, this.height*0.20, this.width*0.36, this.height*0.65, 'red', true],
 				[this.width*0.33, this.height*0.85, this.width*0.36, this.height*0.15, 'yellow', true]
@@ -74,12 +77,22 @@ class Pirate extends Player{
 		'./img/kit/DIE_016.png',
 	];
 
+	IMAGES_DIG = [
+		'./img/kit/DIG_001.png', './img/kit/DIG_003.png',
+		'./img/kit/DIG_004.png', './img/kit/DIG_006.png',
+		'./img/kit/DIG_007.png', './img/kit/DIG_009.png',
+		'./img/kit/DIG_010.png', './img/kit/DIG_012.png',
+		'./img/kit/DIG_013.png', './img/kit/DIG_014.png',
+	];
+
 	noRepeat = ['JUMP'];
 
 	imagesLib = [
 		this.IMAGES_IDLE, this.IMAGES_WALK, this.IMAGES_JUMP, 
-		this.IMAGES_HURT, this.IMAGES_DIE,
+		this.IMAGES_HURT, this.IMAGES_DIE, this.IMAGES_DIG,
 	]
+
+	lastMark = 0; maxMarks = 3; spotting = true;
 
 	constructor(){
 		super();
@@ -94,6 +107,7 @@ class Pirate extends Player{
 
 	main(){
 		super.main();
+		this.xMarkSpotting();
 	}
 
 	cache(){
@@ -110,8 +124,15 @@ class Pirate extends Player{
 		if(!this.world){ return; }
 		
 		this.hurt=this.isHurt();
+
 		if(this.dead){
 			this.changeAnimation(this.IMAGES_DIE);
+		}else if(this.digging){
+			if(this.currImage == this.currImageSet.length -1 ){
+				this.currXmark.destroy(); this.currXmark.buried=false; this.currXmark = false;
+				this.invincible = false; this.digging = false; this.static=false;
+			}
+			this.changeAnimation(this.IMAGES_DIG);
 		}else if(this.hurt && !this.invincible){
 			this.changeAnimation(this.IMAGES_HURT);
 		}else{
@@ -127,5 +148,43 @@ class Pirate extends Player{
 		}
 		this.playAnimation(this.currImageSet);
 	}
+
+	dig(xmark){
+		if(!xmark.buried || this.digging){ return; }
+		this.currImage = 0;
+		this.digging=true; this.static=true; this.invincible = true;
+		this.currXmark=xmark;
+	}
+
+	xMarkSpotting() {
+
+		if(!this.world || !this.world.level){ return; }
+		if(!this.spotting){ return; }
+
+	 	const rDelay = randomInt(100,100000);
+	 	const now = Date.now();
+
+  		this.xmarks = this.world.level.projectiles.filter(rojectile => rojectile.name === 'XMark');
+
+  		if(now - this.lastMark < rDelay || this.xmarks.length>=this.maxMarks){ 
+  			return;
+  		}
+
+		  	let mark = new XMark(true);
+
+	  		let markCenterX = randomInt(0, this.world.level.bounds[2]) - (mark.width*0.5);
+	  		let markCenterY = this.world.ground + (mark.height*0.5) + 36;
+
+  			mark.x = markCenterX; mark.y = markCenterY;
+	  		mark.world = this.world;
+
+  		this.world.level.projectiles.push(mark);
+
+  		this.world.audio.playSound('xmark_appearA');
+
+  		this.lastMark = new Date().getTime();
+		  		
+	}
+
 
 }

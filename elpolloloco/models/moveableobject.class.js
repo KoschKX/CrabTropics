@@ -17,7 +17,7 @@ class MovableObject{
 	groundOffset = 0; 
 
 	facingRight = true; useGravity = false; 
-	falling = false; bouncing = false; useGround = true; 
+	falling = false; bouncing = false; static = false; useGround = true; 
 
 	constructor(world){
 		if(world){
@@ -140,13 +140,13 @@ class MovableObject{
 	}
 
 	moveLeft(){
-		if(!this.world){ return; }
+		if(!this.world || this.static){ return; }
 		if(this.x<this.world.level.bounds[0]-(this.width*0.5)){return;}
 		this.x -= this.speed; this.currDirection = 0;     
 	}
 	moveRight(){
-		if(!this.world){ return; }
-		if(this.x>this.world.level.bounds[2]-(this.width)){return;}
+		if(!this.world || this.static){ return; }
+		if(this.x>this.world.level.bounds[2]-(this.width*0.5)){return;}
 		this.x += this.speed; this.currDirection = 1;     
 	}
 

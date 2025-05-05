@@ -47,12 +47,18 @@ class World{
 		setInterval(() => {
 			this.level.projectiles.forEach((projectile) => {
 				let colPA = this.player.isColliding(projectile,0,0);
+				let colPB = this.player.isColliding(projectile,1,0);
 				if(colPA){
 					this.player.isHit(true);
 				}
+				if(colPB){
+					if(projectile instanceof XMark){
+						if(this.keyboard.DOWN) this.player.dig(projectile);
+					}
+				}
 				this.level.enemies.forEach((enemy) => {
-					let colPB = projectile.isColliding(enemy,0,0);
-					if(colPB){
+					let colPC = projectile.isColliding(enemy,0,0);
+					if(colPC){
 						if(projectile instanceof Cannonball && projectile.hostile){
 							enemy.isHit();
 						}
@@ -101,6 +107,8 @@ class World{
 		this.addObjectsToMap(this.level.effects.filter(effect => effect.name === 'Explosion'));
 		
 		this.addObjectsToMap(this.level.backgrounds.filter(background => background.layer === 2));
+
+		this.addObjectsToMap(this.level.projectiles.filter(projectile => projectile.name === 'XMark'));
 		
 		this.addObjectsToMap(this.level.enemies.filter(enemy => enemy.dead && enemy.name === 'Crab'));
 		this.addToMap(this.player);
@@ -126,7 +134,7 @@ class World{
 	addToMap(mo) {
 
 		// FLICKER IF INVINCIBLE 
-			if(mo.invincible&&mo.flicker(1)){ return ;}
+			if(mo.flickering&&mo.flicker(1)){ return ;}
 	    
 	    this.ctx.save(); 
 	    mo.draw(this.ctx);

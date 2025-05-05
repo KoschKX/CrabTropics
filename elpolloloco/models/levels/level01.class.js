@@ -19,6 +19,7 @@ const level01 = new Level(
 	],
 	[
 		new Cannonball(),
+		new XMark(),
 	],
 	[
 		new Explosion(),

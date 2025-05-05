@@ -20,13 +20,10 @@ class Cannonball extends Enemy{
 	imagesLib = [
 		this.IMAGES_ROLL,
 	]
-	
-	frameRate = 24; 
 
 	boxes = [[0, 0, this.width, this.height, 'red', true]];
 
 	hostile = true;
-
 	madeGroundContact = false;
 	scaleInterval;
 

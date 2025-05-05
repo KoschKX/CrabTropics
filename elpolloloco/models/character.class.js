@@ -3,7 +3,7 @@ class Character extends MovableObject{
 	name = 'Character'; 
 
 	dead = false; hurt = false;
-	invincible = false; willInvincible = false; hostile = false; reviving = false;
+	invincible = false; willInvincible = false; hostile = false; reviving = false; flickering = false;
 	health = 1; starthealth = 1;
 	lastHit = 0; lastFlicker = 0;
 
@@ -164,9 +164,10 @@ class Character extends MovableObject{
 	setInvincible(delay, onOff){
 		if(this.invincible){ return; }
 		setTimeout(() => {
-			this.invincible=false; this.toggleCollider(1,true);
+			this.invincible=false; this.flickering=false; this.toggleCollider(1,true);
 		},delay);
 		this.invincible=true; this.toggleCollider(0,false);
+		this.flickering=true;
 	}
 
 	isInvincible(){
