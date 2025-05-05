@@ -10,11 +10,13 @@ class Crab extends Enemy{
 
 	boxes_fine = [
 					[this.width*0.25, this.height*0.35, this.width*0.50, this.height*0.60, 'red', true],
-					[this.width*0.33, this.height*0.10, this.width*0.34, this.height*0.25, 'yellow', true]
+					[this.width*0.15, this.height*0.10, this.width*0.7, this.height*0.25, 'yellow', true]
+					//[this.width*0.33, this.height*0.25, this.width*0.34, this.height*0.20, 'yellow', true]
 				 ]
 	boxes_hurt = [
 					[this.width*0.25, this.height*0.46, this.width*0.50, this.height*0.48, 'red', true],
-					[this.width*0.33, this.height*0.25, this.width*0.34, this.height*0.20, 'yellow', true]
+					[this.width*0.15, this.height*0.25, this.width*0.7, this.height*0.20, 'yellow', true]
+					//[this.width*0.33, this.height*0.25, this.width*0.34, this.height*0.20, 'yellow', true]
 				 ]
 
 	boxes=this.boxes_fine;
