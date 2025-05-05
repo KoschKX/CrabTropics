@@ -184,4 +184,8 @@
 
 	20:30
 		Updating all the code to use the new graphics. Found some bugs.
+
+05. May, 2025
+	16:30
+		Updated destroy functions for Cannon balls and Explosions. THey were still ticking.
 		
