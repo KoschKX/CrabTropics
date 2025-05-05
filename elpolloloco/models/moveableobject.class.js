@@ -27,6 +27,10 @@ class MovableObject{
 		this.stamp = new Date();
 	}
 
+	destroy(){
+		clearInterval(this.gvtyInterval); clearInterval(this.animInterval); clearInterval(this.mainInterval); 
+	}
+
 	init(){
 		if(this.useGravity){
 			clearInterval(this.gvtyInterval); this.gvtyInterval = setInterval(() => { this.handleGravity(); }, 1000 / 60 );

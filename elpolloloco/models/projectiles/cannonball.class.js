@@ -36,6 +36,12 @@ class Cannonball extends Enemy{
 			this.init();
 		}
 	}
+
+	destroy(){
+		this.world.level.projectiles = destroy(this,this.world.level.projectiles, this.world);
+		clearInterval(this.scaleInterval);
+	    super.destroy();
+	}
 	
 	init() {
 		super.init();
@@ -89,7 +95,7 @@ class Cannonball extends Enemy{
 	    	this.y-=this.speedY;
 	    }
 	    if(this.y>=this.world.cvs.height+this.height){
-	    	this.world.level.projectiles = destroy(this,this.world.level.projectiles, this.world);
+	    	this.destroy();
 	    }
 	}
 

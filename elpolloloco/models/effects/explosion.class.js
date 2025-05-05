@@ -22,6 +22,11 @@ class Explosion extends MovableObject{
 		}
 	}
 	
+	destroy(){
+		this.world.level.effects = destroy(this, this.world.level.effects, this.world);
+	    super.destroy();
+	}
+
 	init() {
 		super.init();
 
@@ -51,7 +56,7 @@ class Explosion extends MovableObject{
     	if(i < anim.length-1){
     		this.currImage++;
 		}else{
-        	this.world.level.effects = destroy(this, this.world.level.effects, this.world);
+        	this.destroy();
         }
 	}
 
