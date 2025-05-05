@@ -10,8 +10,8 @@ class Pirate extends Player{
 	//flipOffset = [-this.width*0.25, 0];
 
 	boxes = [
-				[this.width*0.33, this.height*0.25, this.width*0.36, this.height*0.5, 'red', true],
-				[this.width*0.33, this.height*0.75, this.width*0.36, this.height*0.1, 'yellow', true]
+				[this.width*0.33, this.height*0.20, this.width*0.36, this.height*0.65, 'red', true],
+				[this.width*0.33, this.height*0.85, this.width*0.36, this.height*0.15, 'yellow', true]
 			]
 
 

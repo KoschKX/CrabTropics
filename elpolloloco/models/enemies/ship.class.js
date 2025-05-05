@@ -2,6 +2,8 @@ class Ship extends Enemy{
 
 	name = 'Ship';
 
+	height = 200; width = 200;
+
 	health = 10; starthealth = 10; 
 	frameRate = 24; useGravity = false; 
 	speed = 0.25; frameRate = 10;
@@ -33,7 +35,7 @@ class Ship extends Enemy{
 	explosions = [];
 	cballs = [];
 
-	cannonLocs = [[  33, 0.0 ], [ -33, 0.0 ],];
+	cannonLocs = [[  33, 0.2 ], [ -33, 0.2 ],];
 
 	lastShot = 0;
 	maxShots = 2;
@@ -50,7 +52,7 @@ class Ship extends Enemy{
 	init() {
 		super.init();
 
-		this.height = 200; this.width = 200
+		
 		this.x = 200 + random(0,  500); this.y = 110;
 
 		this.speed = random(0.25, 0.5); this.originalspeed = this.speed;
