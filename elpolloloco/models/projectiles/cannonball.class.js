@@ -13,14 +13,11 @@ class Cannonball extends Enemy{
 	maxWidth = 33; maxHeight = 33;
 	maxZoomWidth = 66; maxZoomHeight = 66;
 
-	IMAGES_ROLL = [
-		'./img/cannonballA/ROLL_001.png',
-	];
-	
+	IMAGES_ROLL = new Anim('./img/cannonballA/ROLL_001.png'	,1 , '' );
 	imagesLib = [
-		this.IMAGES_ROLL,
+		this.IMAGES_ROLL.files,
 	]
-
+	
 	boxes = [[0, 0, this.width, this.height, 'red', true]];
 
 	hostile = true;
@@ -43,7 +40,7 @@ class Cannonball extends Enemy{
 	init() {
 		super.init();
 
-		this.loadImage('./img/cannonballA/ROLL_001.png');
+		this.loadImage(this.IMAGES_ROLL.files[0]);
 		this.changeAnimation(this.IMAGES_ROLL);
 
 		clearInterval(this.scaleInterval); this.scaleInterval = setInterval(() => { this.handleScaling(); }, 1000 / 24 );

@@ -6,10 +6,10 @@ class MovableObject{
 	speed = 1; speedY = 0; acceleration =1;
 	currDirection = 1; currImage = 0;
 
-	IMAGES_BLANK = ['./img/blank.png'];
+	IMAGES_BLANK = new Anim('./img/blank.png'); imagesLib = [this.IMAGES_BLANK]; imageCache = []; 
 
-	currImageSet=['']; currOffsetSet = null; noRepeat=[];
-	img; cache; imageCache = []; imagesLib = [this.IMAGES_BLANK];
+	currImageSet=['']; noRepeat=[];
+	img; cache; 
 	flipOffset = [0, 0];
 	
 	frameRate=60; gvtyInterval; animInterval; mainInterval;
@@ -17,7 +17,7 @@ class MovableObject{
 	groundOffset = 0; 
 
 	facingRight = true; useGravity = false; 
-	falling = false; bouncing = false; static = false; useGround = true; 
+	falling = false; bouncing = false; static = false; appearing = false; useGround = true;  
 
 	constructor(world){
 		if(world){
@@ -44,6 +44,7 @@ class MovableObject{
 /* SPRITE */
 
 	loadImage(path){
+		// if(!path){ return; }
 		this.img = new Image(); this.img.src = path;
 	}
 
@@ -75,32 +76,27 @@ class MovableObject{
 		this.playAnimation(this.currImageSet);
 	}
 
-	changeAnimation(anim,offs=null){
+	changeAnimation(anim, offs=null){
 		if(this.currImageSet==anim){ return; }
 		this.currImageSet=anim;
 		this.currImage = 0;
-		this.loadImages(anim);	
-		this.currOffsetSet = offs || null;
+		this.loadImages(anim.files);	
 	}
 
 	playAnimation(anim){
-		if(!anim || !this.img){ return; }
-    	let i = this.currImage % anim.length; 
-        let path = anim[i];
-        
+		if(!anim || !anim.files || !this.img){ return; }
+    	let i = this.currImage % anim.files.length; 
+        let path = anim.files[i];
         this.currImage++;
-        this.currOffsetSet && this.applyAnimationOffsets(this.currOffsetSet);
-        
+        this.anim.offsets.length && this.applyAnimationOffsets(anim);
         if(!(path in this.imageCache) || path=="*norepeat") return;
-
         this.img.src = this.imageCache[path];
-
 	}
 
-	applyAnimationOffsets(oset){
-		if(!oset){ return; }
-		let i = this.currImage % this.currImageSet.length;
-		let off = oset[i];
+	applyAnimationOffsets(anim){
+		if(!anim){ return; }
+		let i = this.currImage % anim.offets.length;
+		let off = anim.offsets[i];
 		let fscale = 100/this.width;
 		let foff = off*fscale;
 		if (this.currDirection === 0) this.x += foff;

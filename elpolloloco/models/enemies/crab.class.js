@@ -25,40 +25,15 @@ class Crab extends Enemy{
 
 	hostile = true;
 
-	IMAGES_MOVEA = [
-		'./img/crabA/YELLOW_MOVE_001.png', './img/crabA/YELLOW_MOVE_002.png', './img/crabA/YELLOW_MOVE_003.png',
-		'./img/crabA/YELLOW_MOVE_004.png', './img/crabA/YELLOW_MOVE_005.png', './img/crabA/YELLOW_MOVE_006.png',
-		'./img/crabA/YELLOW_MOVE_007.png', './img/crabA/YELLOW_MOVE_008.png', './img/crabA/YELLOW_MOVE_009.png', 
-		'./img/crabA/YELLOW_MOVE_010.png', './img/crabA/YELLOW_MOVE_011.png', './img/crabA/YELLOW_MOVE_012.png',
-	]; //IMAGES_MOVESA_OFFSETS = [ 0, -2, -5, -5, 4, 0, 1, 2, 5 ];
-
-
-	IMAGES_MOVEB = [
-		'./img/crabB/RED_MOVE_001.png', './img/crabB/RED_MOVE_002.png', './img/crabB/RED_MOVE_003.png',
-		'./img/crabB/RED_MOVE_004.png', './img/crabB/RED_MOVE_005.png', './img/crabB/RED_MOVE_006.png',
-		'./img/crabB/RED_MOVE_007.png', './img/crabB/RED_MOVE_008.png', './img/crabB/RED_MOVE_009.png', 
-		'./img/crabB/RED_MOVE_010.png', './img/crabB/RED_MOVE_011.png', './img/crabB/RED_MOVE_012.png',
-	]; // IMAGES_MOVESB_OFFSETS = [ 0, -2, -4, -6, -4, -2, 0, 2, 4 ];
-
-	IMAGES_DIEA = [
-		// './img/crabA/YELLOW_DIE_001.png', './img/crabA/YELLOW_DIE_002.png', './img/crabA/YELLOW_DIE_003.png',
-		'./img/crabA/YELLOW_DIE_004.png', './img/crabA/YELLOW_DIE_005.png', './img/crabA/YELLOW_DIE_006.png',
-		'./img/crabA/YELLOW_DIE_007.png', './img/crabA/YELLOW_DIE_008.png', './img/crabA/YELLOW_DIE_009.png',
-		'./img/crabA/YELLOW_DIE_010.png', './img/crabA/YELLOW_DIE_011.png', './img/crabA/YELLOW_DIE_012.png', 
-		'*norepeat'
-	];
-
-	IMAGES_DIEB = [
-		// './img/crabB/RED_DIE_001.png', './img/crabB/RED_DIE_002.png', './img/crabB/RED_DIE_003.png',
-		'./img/crabB/RED_DIE_004.png', './img/crabB/RED_DIE_005.png', './img/crabB/RED_DIE_006.png',
-		'./img/crabB/RED_DIE_007.png', './img/crabB/RED_DIE_008.png', './img/crabB/RED_DIE_009.png',
-		'./img/crabB/RED_DIE_010.png', './img/crabB/RED_DIE_011.png', './img/crabB/RED_DIE_012.png',
-		'*norepeat'
-	];
-
+	IMAGES_MOVEA 	= new Anim('./img/crabA/YELLOW_MOVE_001.png',   12, 					 ''				);
+	IMAGES_MOVEB 	= new Anim('./img/crabB/RED_MOVE_001.png',      12,						 ''				);
+	IMAGES_DIEA  	= new Anim('./img/crabA/YELLOW_DIE_004.png',    [4,5,6,7,8,9,10,11,12],  'repeat=0'		);
+	IMAGES_DIEB  	= new Anim('./img/crabB/RED_DIE_004.png',     	 [4,5,6,7,8,9,10,11,12], 'repeat=0' 	);
+	IMAGES_APPEARA  = new Anim('./img/crabA/YELLOW_APPEAR_001.png', [4,5,6,7,8,9,10,11,12],  'repeat=0'		);
 	imagesLib = [
 		this.IMAGES_MOVEA, this.IMAGES_MOVEB,
 		this.IMAGES_DIEA, this.IMAGES_DIEB,
+		this.IMAGES_APPEARA,
 	]
 
 	constructor(variant){
@@ -71,7 +46,7 @@ class Crab extends Enemy{
 		//this.init();
 	}
 
-	stomp;
+	stomp; bounceoninjured = true;
 
 	main(){
 		super.main();
@@ -100,8 +75,8 @@ class Crab extends Enemy{
 	isHit(){
 		super.isHit(); 
 		this.currImage=0; this.invincible = true; this.static = true; this.hostile=false;
+		if(this.health <= 0) clearTimeout(this.reviveTimout);
 		this.world.audio.playSound(['crab_hitA','crab_hitB','crab_hitC']);
-		clearTimeout(this.reviveTimout);
 	}
 
 	moveLeft(){
@@ -116,21 +91,24 @@ class Crab extends Enemy{
 
 	init() {
 		super.init();
-		this.loadImage(this. IMAGES_BLANK);
+		this.loadImage(this.IMAGES_BLANK.files[0]);
 		this.currImageSet = this.IMAGES_IDLE;
 	}
 
 	handleAnimation(){
-		const variantData = {
-		  0: { invincible: this.IMAGES_DIEA, move: this.IMAGES_MOVEA, offsets: this.IMAGES_MOVESA_OFFSETS },
-		  1: { invincible: this.IMAGES_DIEB, move: this.IMAGES_MOVEB, offsets: this.IMAGES_MOVESB_OFFSETS }
-		}[this.variant];
 
-		if (variantData) {
-		  const { move, invincible, offsets } = variantData;
-		  this.changeAnimation((this.invincible || this.dead) || this.hurt ? invincible : move, (this.invincible || this.dead) || this.hurt ? undefined : offsets);
-		} else {
-		  console.log('Variant doesn\'t exist');
+		if(!this.appearing){ 
+			const variantData = {
+			  0: { invincible: this.IMAGES_DIEA, move: this.IMAGES_MOVEA, offsets: this.IMAGES_MOVESA_OFFSETS },
+			  1: { invincible: this.IMAGES_DIEB, move: this.IMAGES_MOVEB, offsets: this.IMAGES_MOVESB_OFFSETS }
+			}[this.variant];
+
+			if (variantData) {
+			  const { move, invincible, offsets } = variantData;
+			  this.changeAnimation((this.invincible || this.dead) || this.hurt ? invincible : move, (this.invincible || this.dead) || this.hurt ? undefined : offsets);
+			} else {
+			  console.log('Variant doesn\'t exist');
+			}
 		}
 
 		this.playAnimation(this.currImageSet);
@@ -140,6 +118,10 @@ class Crab extends Enemy{
 		){
 			this.applyAnimationOffsets(this.currOffsetSet);
 		}	
+
+		if(this.appearing && this.currImage == this.currImageSet.files.length - 1){
+			this.appearing = false; this.static=false;
+		}
 	}
 
 	die(){

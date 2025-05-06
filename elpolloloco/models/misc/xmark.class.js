@@ -6,10 +6,11 @@ class XMark extends Enemy{
 
 	width = 64; height = 24;
 
-	IMAGES_MARK = [
-		'./img/misc/XMARK_DISTORTED_000.png',
-	];
-
+	IMAGES_MARK = new Anim('./img/misc/XMARK_DISTORTED_001.png',1 , '');
+	imagesLib = [
+		this.IMAGES_MARK,
+	]
+	
 	boxes = [[0, 0, this.width, this.height, 'lime', true]];
 
 	buried = true;
@@ -28,8 +29,7 @@ class XMark extends Enemy{
 
 	init() {
 		super.init();
-
-		this.loadImage(this.IMAGES_MARK[0]);
+		this.loadImage(this.IMAGES_MARK.files[0]);
 		this.changeAnimation(this.IMAGES_MARK);
 	}
 

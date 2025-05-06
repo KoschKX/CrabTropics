@@ -3,9 +3,9 @@ class Movie extends Background{
 	name = 'Movie';
 	category = 'background';
 
-	IMAGES_BLANK = ['./img/blank.png'];
+	IMAGES_ANIM = new Anim('./img/blank.png',0,'');
+	imagePath; imageCache = []; imagesLib = [];
 
-	imagePath; imageCache = []; imagesLib = [this.IMAGES_BLANK];
 	currImage = 0; anim = [];
 
 	frames=1; frameRate=30;
@@ -18,6 +18,7 @@ class Movie extends Background{
 		super(imagePath,layer, x, y, width, height);
 		this.frames = frames;
 		this.imagePath = imagePath;
+		/*
 		for(let idx = 0; idx<frames; idx++){
 			let ext = imagePath.split('.').pop();
 			let name = imagePath.split('_').slice(0, -1).join('_');
@@ -28,6 +29,9 @@ class Movie extends Background{
 			this.imageCache[ipath] = ipath;
 
 		}	
+		*/
+		this.IMAGES_ANIM = new Anim(imagePath, frames, '' );
+
 		this.x = x; this.y = y; this.width = width; this.height = height;
 	}
 
@@ -46,8 +50,8 @@ class Movie extends Background{
 
 	playAnimation(){
 		if(!this.img || !this.isPlaying){ return; }
-    	let i = this.currImage % this.anim.length; 
-        let path = this.anim[i];
+    	let i = this.currImage % this.IMAGES_ANIM.files.length; 
+        let path = this.IMAGES_ANIM.files[i];
         this.currImage++;
         if(!(path in this.imageCache)) return;
         this.img.src = this.imageCache[path];

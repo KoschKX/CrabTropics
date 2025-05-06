@@ -9,18 +9,10 @@ class Stomp extends MovableObject{
 
 	scale = 1;
 
-	IMAGES_STOMP = [
-		'./img/stompA/STOMP_001.png', './img/stompA/STOMP_002.png', './img/stompA/STOMP_003.png',
-		'./img/stompA/STOMP_004.png', './img/stompA/STOMP_005.png', './img/stompA/STOMP_006.png',
-		'./img/stompA/STOMP_007.png', './img/stompA/STOMP_008.png', './img/stompA/STOMP_009.png',
-		'./img/stompA/STOMP_010.png', './img/stompA/STOMP_011.png', './img/stompA/STOMP_012.png',
-		'./img/stompA/STOMP_013.png', './img/stompA/STOMP_014.png', './img/stompA/STOMP_015.png',
-		'./img/stompA/STOMP_016.png', './img/stompA/STOMP_017.png', './img/stompA/STOMP_018.png',
-		'./img/stompA/STOMP_019.png', './img/stompA/STOMP_020.png', './img/stompA/STOMP_021.png',
-		'./img/stompA/STOMP_022.png', './img/stompA/STOMP_023.png', './img/stompA/STOMP_024.png',
-		'./img/stompA/STOMP_025.png', './img/stompA/STOMP_026.png', './img/stompA/STOMP_027.png',
-		'./img/stompA/STOMP_028.png',
-	];
+	IMAGES_STOMP = new Anim('./img/stompA/STOMP_001.png', 28 , '' );
+	imagesLib = [
+		this.IMAGES_STOMP
+	]
 	
 	constructor(immediate = false){
 		super();
@@ -36,7 +28,7 @@ class Stomp extends MovableObject{
 
 	init() {
 		super.init();
-		this.loadImage(this.IMAGES_STOMP[0]);
+		this.loadImage(this.IMAGES_STOMP.files[0]);
 		this.changeAnimation(this.IMAGES_STOMP);
 	}
 
@@ -50,11 +42,11 @@ class Stomp extends MovableObject{
 
 	playAnimation(anim){
 		if( !this.world || !anim ){ return; }
-		let i = this.currImage % anim.length;
-        let path = anim[i];
+		let i = this.currImage % anim.files.length;
+        let path = anim.files[i];
         if(!this.imageCache[path]){ return; }
         this.img.src = this.imageCache[path];
-    	if(i < anim.length-1){
+    	if(i < anim.files.length-1){
     		this.currImage++;
 		}else{
         	this.destroy();

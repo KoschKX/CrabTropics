@@ -17,76 +17,12 @@ class Pirate extends Player{
 				[this.width*0.33, this.height*0.85, this.width*0.36, this.height*0.15, 'yellow', true]
 			]
 
-
-	IMAGES_IDLE = [
-		'./img/kit/IDLE_001.png', './img/kit/IDLE_001.png', 
-		'./img/kit/IDLE_002.png', './img/kit/IDLE_002.png', 
-		'./img/kit/IDLE_003.png', './img/kit/IDLE_003.png',
-		'./img/kit/IDLE_004.png', './img/kit/IDLE_004.png',
-		'./img/kit/IDLE_005.png', './img/kit/IDLE_005.png',
-		'./img/kit/IDLE_006.png', './img/kit/IDLE_006.png',
-		'./img/kit/IDLE_007.png', './img/kit/IDLE_007.png',
-		'./img/kit/IDLE_006.png', './img/kit/IDLE_006.png', 
-		'./img/kit/IDLE_005.png', './img/kit/IDLE_005.png', 
-		'./img/kit/IDLE_004.png', './img/kit/IDLE_004.png', 
-		'./img/kit/IDLE_003.png', './img/kit/IDLE_003.png',
-		'./img/kit/IDLE_002.png', './img/kit/IDLE_002.png',
-	];
-
-	IMAGES_WALK = [
-		'./img/kit/RUN_001.png',
-		'./img/kit/RUN_002.png',
-		'./img/kit/RUN_003.png',
-		'./img/kit/RUN_004.png',
-		'./img/kit/RUN_005.png',
-		'./img/kit/RUN_006.png',
-		'./img/kit/RUN_007.png',
-		'./img/kit/RUN_008.png',
-		'./img/kit/RUN_009.png',
-		'./img/kit/RUN_010.png',
-		'./img/kit/RUN_011.png',
-		'./img/kit/RUN_012.png',
-		'./img/kit/RUN_013.png',
-		'./img/kit/RUN_014.png',
-	];
-
-	IMAGES_JUMP = [
-		'./img/kit/JUMP_001.png', './img/kit/JUMP_001.png',
-		'./img/kit/JUMP_002.png', './img/kit/JUMP_002.png',
-		'./img/kit/JUMP_003.png', './img/kit/JUMP_004.png',
-		'./img/kit/JUMP_005.png', './img/kit/JUMP_006.png',
-		'./img/kit/JUMP_007.png',
-		'*norepeat',
-	];
-
-	IMAGES_HURT = [
-		'./img/kit/JUMP_001.png', './img/kit/JUMP_001.png','./img/kit/JUMP_002.png',
-		'./img/kit/JUMP_003.png', './img/kit/JUMP_004.png',
-		//'./img/pirate/HURT_001.png', './img/pirate/HURT_002.png', './img/pirate/HURT_003.png',
-		//'./img/pirate/HURT_004.png',
-		//'./img/pirate/HURT_005.png',
-		//'./img/pirate/HURT_006.png',
-	];
-
-	IMAGES_DIE = [
-		'./img/kit/DIE_001.png', './img/kit/DIE_002.png', './img/kit/DIE_003.png',
-		'./img/kit/DIE_004.png', './img/kit/DIE_005.png', './img/kit/DIE_006.png',
-		'./img/kit/DIE_007.png', './img/kit/DIE_008.png', './img/kit/DIE_009.png',
-		'./img/kit/DIE_010.png', './img/kit/DIE_011.png', './img/kit/DIE_012.png',
-		'./img/kit/DIE_013.png', './img/kit/DIE_014.png', './img/kit/DIE_015.png',
-		'./img/kit/DIE_016.png',
-	];
-
-	IMAGES_DIG = [
-		'./img/kit/DIG_001.png', './img/kit/DIG_003.png',
-		'./img/kit/DIG_004.png', './img/kit/DIG_006.png',
-		'./img/kit/DIG_007.png', './img/kit/DIG_009.png',
-		'./img/kit/DIG_010.png', './img/kit/DIG_012.png',
-		'./img/kit/DIG_013.png', './img/kit/DIG_014.png',
-	];
-
-	noRepeat = ['JUMP'];
-
+	IMAGES_IDLE = new Anim('./img/kit/IDLE_001.png'	, [1,2,3,4,5,6,7,6,5,4,3,2], '' 			);
+	IMAGES_WALK = new Anim('./img/kit/RUN_001.png'	, 14, 						 ''				);
+	IMAGES_JUMP = new Anim('./img/kit/JUMP_001.png'	, 7, 						 'repeat=0' );
+	IMAGES_HURT = new Anim('./img/kit/JUMP_001.png'	, [1,1,2,3,4], 				 '' 			);
+	IMAGES_DIE 	= new Anim('./img/kit/DIE_001.png'	, 16, 						 'repeat=0'	);
+	IMAGES_DIG 	= new Anim('./img/kit/DIG_001.png'	, 14,						 '' 			);
 	imagesLib = [
 		this.IMAGES_IDLE, this.IMAGES_WALK, this.IMAGES_JUMP, 
 		this.IMAGES_HURT, this.IMAGES_DIE, this.IMAGES_DIG,
@@ -100,9 +36,8 @@ class Pirate extends Player{
 
 	init() {
 		super.init();
-		this.loadImage('./img/kit/IDLE_001.png');
-		this.currImageSet = this.IMAGES_IDLE;
-		this.loadImages(this.currImageSet);
+		this.loadImage(this.IMAGES_IDLE.files[0]);
+		this.changeAnimation(this.IMAGES_IDLE);
 	}
 
 	main(){
@@ -128,9 +63,8 @@ class Pirate extends Player{
 		if(this.dead){
 			this.changeAnimation(this.IMAGES_DIE);
 		}else if(this.digging){
-			if(this.currImage == this.currImageSet.length -1 ){
-				this.currXmark.destroy(); this.currXmark.buried=false; this.currXmark = false;
-				this.invincible = false; this.digging = false; this.static=false;
+			if(this.currImage == this.currImageSet.files.length - 1 ){
+				this.xMarkRemove(this.currXmark);
 			}
 			this.changeAnimation(this.IMAGES_DIG);
 		}else if(this.hurt && !this.invincible){
@@ -156,10 +90,19 @@ class Pirate extends Player{
 		this.currXmark=xmark;
 		
 		let hole = new ShovelHole(true);
-	  	hole.x = xmark.x; hole.y = xmark.y;
+	  	hole.x = xmark.x; hole.y = xmark.y - 6;
 	  	hole.world = this.world;
 	  	this.world.level.projectiles.push(hole);
 	  	this.world.audio.playSound('shovel_digA', 0.5);
+	}
+
+	xMarkRemove(xmark){
+		if(!xmark){ return; }
+		xmark.buried=false; xmark.destroy(); 
+		if(xmark == this.currXmark){ 
+			this.currXmark = false;
+			this.invincible = false; this.digging = false; this.static=false;
+		}
 	}
 
 	xMarkSpotting() {

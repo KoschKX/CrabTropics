@@ -40,14 +40,15 @@ class Level{
 
 		this.loadedCallback = callback;
 
-		this.cacheImages( concat(this.player.imagesLib) ); 
-	    this.enemies.forEach((enemy) => { this.cacheImages( concat(enemy.imagesLib) ); });
+		this.cacheImageLib( this.player.imagesLib ); 
+	    this.enemies.forEach((enemy) => { this.cacheImageLib( enemy.imagesLib); });
 
-	    this.backgrounds.forEach((background) => { this.cacheImages( concat(background.imagesLib) ); });
+	    this.backgrounds.forEach((background) => { this.cacheImageLib( background.imagesLib); });
 
 	    let self = this;
-	    this.effects.forEach((effect) => { this.cacheImages( concat(effect.imagesLib) ); self.effects=[]; });
-	    this.projectiles.forEach((projectile) => { this.cacheImages( concat(projectile.imagesLib) ); self.projectiles=[]; });
+	    this.effects.forEach((effect) => { this.cacheImageLib( effect.imagesLib ); self.effects=[]; });
+	    this.projectiles.forEach((projectile) => { this.cacheImageLib( projectile.imagesLib ); self.projectiles=[]; });
+
 	}
 
 	init(){
@@ -58,6 +59,7 @@ class Level{
 		this.effects.forEach((effect) => { effect.init(); });
 		this.player.init();
 
+
 		if(this.loadedCallback && typeof this.loadedCallback === 'function') {
 			let self = this;
 			setTimeout(function(){
@@ -66,14 +68,27 @@ class Level{
 		}
 	}
 
+	cacheImageLib(imagesLib) {
+		let libs = concat(imagesLib);
+		let images = [];
+		libs.forEach(lib => { 
+			if(!lib.files || !lib.files.length){ return; }
+			lib.files.forEach(img => { 
+				images.push(img);
+			});
+		});
+		if(images){ this.cacheImages(images); }
+		//this.cacheImages(images);
+		//this.effects.forEach((effect) => { this.cacheAnims( concat(effect.imagesLib) ); self.effects=[]; });
+	}
+
 	cacheImages(images) {
-		if(!images){ return; }
+		if(!images || !images.length){ return; }
+
 		let self = this;
 		let cacheDiv = document.querySelector('#cache');
 		if (cacheDiv) {;
 			images.forEach(function(image) {
-
-				if(image.startsWith('*')){self.loadedAssets += 1; return;}
 
 				let checkCache = document.querySelector('#cache img[src="' + image + '"]');
 				if (!checkCache) {

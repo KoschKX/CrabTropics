@@ -41,6 +41,7 @@ class World{
 			this.world.init();
 			this.world.screen.showControls();
 		}); 
+
 	}
 
 	checkCollisions(){
@@ -59,7 +60,7 @@ class World{
 				this.level.enemies.forEach((enemy) => {
 					let colPC = projectile.isColliding(enemy,0,0);
 					if(colPC){
-						if(projectile instanceof Cannonball && projectile.hostile){
+						if(projectile instanceof Cannonball && projectile.hostile && (!enemy.appearing)){
 							enemy.isHit();
 						}
 					}
@@ -70,7 +71,8 @@ class World{
 				let colB = this.player.isColliding(enemy,1,1);
 				if(colB){
 					if(this.player.falling && colB==1){
-						if(!this.player.dead && enemy.hostile){
+						// if(!this.player.dead && enemy.hostile){
+						 if(!this.player.dead && (enemy.bounceoninjured || enemy.hostile) && (!enemy.appearing)){
 							if(enemy.health>0){ this.player.bounce(17.5, enemy.y-enemy.height); }
 							enemy.isHit();
 						}
@@ -87,7 +89,7 @@ class World{
 	draw() {
 		this.ctx.clearRect(0,0,this.cvs.width,this.cvs.height);
 
-		if(!this.player.img){ this.ctx.restore(); return false; }
+		//if(!this.player.img){ this.ctx.restore(); return false; }
 
 		this.ctx.save(); 
 

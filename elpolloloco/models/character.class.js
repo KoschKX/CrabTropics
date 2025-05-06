@@ -99,28 +99,27 @@ class Character extends MovableObject{
 /* SPRITE */
 
 	playAnimation(anim){
-		if(!anim || !this.img){ return; }
-    	let i = this.currImage % anim.length;
-        let path = anim[i]; 
-
+		if(!anim || !anim.files || !this.img){ return; }
+    	let i = this.currImage % anim.files.length;
+        let path = anim.files[i]; 
         if(this.hurt||this.invincible){
         	if(this.health==0){
-	        	if (i === anim.length - 1) this.hurt = false, this.dead = true;
+	        	if (i === anim.files.length - 1) this.hurt = false, this.dead = true;
 	    	}else{
-	    		if (i < anim.length - 1  ) this.hurt = false;
+	    		if (i < anim.files.length - 1  ) this.hurt = false;
 	    	}
         }
         if(!this.invincible&&this.hurt&&this.willInvincible){
-        	if (i === anim.length - 1) this.setInvincible(1000);
+        	if (i === anim.files.length - 1) this.setInvincible(1000);
         	this.willInvincible = false;
         }
         if(this.dead){
-        	if (i < anim.length - 1) this.currImage++;
+        	if (i < anim.files.length - 1) this.currImage++;
         }else{
         	this.currImage++;
         }
 
-        if(!(path in this.imageCache) || path=="*norepeat") { this.currImage = anim.length - 1; return; } ;
+        if(!(path in this.imageCache) || (!anim.repeat && i == anim.files.length -1) ) { this.currImage=i; return; } ;
 
         this.img.src = this.imageCache[path];
 	}
