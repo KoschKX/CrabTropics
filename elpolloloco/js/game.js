@@ -85,6 +85,18 @@ function init(){
            keyboard.keyUp('Space');
         }, { passive: false });
     });
+    ['touchstart','mousedown'].forEach(eventType => {
+        document.querySelector('#crouch_btn').addEventListener(eventType, (e) => {
+            e.stopPropagation(); e.preventDefault();
+            keyboard.keyDown('ArrowDown');
+        }, { passive: false });
+    });
+    ['touchend','mouseup'].forEach(eventType => {
+        document.querySelector('#crouch_btn').addEventListener(eventType, (e) => {
+            e.stopPropagation(); e.preventDefault();
+           keyboard.keyUp('ArrowDown');
+        }, { passive: false });
+    });
     ['click','mouseup'].forEach(eventType => {
        document.querySelector('body').addEventListener(eventType, (e) => {
             keyboard.keyUp('*');

@@ -111,6 +111,12 @@ canvas{
         opacity: 0;
         pointer-events: none;
         transition: opacity 0.5s;
+
+        
+    }
+    #controls.centered{
+        position: absolute;
+        height: 100%;
     }
     #controls .left,
     #controls .right{
