@@ -31,6 +31,7 @@ class Movie extends Background{
 		}	
 		*/
 		this.IMAGES_ANIM = new Anim(imagePath, frames, '' );
+		this.imagesLib = [ this.IMAGES_ANIM ]; this.cacheAnim(this.IMAGES_ANIM);
 
 		this.x = x; this.y = y; this.width = width; this.height = height;
 	}
@@ -47,6 +48,12 @@ class Movie extends Background{
 		this.isPlaying=false;
 	}
 
+	cacheAnim(anim){
+		anim.files.forEach((path) => {
+			if((path in this.imageCache)) return;
+			this.imageCache[path] = path;
+		});
+	}
 
 	playAnimation(){
 		if(!this.img || !this.isPlaying){ return; }
@@ -54,6 +61,7 @@ class Movie extends Background{
         let path = this.IMAGES_ANIM.files[i];
         this.currImage++;
         if(!(path in this.imageCache)) return;
+        console.log('sdgsdgd');
         this.img.src = this.imageCache[path];
 	}
 
