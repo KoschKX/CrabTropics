@@ -5,6 +5,8 @@ class Character extends MovableObject{
 	dead = false; hurt = false;
 	invincible = false; willInvincible = false; hostile = false; reviving = false; flickering = false;
 	health = 1; starthealth = 1; reviveTimout;
+	doubloons = 0;
+
 	lastHit = 0; lastFlicker = 0; 
 
 	useGravity = true; falling = false; bounding = false;

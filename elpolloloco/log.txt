@@ -204,3 +204,15 @@
 06. May, 2025
 	14:00
 		Created animation class.
+
+	14:15
+		Fixed a bug in the movie class code. 
+
+	14:30
+		Making coin object now in night cafe creator and blender.
+
+	15:00 
+		Writing doubloon class. 
+
+	15:30
+		Updating the scripts to allow for item pickup. Adding some nice sounds too.

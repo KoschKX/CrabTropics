@@ -50,6 +50,14 @@ class Player extends Character{
 		}
 	}
 
+	getItem(item){
+		if(item.name=="Doubloon"){
+			this.doubloons+=1;
+			this.world.audio.playSound('doubloon_getA');
+		}
+		 item.destroy();
+	}
+
 	bounce(spd,point){
 		super.bounce(spd,point);
 		this.world.audio.playSound('jump');

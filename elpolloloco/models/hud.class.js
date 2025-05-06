@@ -52,6 +52,8 @@ class HUD{
             this.ctx.textBaseline = "middle";
 
             statusText += '♥'.repeat(this.world.player.health);
+            statusText += '\n';
+            statusText += '$' + (this.world.player.doubloons);
             
             this.ctx.fillText(statusText, 20, 40);
             this.ctx.strokeText(statusText, 20, 40);

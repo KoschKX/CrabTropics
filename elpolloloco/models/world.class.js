@@ -83,6 +83,12 @@ class World{
 					}
 				}
 			});
+			this.level.items.forEach((item) => {
+				let colIA = this.player.isColliding(item,0,0);
+				if(colIA){
+					this.player.getItem(item);
+				}
+			});
 		}, 1000 / 60);
 	}
 
@@ -109,8 +115,11 @@ class World{
 		this.addObjectsToMap(this.level.effects.filter(effect => effect.name === 'Explosion'));
 		
 		this.addObjectsToMap(this.level.backgrounds.filter(background => background.layer === 2));
+		
 
 		this.addObjectsToMap(this.level.projectiles.filter(projectile => projectile.name === 'XMark'));
+
+		this.addObjectsToMap(this.level.items.filter(item => item.name === 'Doubloon'));
 		
 		this.addObjectsToMap(this.level.enemies.filter(enemy => enemy.dead && enemy.name === 'Crab'));
 		this.addToMap(this.player);

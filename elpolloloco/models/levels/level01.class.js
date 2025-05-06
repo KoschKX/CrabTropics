@@ -18,6 +18,9 @@ const level01 = new Level(
 		new Background('./img/beach/beachA.png', 2, 0 , 0),
 	],
 	[
+		new Doubloon(),
+	],
+	[
 		new Cannonball(),
 		new XMark(),
 	],

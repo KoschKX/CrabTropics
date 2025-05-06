@@ -12,7 +12,7 @@ class ShovelHole extends Enemy{
 		this.IMAGES_OPEN, this.IMAGES_CLOSE,
 	]
 
-	createobj;
+	createobj; objtype;
 
 	constructor(immediate = false){
 		super();
@@ -33,10 +33,29 @@ class ShovelHole extends Enemy{
 		let self = this; setTimeout(function(){
 			self.changeAnimation(self.IMAGES_CLOSE);
 		}, 2000);
+
+		this.objtype = randomInt(0,2);
+    	
 	}
 
 	main(){
 		super.main();
+	}
+
+	createDoubloon(){
+		let self = this; setTimeout(function(){
+			if(self.createobj){ return; }
+			self.createobj = new Doubloon();
+		  	self.createobj.world = self.world;
+		  	self.createobj.init();
+
+		  	self.createobj.x = self.x + (self.width - self.createobj.width) * 0.5; self.createobj.y = self.y - self.height;
+		  	self.createobj.changeAnimation(self.createobj.IMAGES_SPIN);
+		  	//self.createobj.static = true;
+		  	self.world.level.items.push(self.createobj);
+
+		  	self.world.audio.playSound('doubloon_findA', 1.0);
+		 }, 1000);
 	}
 
 	createCrab(){
@@ -67,7 +86,17 @@ class ShovelHole extends Enemy{
         if(!this.imageCache[path]){ return; }
         this.img.src = this.imageCache[path];
         if(i==0){
-        	this.createCrab();
+	    	switch(this.objtype){
+	    		case 0:
+	    			// empty;
+	    			break;
+	    		case 1:
+	    			this.createCrab();
+	    			break;
+	    		case 2:
+	    			this.createDoubloon();
+	    			break;
+	    	}
         }
     	if(i < anim.files.length-1){
     		this.currImage++;
