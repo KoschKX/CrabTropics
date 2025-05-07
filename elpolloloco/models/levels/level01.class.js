@@ -5,6 +5,7 @@ const level01 = new Level(
 		new Crab(1),
 		new Crab(0),
 		new Ship(0),
+		new SeaTurtle(),
 	],
 	[
 		// new Cloud(0, [0,200], [25,50]),
@@ -22,6 +23,7 @@ const level01 = new Level(
 	],
 	[
 		new Cannonball(),
+		new ShovelHole(),
 		new XMark(),
 	],
 	[

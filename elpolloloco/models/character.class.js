@@ -4,7 +4,7 @@ class Character extends MovableObject{
 
 	dead = false; hurt = false;
 	invincible = false; willInvincible = false; hostile = false; reviving = false; flickering = false;
-	health = 1; starthealth = 1; reviveTimout;
+	health = 1; starthealth = 1; reviveTimout; dieTimout;
 	doubloons = 0;
 
 	lastHit = 0; lastFlicker = 0; 
@@ -104,6 +104,7 @@ class Character extends MovableObject{
 		if(!anim || !anim.files || !this.img){ return; }
     	let i = this.currImage % anim.files.length;
         let path = anim.files[i]; 
+
         if(this.hurt||this.invincible){
         	if(this.health==0){
 	        	if (i === anim.files.length - 1) this.hurt = false, this.dead = true;

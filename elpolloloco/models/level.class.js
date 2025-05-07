@@ -10,6 +10,7 @@ class Level{
 	items = [];
 	projectiles = [];
 	effects = [];
+	tmp = [];
 
 	bounds = [0,0,0,0]
 	ground;
@@ -44,7 +45,12 @@ class Level{
 		this.loadedCallback = callback;
 
 		this.cacheImageLib( this.player.imagesLib ); 
-	    this.enemies.forEach((enemy) => { this.cacheImageLib( enemy.imagesLib); });
+
+		let minions = this.enemies.filter(enemy => !enemy.isboss);
+	   		minions.forEach((enemy) => { this.cacheImageLib( enemy.imagesLib); });
+
+	   	let bosses = this.enemies.filter(enemy => enemy.isboss === true);
+			bosses.forEach((boss) => { this.tmp.push(boss); boss.destroy(); });
 
 	    this.backgrounds.forEach((background) => { this.cacheImageLib( background.imagesLib); });
 
@@ -53,6 +59,19 @@ class Level{
 	    this.effects.forEach((effect) => { this.cacheImageLib( effect.imagesLib ); self.effects=[]; });
 	    this.projectiles.forEach((projectile) => { this.cacheImageLib( projectile.imagesLib ); self.projectiles=[]; });
 
+	}
+
+	preloadBoss(callback){
+		if(!this.tmp.length){ return; }
+		console.log('preloading boss');
+		this.tmp.forEach((boss) => { this.cacheImageLib( boss.imagesLib, true); });
+		this.tmp = [];
+		if(callback && typeof callback === 'function') {
+			let self = this;
+			setTimeout(function(){
+				callback();
+			}, 1000);
+		}
 	}
 
 	init(){
@@ -65,14 +84,14 @@ class Level{
 		this.player.init();
 
 		if(this.loadedCallback && typeof this.loadedCallback === 'function') {
-			let self = this;
-			setTimeout(function(){
+			let self = this; setTimeout(function(){
 				self.loadedCallback();
 			}, 1000);
 		}
 	}
 
-	cacheImageLib(imagesLib) {
+
+	cacheImageLib(imagesLib, onDemand=false) {
 		let libs = concat(imagesLib);
 		let images = [];
 		libs.forEach(lib => { 
@@ -81,24 +100,30 @@ class Level{
 				images.push(img);
 			});
 		});
-		if(images){ this.cacheImages(images); }
-		//this.cacheImages(images);
-		//this.effects.forEach((effect) => { this.cacheAnims( concat(effect.imagesLib) ); self.effects=[]; });
+		if(images){ this.cacheImages(images, onDemand); }
 	}
 
-	cacheImages(images) {
+	cacheImages(images, onDemand=false) {
 		if(!images || !images.length){ return; }
-
 		let self = this;
 		let cacheDiv = document.querySelector('#cache');
-		if (cacheDiv) {;
-			images.forEach(function(image) {
+		if (cacheDiv) {
+			
+			let checkBlank = document.querySelector('#cache img[src="' + './img/blank.png' + '"]');
+			if(!checkBlank){
+				let blankImage = new Image(); blankImage.src = './img/blank.png'; cacheDiv.appendChild(blankImage);
+			}
 
+			images.forEach(function(image) {
 				let checkCache = document.querySelector('#cache img[src="' + image + '"]');
+
 				if (!checkCache) {
 					let cachedImage = new Image();
 					cachedImage.src = image;
 					cacheDiv.appendChild(cachedImage);
+
+					if(onDemand){ return; }
+
 					cachedImage.onload = function(){
 						self.loadedAssets += 1;
 						if(self.loadedAssets === self.totalAssets){

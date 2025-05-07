@@ -216,3 +216,16 @@
 
 	15:30
 		Updating the scripts to allow for item pickup. Adding some nice sounds too.
+
+	17:00
+		Started working on Boss animations.
+
+	19:00
+		Sound system doesn't work in safari. Need to refactor.
+
+	22:00
+		Refactored sound, but the crab walking sound keeps repeating even after the crabs are dead.
+
+07. May, 2025
+	12:30
+		The sound bug was because of the revival code. Fixed.

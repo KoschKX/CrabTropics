@@ -36,6 +36,8 @@ class Crab extends Enemy{
 		this.IMAGES_APPEARA,
 	]
 
+	stomp; bounceoninjured = true; walksound;
+
 	constructor(variant){
 		super();
 		this.variant=variant;
@@ -46,7 +48,11 @@ class Crab extends Enemy{
 		//this.init();
 	}
 
-	stomp; bounceoninjured = true;
+	init() {
+		super.init();
+		this.loadImage(this.IMAGES_BLANK.files[0]);
+		this.currImageSet = this.IMAGES_IDLE;
+	}
 
 	main(){
 		super.main();
@@ -57,11 +63,9 @@ class Crab extends Enemy{
 				self.static = false; self.invincible = false;  self.hostile = true;
 			});
 		}
+
 		if(this.dead){
-			let self = this;
-			setTimeout(function(){
-				self.die();
-			}, 1000);
+			let self = this; this.dieTimeout = setTimeout(function(){ self.die(); }, 1000);
 		}
 		if(this.hurt || this.dead){
 			this.boxes = this.boxes_hurt;
@@ -70,6 +74,7 @@ class Crab extends Enemy{
 			this.boxes = this.boxes_fine;
 			this.toggleCollider(0,true);
 		}
+
 	}
 
 	isHit(){
@@ -79,28 +84,29 @@ class Crab extends Enemy{
 		this.world.audio.playSound(['crab_hitA','crab_hitB','crab_hitC']);
 	}
 
-	moveLeft(){
-		super.moveLeft();
-		this.world.audio.playSound('crab_walkA', 0.5, false);
+	moveLeft() {
+	    if (!this.world || this.static || this.dead) { return; }
+	    super.moveLeft();
+		if (!this.walksound || !this.world.audio.isSpecificSoundPlaying('crab_walkA', this.walksound)) {
+		    this.walksound = this.world.audio.playSound('crab_walkA', 0.5, true);
+		}
 	}
 
-	moveRight(){
-		super.moveRight();
-		this.world.audio.playSound('crab_walkA', 0.5, false);
+	moveRight() {
+	    if (!this.world || this.static || this.dead) { return; }
+	    super.moveRight();
+		if (!this.walksound || !this.world.audio.isSpecificSoundPlaying('crab_walkA', this.walksound)) {
+		    this.walksound = this.world.audio.playSound('crab_walkA', 0.5, true);
+		}
 	}
 
-	init() {
-		super.init();
-		this.loadImage(this.IMAGES_BLANK.files[0]);
-		this.currImageSet = this.IMAGES_IDLE;
-	}
+
 
 	handleAnimation(){
-
 		if(!this.appearing){ 
 			const variantData = {
-			  0: { invincible: this.IMAGES_DIEA, move: this.IMAGES_MOVEA, offsets: this.IMAGES_MOVESA_OFFSETS },
-			  1: { invincible: this.IMAGES_DIEB, move: this.IMAGES_MOVEB, offsets: this.IMAGES_MOVESB_OFFSETS }
+			  0: { invincible: this.IMAGES_DIEA, move: this.IMAGES_MOVEA },
+			  1: { invincible: this.IMAGES_DIEB, move: this.IMAGES_MOVEB }
 			}[this.variant];
 
 			if (variantData) {
@@ -124,6 +130,12 @@ class Crab extends Enemy{
 		}
 	}
 
+	destroy(){
+		super.destroy();
+		clearTimeout(this.dieTimeout); clearTimeout(this.reviveTimout);
+	}
+
+
 	die(){
 		if(this.stomp) { return; }
 		this.stomp = new Stomp(true);
@@ -131,7 +143,6 @@ class Crab extends Enemy{
 		this.stomp.x = (this.x + (this.width - this.stomp.width) * 0.5);
 		this.stomp.y = (this.y + (this.height - this.stomp.height) * 0.5) - 20;
 		this.world.level.effects.push(this.stomp);
-
 		this.world.level.enemies = destroy(this, this.world.level.enemies, this.world);
 		this.destroy();
 	}

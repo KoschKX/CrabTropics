@@ -1,4 +1,5 @@
 let canvas;
+let context;
 let world;
 let keyboard;
 let screen;
@@ -15,13 +16,16 @@ document.addEventListener('DOMContentLoaded', function() {
 function init(){
     
     canvas = document.getElementById('canvas');
-
+    context = canvas.getContext('2d');
+    //context.imageSmoothingEnabled = true;
+    //context.imageSmoothingQuality = 'high'; 
+    
     screen = new Screen(canvas); 
     screen.showMenu();
     
     keyboard = new Keyboard();
 
-    audio = new Audiomanager();
+    audio = new AudioManager();
 
     bounds = [0,0,canvas.width,canvas.height];
 

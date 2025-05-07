@@ -1,8 +1,8 @@
 class Enemy extends Character{
 
-	name = 'Enemy';
+	name = 'Enemy'; isboss = false;
 
-	dead = false; dying = false;
+	dead = false; dying = false; 
 
 	variant = 0;
 
@@ -14,7 +14,7 @@ class Enemy extends Character{
 	}
 	main(){ super.main(); }
 
-	handleAnimation(){}
+	handleAnimation(){ super.handleAnimation();}
 
 	handleMovement(){
 		if(!this.world || this.dead){ return; }

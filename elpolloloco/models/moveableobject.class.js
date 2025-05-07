@@ -136,12 +136,12 @@ class MovableObject{
 	}
 
 	moveLeft(){
-		if(!this.world || this.static){ return; }
+		if(!this.world || this.static || this.dead){ return; }
 		if(this.x<this.world.level.bounds[0]-(this.width*0.5)){return;}
 		this.x -= this.speed; this.currDirection = 0;     
 	}
 	moveRight(){
-		if(!this.world || this.static){ return; }
+		if(!this.world || this.static || this.dead){ return; }
 		if(this.x>this.world.level.bounds[2]-(this.width*0.5)){return;}
 		this.x += this.speed; this.currDirection = 1;     
 	}

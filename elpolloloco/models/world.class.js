@@ -3,9 +3,9 @@ class World{
 	cvs; ctx; cam; hud;
 	keyboard; screen; audio; loadicon;
 	gameover = false; 
-	cache = true; debug = false;
+	cache = true; debug = false; bosstest = false;
 
-	level;
+	level; boss;
 
 	constructor(cvs,scr,kbd,aud){
 		this.cvs = cvs;  this.ctx = cvs.getContext('2d');
@@ -40,6 +40,8 @@ class World{
 		this.level.preload(function(){
 			this.world.init();
 			this.world.screen.showControls();
+
+
 		}); 
 
 	}
@@ -115,12 +117,13 @@ class World{
 		this.addObjectsToMap(this.level.effects.filter(effect => effect.name === 'Explosion'));
 		
 		this.addObjectsToMap(this.level.backgrounds.filter(background => background.layer === 2));
-		
 
+		this.addObjectsToMap(this.level.enemies.filter(enemy => enemy.name === 'SeaTurtle'));
+		
 		this.addObjectsToMap(this.level.projectiles.filter(projectile => projectile.name === 'XMark'));
 
 		this.addObjectsToMap(this.level.items.filter(item => item.name === 'Doubloon'));
-		
+
 		this.addObjectsToMap(this.level.enemies.filter(enemy => enemy.dead && enemy.name === 'Crab'));
 		this.addToMap(this.player);
 		this.addObjectsToMap(this.level.enemies.filter(enemy => !enemy.dead && enemy.name === 'Crab'));
@@ -133,6 +136,7 @@ class World{
 
 		this.hud.print();
 		this.checkDebugKey();
+		this.checkBossTestKey();
 
 		self=this;
 		requestAnimationFrame(function(){
@@ -156,6 +160,26 @@ class World{
 	    	mo.drawColliders(this.ctx);
 	    }
 	    this.ctx.restore(); 
+	}
+
+	checkBossTestKey(){
+		if(!this.boss && !this.bosstest && this.keyboard.TAB){
+			let self = this; this.level.preloadBoss(function(){
+				console.log('Boss Loaded');
+
+				self.boss = new SeaTurtle(1);
+			  	self.boss.world = self;
+			  	self.boss.init();
+
+			  	self.boss.changeAnimation(self.boss.IMAGES_WALK);
+			  	self.boss.appearing = false; self.boss.static = true;
+			  	self.level.enemies.push(self.boss);
+
+				self.bosstest = true;
+			});
+
+		}
+		this.bosstest = this.keyboard.TAB;
 	}
 
 	checkDebugKey(){

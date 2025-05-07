@@ -6,10 +6,9 @@ class Explosion extends MovableObject{
 
 	scale = 1;
 
-	IMAGES_EXPLODE = new Anim('./img/explosionA/EXPLODE_001.png'	,9 , '' );
-
+	IMAGES_EXPLODE = new Anim('./img/explosionA/EXPLODE_001.png', 9 , '' );
 	imagesLib = [
-		this.IMAGES_EXPLODE.files,
+		this.IMAGES_EXPLODE,
 	]
 	
 	constructor(immediate = false){
