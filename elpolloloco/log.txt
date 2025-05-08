@@ -251,3 +251,6 @@
 
 	20:00 
 		Added random colors for Crabs. Big crab respawns from the side of the screen.
+
+	21:00
+		Added mute button. Changed menu font.
