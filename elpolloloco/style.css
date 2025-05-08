@@ -116,10 +116,13 @@ canvas{
 
     #menu .button{
         margin-left: 0.5em;
+
     }
     #menu .button .icon{
         display:none;
         font-family: "Symbols";
+        user-select: none;
+        pointer-events: none;
     }
 
     #menu .button .icon.active{
