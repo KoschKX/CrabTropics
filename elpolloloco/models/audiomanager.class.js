@@ -34,13 +34,15 @@ class AudioManager {
         './audio/royalty_free.mp3'
     ];
 
-context = null;
+	context = null;
     gainNode = null;
     sounds = {};
     currSounds = {};
     musicSource = null;
     musicGain = null;
     isReady = false;
+
+    muted = false;
 
     mainInterval; debugInterval;
 
@@ -83,40 +85,40 @@ context = null;
         await Promise.all(promises);
     }
 
-playSound(name, vol = 1.0, overlap = true, loop = false) {
-    if (!this.isReady) return null;
+	playSound(name, vol = 1.0, overlap = true, loop = false) {
+	    if (!this.isReady) return null;
 
-    let label = Array.isArray(name) ? name[Math.floor(Math.random() * name.length)] : name;
-    const soundBuffer = this.sounds[label];
-    if (!soundBuffer) return null;
+	    let label = Array.isArray(name) ? name[Math.floor(Math.random() * name.length)] : name;
+	    const soundBuffer = this.sounds[label];
+	    if (!soundBuffer) return null;
 
-    if (!this.currSounds[label]) this.currSounds[label] = [];
+	    if (!this.currSounds[label]) this.currSounds[label] = [];
 
-    if (!overlap && this.currSounds[label].length > 0) return null;
+	    if (!overlap && this.currSounds[label].length > 0) return null;
 
-    const source = this.context.createBufferSource();
-    source.buffer = soundBuffer;
-    source.loop = loop;
+	    const source = this.context.createBufferSource();
+	    source.buffer = soundBuffer;
+	    source.loop = loop;
 
-    const gain = this.context.createGain();
-    gain.gain.value = vol;
+	    const gain = this.context.createGain();
+	    gain.gain.value = vol;
 
-    source.connect(gain);
-    gain.connect(this.context.destination);
-    source.start();
+	    source.connect(gain);
+	    gain.connect(this.gainNode);
+	    source.start();
 
-    const id = Math.random().toString(36).substr(2, 9);
+	    const id = Math.random().toString(36).substr(2, 9);
 
-    const instance = { id, source };
-    this.currSounds[label].push(instance);
+	    const instance = { id, source };
+	    this.currSounds[label].push(instance);
 
-    source.onended = () => {
-        this.currSounds[label] = this.currSounds[label].filter(s => s.id !== id);
-        if (this.currSounds[label].length === 0) delete this.currSounds[label];
-    };
+	    source.onended = () => {
+	        this.currSounds[label] = this.currSounds[label].filter(s => s.id !== id);
+	        if (this.currSounds[label].length === 0) delete this.currSounds[label];
+	    };
 
-    return id;
-}
+	    return id;
+	}
 
     stopSound(name) {
         const sources = this.currSounds[name];
@@ -158,7 +160,7 @@ playSound(name, vol = 1.0, overlap = true, loop = false) {
         gain.gain.value = vol;
 
         source.connect(gain);
-        gain.connect(this.context.destination);
+        gain.connect(this.gainNode);
         source.start();
 
         this.musicSource = source;
@@ -178,6 +180,23 @@ playSound(name, vol = 1.0, overlap = true, loop = false) {
             this.gainNode.gain.value = vol;
         }
     }
+
+/* EVENTS */
+
+    mute() {
+    	this.muted = true;
+        this.setMasterVolume(0);
+        document.querySelector('#menu #sound_on').classList.remove('active');
+        document.querySelector('#menu #sound_off').classList.add('active');
+    }
+    
+    unmute() {
+    	this.muted = false;
+      	this.setMasterVolume(1);
+        document.querySelector('#menu #sound_on').classList.add('active');
+        document.querySelector('#menu #sound_off').classList.remove('active');
+    }
+
 
 /* DEBUG */
 

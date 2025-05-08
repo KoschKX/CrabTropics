@@ -45,11 +45,20 @@ function init(){
     });
 
     ['click'].forEach(eventType => {
-        document.querySelector('#full_screen').addEventListener(eventType, (e) => {
+        document.querySelector('#screen').addEventListener(eventType, (e) => {
             e.stopPropagation(); e.preventDefault();
             if( document.fullscreenElement){ screen.exitFullscreen(); }else{ screen.enterFullscreen(); }
         }, { passive: false });
     });
+
+    /* SOUND MUTE */
+    ['click'].forEach(eventType => {
+        document.querySelector('#sound').addEventListener(eventType, (e) => {
+            e.stopPropagation(); e.preventDefault();
+            if( audio.muted ){ audio.unmute(); }else{ audio.mute(); }
+        }, { passive: false });
+    });
+
 
     /* MOBILE */
     ['touchstart','mousedown'].forEach(eventType => {

@@ -14,9 +14,13 @@ class Screen{
     enterFullscreen() {
         const elem = document.querySelector('#game');
         if (elem.requestFullscreen) { elem.requestFullscreen(); this.resizeCanvas(); }
+        document.querySelector('#menu #maximize').classList.remove('active');
+        document.querySelector('#menu #minimize').classList.add('active');
     }
     exitFullscreen() {
       	if (document.exitFullscreen) { document.exitFullscreen(); this.resizeCanvas(); } 
+        document.querySelector('#menu #maximize').classList.add('active');
+        document.querySelector('#menu #minimize').classList.remove('active');
     }
 
     resizeCanvas() {
