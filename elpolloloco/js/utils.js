@@ -21,3 +21,41 @@ function concat(arr){
     arr.forEach((a) => { out = out.concat(a); });
     return out;
 }
+
+function getQueryString(prms){
+    const params = new URLSearchParams(window.location.search);
+    return params;
+}
+
+function createNamedClass(className) {
+  return {
+    [className]: class {
+      constructor() {
+        console.log(`Instance of ${className}`);
+      }
+    }
+  }[className];
+}
+
+function hexToRgb(hex) {
+  hex = hex.replace(/^#/, '');
+  if (hex.length === 3) {
+    hex = hex.split('').map(ch => ch + ch).join('');
+  }
+  const bint = parseInt(hex, 16);
+  return {
+    r: (bint >> 16) & 255, g: (bint >> 8) & 255, b: bint & 255
+  };
+}
+
+function colorToHex(color) {
+  const ctx = document.createElement("canvas").getContext("2d"); ctx.fillStyle = color;
+  const computed = ctx.fillStyle;
+  if (computed.startsWith("#")) return computed;
+  const rgb = computed.match(/\d+/g);
+  if (!rgb) return null;
+  const [r, g, b] = rgb;
+  return (
+    "#" + [r, g, b] .map(x => parseInt(x).toString(16).padStart(2, "0")).join("")
+  );
+}

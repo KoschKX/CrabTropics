@@ -23,7 +23,7 @@ class Crab extends Enemy{
 
 	boxes=this.boxes_fine;
 
-	hostile = true;
+	hostile = true; bounceoninjured = true;
 
 	IMAGES_MOVEA 	= new Anim('./img/crabA/YELLOW_MOVE_001.png',   12, 					 ''				);
 	IMAGES_MOVEB 	= new Anim('./img/crabB/RED_MOVE_001.png',      12,						 ''				);
@@ -36,7 +36,7 @@ class Crab extends Enemy{
 		this.IMAGES_APPEARA,
 	]
 
-	stomp; bounceoninjured = true; walksound;
+	stomp; walksound;
 
 	constructor(variant){
 		super();
@@ -88,7 +88,7 @@ class Crab extends Enemy{
 	    if (!this.world || this.static || this.dead) { return; }
 	    super.moveLeft();
 		if (!this.walksound || !this.world.audio.isSpecificSoundPlaying('crab_walkA', this.walksound)) {
-		    this.walksound = this.world.audio.playSound('crab_walkA', 0.5, true);
+		    this.walksound = this.world.audio.playSound('crab_walkA', 0.25, true);
 		}
 	}
 
@@ -96,11 +96,9 @@ class Crab extends Enemy{
 	    if (!this.world || this.static || this.dead) { return; }
 	    super.moveRight();
 		if (!this.walksound || !this.world.audio.isSpecificSoundPlaying('crab_walkA', this.walksound)) {
-		    this.walksound = this.world.audio.playSound('crab_walkA', 0.5, true);
+		    this.walksound = this.world.audio.playSound('crab_walkA', 0.25, true);
 		}
 	}
-
-
 
 	handleAnimation(){
 		if(!this.appearing){ 

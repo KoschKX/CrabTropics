@@ -16,8 +16,7 @@ class Level{
 	ground;
 
 	loadedCallback;
-	totalAssets = 0;
-	loadedAssets = 0;
+	totalAssets = 0; loadedAssets = 0;
 	loaded = false;
 
 	constructor(player, enemies, clouds, backgrounds, items, projectiles, effects, bounds, ground){

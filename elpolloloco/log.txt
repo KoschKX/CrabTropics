@@ -229,3 +229,18 @@
 07. May, 2025
 	12:30
 		The sound bug was because of the revival code. Fixed.
+
+	13:00
+		Starting with boss animations.
+
+	18:00
+		Wave splash animationss.
+
+08. May. 2025
+	12:00
+		Animated collision box code. Making a parser that can grab boxes from png files, so I don't have to enter in each frame manually.
+
+	16:00
+		Working on boss's behavior code.
+
+		

@@ -4,9 +4,13 @@ class Anim{
     files = [];
     offsets = [];
 
+    name = '';
+
 	constructor(startfile,frames,options){
         let ext = startfile.split('.').pop();
         let name = startfile.split('_').slice(0, -1).join('_');
+
+        this.name = name;
 
         // POPULATE FRAMES 
         if(!frames){  

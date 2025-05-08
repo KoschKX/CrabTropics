@@ -40,8 +40,6 @@ class World{
 		this.level.preload(function(){
 			this.world.init();
 			this.world.screen.showControls();
-
-
 		}); 
 
 	}
@@ -115,14 +113,20 @@ class World{
 		this.addObjectsToMap(this.level.enemies.filter(enemy => enemy.name === 'Ship'));
 		this.addObjectsToMap(this.level.projectiles.filter(projectile => !projectile.falling && projectile.name === 'Cannonball'));
 		this.addObjectsToMap(this.level.effects.filter(effect => effect.name === 'Explosion'));
+
+		
 		
 		this.addObjectsToMap(this.level.backgrounds.filter(background => background.layer === 2));
 
-		this.addObjectsToMap(this.level.enemies.filter(enemy => enemy.name === 'SeaTurtle'));
+
 		
 		this.addObjectsToMap(this.level.projectiles.filter(projectile => projectile.name === 'XMark'));
 
 		this.addObjectsToMap(this.level.items.filter(item => item.name === 'Doubloon'));
+
+		this.addObjectsToMap(this.level.enemies.filter(enemy => enemy.name === 'SeaTurtle'));
+
+		
 
 		this.addObjectsToMap(this.level.enemies.filter(enemy => enemy.dead && enemy.name === 'Crab'));
 		this.addToMap(this.player);
@@ -131,6 +135,11 @@ class World{
 		this.addObjectsToMap(this.level.effects.filter(effect => effect.name === 'Stomp'));
 		
 		this.addObjectsToMap(this.level.projectiles.filter(projectile => projectile.falling && projectile.name === 'Cannonball'));
+
+
+		this.addObjectsToMap(this.level.backgrounds.filter(background => background.layer === 3));
+
+		
 
 		this.ctx.restore();
 
@@ -171,7 +180,6 @@ class World{
 			  	self.boss.world = self;
 			  	self.boss.init();
 
-			  	self.boss.changeAnimation(self.boss.IMAGES_WALK);
 			  	self.boss.appearing = false; self.boss.static = true;
 			  	self.level.enemies.push(self.boss);
 

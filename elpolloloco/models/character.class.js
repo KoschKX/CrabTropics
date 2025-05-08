@@ -11,7 +11,8 @@ class Character extends MovableObject{
 
 	useGravity = true; falling = false; bounding = false;
 
-	boxes = []
+	boxes = [];  aboxes = []; aboxesLib = []; 
+	boxcolors = ['red','yellow','lime'];
 
 	constructor() { super(); }
 		   init() { super.init(); this.initCollisionBoxes(); }
@@ -67,7 +68,7 @@ class Character extends MovableObject{
 				let tdir = '';
 				if(dir==1){ tdir = 'top'; } if(dir==2){ tdir = 'right'; }
 				if(dir==3){ tdir = 'bottom'; } if(dir==4){ tdir = 'left'; }
-				console.log('Collision with ['+this.name+':'+idxA+']['+mo.name+':'+idxB+']'+' : '+tdir);
+				//console.log('Collision with ['+this.name+':'+idxA+']['+mo.name+':'+idxB+']'+' : '+tdir);
 			}
 		}
 
@@ -95,7 +96,39 @@ class Character extends MovableObject{
 		ctx.stroke();
 	}
 	drawColliders(ctx){
-		this.boxes.forEach((enemy, idx) => this.drawCollider(ctx, idx, enemy));
+		if(!this.boxes || !this.boxes.length){ return; } 
+		this.boxes.forEach((box, idx) => this.drawCollider(ctx, idx, box));
+	}
+
+	getAnimatedHitBoxes(lib){
+		let tmpboxes=this.aboxesLib; this.aboxesLib = [];
+		let self = this; tmpboxes.forEach((anim, idx) => {
+			let ahb = new AnimatedHitbox(this, anim);
+			self.aboxesLib[anim.name]=ahb;
+		});
+	}
+	animateCollisionBoxes(){
+		this.alib = this.aboxesLib[this.currImageSet.name];
+		this.boxes=[];
+		if(!this.alib) { return; }
+		this.aboxes = this.alib.boxes;
+		for(let ab = 0; ab<this.aboxes.length; ab++){
+			let abox = this.aboxes[ab][parseInt(this.currImage)];
+				abox = this.scaleBox(abox, abox[6], abox[7], this.width, this.height);
+				abox[5]=true;
+			this.boxes.push(abox);
+		}
+	}
+	scaleBox(sbox, fw, fh, tw, th) {
+		if (fw === 0 || fh === 0) return sbox.slice();
+		const scaleX = tw / fw;
+		const scaleY = th / fh;
+		const box = sbox.slice(); 
+		box[0] = box[0] * scaleX;
+		box[1] = box[1] * scaleY;
+		box[2] = box[2] * scaleX;
+		box[3] = box[3] * scaleY;
+		return box;
 	}
 
 /* SPRITE */
@@ -137,6 +170,7 @@ class Character extends MovableObject{
 /* STATUS */
 
 	isHit(makeInvincible){
+		console.log(this.name +  " hit! ");
 		if(this.hurt || this.willInvincible){ return; }
 		this.hurt=true;   this.health--;
 		this.health < 0 ? this.health = 0 : this.lastHit = Date.now();

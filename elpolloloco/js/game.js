@@ -110,5 +110,18 @@ function init(){
     document.querySelector('#controls .button').addEventListener('pointerdown', (e) => {
        // e.preventDefault(); e.stopPropagation();
     });
+
+    runHitBoxGrabber();
 }
 
+function runHitBoxGrabber() {
+  const qs = new URLSearchParams(window.location.search);
+  const cname = qs.get("class");
+  if(!cname){ return; }
+  const inst = eval('new ' + cname + '()');
+  if(inst){
+    inst.imagesLib.forEach((anim) => { 
+        let ahb = new AnimatedHitbox(inst, anim, true);
+    })
+  }
+}
