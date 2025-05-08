@@ -249,3 +249,5 @@
 	18:30 
 		Ran into some bugs with the boss code. Fixed.
 
+	20:00 
+		Added random colors for Crabs. Big crab respawns from the side of the screen.

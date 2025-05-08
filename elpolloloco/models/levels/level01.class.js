@@ -1,9 +1,9 @@
 const level01 = new Level(
 	new Pirate(),
 	[
-		new Crab(0),
-		new Crab(1),
-		new Crab(0),
+		new Crab(randomInt(0,2)),
+		new Crab(randomInt(0,2)),
+		new Crab(3),
 		new Ship(0),
 		new SeaTurtle(),
 	],

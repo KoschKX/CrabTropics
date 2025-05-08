@@ -61,12 +61,24 @@ class ShovelHole extends Enemy{
 	createCrab(){
 		let self = this; setTimeout(function(){
 			if(self.createobj){ return; }
-			self.createobj = new Crab(0);
+			let rndVari = randomInt(0,2);
+			self.createobj = new Crab(rndVari);
 		  	self.createobj.world = self.world;
 		  	self.createobj.init();
 
 		  	self.createobj.x = self.x + (self.width - self.createobj.width) * 0.5; self.createobj.y = self.y;
-		  	self.createobj.changeAnimation(self.createobj.IMAGES_APPEARA);
+		  	switch(rndVari){
+		  		case 0:
+		  			self.createobj.changeAnimation(self.createobj.IMAGES_APPEARA1);
+		  			break;
+		  		case 1:
+		  			self.createobj.changeAnimation(self.createobj.IMAGES_APPEARA2);
+		  			break;
+		  		case 2:
+		  			self.createobj.changeAnimation(self.createobj.IMAGES_APPEARA3);
+		  			break;
+		  	}
+		  	
 		  	self.createobj.appearing = true; self.createobj.static = true;
 		  	self.world.level.enemies.push(self.createobj);
 		 }, 1500);

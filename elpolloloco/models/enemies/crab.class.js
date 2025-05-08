@@ -25,15 +25,22 @@ class Crab extends Enemy{
 
 	hostile = true; bounceoninjured = true;
 
-	IMAGES_MOVEA 	= new Anim('./img/crabA/YELLOW_MOVE_001.png',   12, 					 ''				);
-	IMAGES_MOVEB 	= new Anim('./img/crabB/RED_MOVE_001.png',      12,						 ''				);
-	IMAGES_DIEA  	= new Anim('./img/crabA/YELLOW_DIE_004.png',    [4,5,6,7,8,9,10,11,12],  'repeat=0'		);
-	IMAGES_DIEB  	= new Anim('./img/crabB/RED_DIE_004.png',     	 [4,5,6,7,8,9,10,11,12], 'repeat=0' 	);
-	IMAGES_APPEARA  = new Anim('./img/crabA/YELLOW_APPEAR_001.png', [4,5,6,7,8,9,10,11,12],  'repeat=0'		);
+	IMAGES_MOVEA1 	= new Anim('./img/crabA/YELLOW_MOVE_001.png',    12, 					 ''				);
+	IMAGES_MOVEA2 	= new Anim('./img/crabA/BLUE_MOVE_001.png',   	 12, 					 ''				);
+	IMAGES_MOVEA3 	= new Anim('./img/crabA/RED_MOVE_001.png',   	 12, 					 ''				);
+	IMAGES_MOVEB 	= new Anim('./img/crabB/RED_MOVE_001.png',       12,						 ''			);
+	IMAGES_DIEA1 	= new Anim('./img/crabA/YELLOW_DIE_004.png',     [4,5,6,7,8,9,10,11,12],  'repeat=0'	);
+	IMAGES_DIEA2 	= new Anim('./img/crabA/BLUE_DIE_004.png',    	 [4,5,6,7,8,9,10,11,12],  'repeat=0'	);
+	IMAGES_DIEA3 	= new Anim('./img/crabA/RED_DIE_004.png',    	 [4,5,6,7,8,9,10,11,12],  'repeat=0'	);
+	IMAGES_DIEB  	= new Anim('./img/crabB/RED_DIE_004.png',     	 [4,5,6,7,8,9,10,11,12],  'repeat=0' 	);
+	IMAGES_APPEARA1  = new Anim('./img/crabA/YELLOW_APPEAR_001.png', [4,5,6,7,8,9,10,11,12],  'repeat=0'	);
+	IMAGES_APPEARA2  = new Anim('./img/crabA/BLUE_APPEAR_001.png', 	 [4,5,6,7,8,9,10,11,12],  'repeat=0'	);
+	IMAGES_APPEARA3  = new Anim('./img/crabA/RED_APPEAR_001.png', 	 [4,5,6,7,8,9,10,11,12],  'repeat=0'	);
+
 	imagesLib = [
-		this.IMAGES_MOVEA, this.IMAGES_MOVEB,
-		this.IMAGES_DIEA, this.IMAGES_DIEB,
-		this.IMAGES_APPEARA,
+		this.IMAGES_MOVEA1, this.IMAGES_MOVEA2, this.IMAGES_MOVEA3, this.IMAGES_MOVEB,
+		this.IMAGES_DIEA1, this.IMAGES_DIEA2, this.IMAGES_DIEA3, this.IMAGES_DIEB,
+		this.IMAGES_APPEARA1, this.IMAGES_APPEARA2, this.IMAGES_APPEARA3,
 	]
 
 	stomp; walksound;
@@ -44,14 +51,12 @@ class Crab extends Enemy{
 		
 		this.x = 200 + random(0,  500); this.y = 64;  
 		this.speed = random(0.5, 1); this.originalspeed = this.speed;
-
-		//this.init();
 	}
 
 	init() {
 		super.init();
 		this.loadImage(this.IMAGES_BLANK.files[0]);
-		this.currImageSet = this.IMAGES_IDLE;
+		this.currImageSet = this.IMAGES_BLANK;
 	}
 
 	main(){
@@ -103,8 +108,10 @@ class Crab extends Enemy{
 	handleAnimation(){
 		if(!this.appearing){ 
 			const variantData = {
-			  0: { invincible: this.IMAGES_DIEA, move: this.IMAGES_MOVEA },
-			  1: { invincible: this.IMAGES_DIEB, move: this.IMAGES_MOVEB }
+			  0: { invincible: this.IMAGES_DIEA1, move: this.IMAGES_MOVEA1 },
+			  1: { invincible: this.IMAGES_DIEA2, move: this.IMAGES_MOVEA2 },
+			  2: { invincible: this.IMAGES_DIEA3, move: this.IMAGES_MOVEA3 },
+			  3: { invincible: this.IMAGES_DIEB, move: this.IMAGES_MOVEB }
 			}[this.variant];
 
 			if (variantData) {
@@ -118,7 +125,7 @@ class Crab extends Enemy{
 		this.playAnimation(this.currImageSet);
 
 		if (   this.currImageSet == this.IMAGES_MOVEB 
-			|| this.currImageSet == this.IMAGES_MOVEA
+			|| (this.currImageSet == this.IMAGES_MOVEA1 || this.currImageSet == this.IMAGES_MOVEA2 || this.currImageSet == this.IMAGES_MOVEA3)
 		){
 			this.applyAnimationOffsets(this.currOffsetSet);
 		}	

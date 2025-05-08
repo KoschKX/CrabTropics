@@ -43,6 +43,7 @@ class Pirate extends Player{
 	main(){
 		super.main();
 		this.xMarkSpotting();
+		this.replenishBigCrab();
 	}
 
 	cache(){
@@ -94,6 +95,26 @@ class Pirate extends Player{
 	  	hole.world = this.world;
 	  	this.world.level.projectiles.push(hole);
 	  	this.world.audio.playSound('shovel_digA', 0.5);
+	}
+
+	replenishBigCrab(){
+		let crabsB = this.world.level.enemies.filter(enemy => enemy.name === 'Crab' && enemy.variant === 3);
+		if(!crabsB.length){
+			let crabB = new Crab(3); crabB.world = this.world; 
+			this.world.level.enemies.push(crabB);
+			let self = this; setTimeout( function(){
+				crabB.init();
+				let rndDir = randomInt(0,1);
+				if(rndDir==1){
+					crabB.x = self.world.level.bounds[0]-crabB.width;
+					crabB.currDirection = 1;
+				}else{
+					crabB.x = self.world.level.bounds[2]+crabB.width;
+					crabB.currDirection = 0;
+				}
+				console.log('Created new Crab B @ ' + crabB.x);
+			}, randomInt(1,10)*1000 );
+		}
 	}
 
 	xMarkRemove(xmark){
