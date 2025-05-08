@@ -112,7 +112,6 @@ class Pirate extends Player{
 					crabB.x = self.world.level.bounds[2]+crabB.width;
 					crabB.currDirection = 0;
 				}
-				console.log('Created new Crab B @ ' + crabB.x);
 			}, randomInt(1,10)*1000 );
 		}
 	}

@@ -21,15 +21,14 @@ function init(){
     //context.imageSmoothingQuality = 'high'; 
     
     screen = new Screen(canvas); 
+    screen.bounds = [0,0,720,480];
     screen.showMenu();
     
     keyboard = new Keyboard();
-
     audio = new AudioManager();
 
-    bounds = [0,0,canvas.width,canvas.height];
-
     titlescreen = new Titlescreen(canvas, screen, keyboard, audio);
+
 
     window.addEventListener('keydown', (e) => {
         if(e.key=='Tab'){ e.preventDefault(); }

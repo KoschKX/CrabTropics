@@ -12,7 +12,7 @@ class Titlescreen{
 	selected = 0;
 	menuChanged = false;
 
-	
+	bounds = [0,0,0,0]
 
 	constructor(cvs,scr,kbd,aud){
 		this.cvs = cvs;  this.ctx = cvs.getContext('2d');
