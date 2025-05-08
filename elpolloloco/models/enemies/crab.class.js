@@ -18,7 +18,7 @@ class Crab extends Enemy{
 	boxes_hurt = [
 					[this.width*0.25, this.height*0.46, this.width*0.50, this.height*0.48, 'red', true],
 					//[this.width*0.15, this.height*0.25, this.width*0.7, this.height*0.20, 'yellow', true]
-					[this.width*0.37, this.height*0.25, this.width*0.25, this.height*0.20, 'yellow', true]
+					[this.width*0.37, this.height*0.45, this.width*0.25, this.height*0.20, 'yellow', true]
 				 ]
 
 	boxes=this.boxes_fine;
@@ -67,7 +67,7 @@ class Crab extends Enemy{
 		if(this.dead){
 			let self = this; this.dieTimeout = setTimeout(function(){ self.die(); }, 1000);
 		}
-		if(this.hurt || this.dead){
+		if(this.hurt || this.invincible || this.dead){
 			this.boxes = this.boxes_hurt;
 			this.toggleCollider(0,false);
 		}else{

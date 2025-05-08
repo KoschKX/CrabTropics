@@ -45,10 +45,10 @@ class Level{
 
 		this.cacheImageLib( this.player.imagesLib ); 
 
-		let minions = this.enemies.filter(enemy => !enemy.isboss);
+		let minions = this.enemies.filter(enemy => !enemy.isBoss);
 	   		minions.forEach((enemy) => { this.cacheImageLib( enemy.imagesLib); });
 
-	   	let bosses = this.enemies.filter(enemy => enemy.isboss === true);
+	   	let bosses = this.enemies.filter(enemy => enemy.isBoss === true);
 			bosses.forEach((boss) => { this.tmp.push(boss); boss.destroy(); });
 
 	    this.backgrounds.forEach((background) => { this.cacheImageLib( background.imagesLib); });

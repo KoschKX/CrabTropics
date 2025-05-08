@@ -88,6 +88,8 @@ class AnimatedHitbox{
  		if (typeof fcol === 'string' && fcol.includes('#')) { fcol = hexToRgb(fcol); }
  		if(!fcol){return;}
 
+ 		// if(!img){return [0, 0, 0, 0, '\''+col+'\'', false, 0, 0]; }
+
 	    cvs.width = img.width; cvs.height = img.height;
 	    ctx.drawImage(img, 0, 0);
 

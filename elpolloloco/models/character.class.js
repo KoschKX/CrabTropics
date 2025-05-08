@@ -4,7 +4,7 @@ class Character extends MovableObject{
 
 	dead = false; hurt = false;
 	invincible = false; willInvincible = false; hostile = false; reviving = false; flickering = false;
-	health = 1; starthealth = 1; reviveTimout; dieTimout;
+	health = 1; starthealth; reviveTimout; dieTimout;
 	doubloons = 0;
 
 	lastHit = 0; lastFlicker = 0; 
@@ -15,7 +15,7 @@ class Character extends MovableObject{
 	boxcolors = ['red','yellow','lime'];
 
 	constructor() { super(); }
-		   init() { super.init(); this.initCollisionBoxes(); }
+		   init() { super.init(); this.starthealth = this.health; this.initCollisionBoxes(); }
 		   main() { super.main(); }
 
 /* COLLISIONS */
@@ -170,7 +170,6 @@ class Character extends MovableObject{
 /* STATUS */
 
 	isHit(makeInvincible){
-		console.log(this.name +  " hit! ");
 		if(this.hurt || this.willInvincible){ return; }
 		this.hurt=true;   this.health--;
 		this.health < 0 ? this.health = 0 : this.lastHit = Date.now();
@@ -217,7 +216,9 @@ class Character extends MovableObject{
 		clearTimeout(this.reviveTimout);
 		this.reviveTimout = setTimeout(() => {
 			this.dead = false; this.hurt = false; this.reviving=false;
-			this.health = this.starthealth;
+			if(this instanceof Player){
+				this.health = this.starthealth;
+			}
 			clearTimeout(this.reviveTimout);
 			if(callback){ callback();}
 		},delay);

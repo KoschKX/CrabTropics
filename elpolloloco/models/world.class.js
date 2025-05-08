@@ -46,64 +46,76 @@ class World{
 
 	checkCollisions(){
 		setInterval(() => {
-			this.level.projectiles.forEach((projectile) => {
-				let colPA = this.player.isColliding(projectile,0,0);
-				let colPB = this.player.isColliding(projectile,1,0);
-				if(colPA){
+			this.checkCollisionsItem();
+			this.checkCollisionsProjectile();
+			this.checkCollisionsEnemy();
+		}, 1000 / 60);
+	}
+
+	checkCollisionsItem(){
+		this.level.items.forEach((item) => {
+			let colIA = this.player.isColliding(item,0,0);
+			if(colIA){
+				this.player.getItem(item);
+			}
+		});
+	}
+
+	checkCollisionsProjectile(){
+		this.level.projectiles.forEach((projectile) => {
+			let colPA = this.player.isColliding(projectile,0,0);
+			let colPB = this.player.isColliding(projectile,1,0);
+			if(colPA){
+				this.player.isHit(true);
+			}
+			if(colPB){
+				if(projectile instanceof XMark){
+					if(this.keyboard.DOWN) this.player.dig(projectile);
+				}
+			}
+			this.level.enemies.forEach((enemy) => {
+				if(enemy.isBoss){ return; }
+				let colPC = projectile.isColliding(enemy,0,0);
+				if(colPC){
+					if(projectile instanceof Cannonball && projectile.hostile && (!enemy.appearing)){
+						enemy.isHit();
+					}
+				}
+			});
+		});
+	}
+
+	checkCollisionsEnemy(){
+		this.level.enemies.forEach((enemy) => {
+			let colA = this.player.isColliding(enemy,0,0);
+			let colB = this.player.isColliding(enemy,1,1);
+			if(colB){
+				if(this.player.falling){
+					let bopPoint = enemy.y+enemy.boxes[1][1]-(this.player.boxes[1][1]);
+					if(enemy.isBoss==true && enemy.dead){ 
+						this.player.bounce(17.5, bopPoint); 
+						enemy.isHit();
+					}else {
+						if(!this.player.dead && (enemy.bounceoninjured || enemy.hostile) && (!enemy.appearing)){
+							if(enemy.health>0){ this.player.bounce(17.5, bopPoint); }
+							enemy.isHit();
+						}
+					}
+				}
+			}else if(colA){
+				if(!((this.player.falling || this.player.bouncing) && colA==1) && enemy.hostile){
 					this.player.isHit(true);
 				}
-				if(colPB){
-					if(projectile instanceof XMark){
-						if(this.keyboard.DOWN) this.player.dig(projectile);
-					}
-				}
-				this.level.enemies.forEach((enemy) => {
-					let colPC = projectile.isColliding(enemy,0,0);
-					if(colPC){
-						if(projectile instanceof Cannonball && projectile.hostile && (!enemy.appearing)){
-							enemy.isHit();
-						}
-					}
-				});
-			});
-			this.level.enemies.forEach((enemy) => {
-				let colA = this.player.isColliding(enemy,0,0);
-				let colB = this.player.isColliding(enemy,1,1);
-				if(colB){
-					if(this.player.falling && colB==1){
-						// if(!this.player.dead && enemy.hostile){
-						 if(!this.player.dead && (enemy.bounceoninjured || enemy.hostile) && (!enemy.appearing)){
-							if(enemy.health>0){ this.player.bounce(17.5, enemy.y-enemy.height); }
-							enemy.isHit();
-						}
-					}
-				}else if(colA){
-					if(!((this.player.falling || this.player.bouncing) && colA==1) && enemy.hostile){
-						this.player.isHit(true);
-					}
-				}
-			});
-			this.level.items.forEach((item) => {
-				let colIA = this.player.isColliding(item,0,0);
-				if(colIA){
-					this.player.getItem(item);
-				}
-			});
-		}, 1000 / 60);
+			}
+		});
 	}
 
 	draw() {
 		this.ctx.clearRect(0,0,this.cvs.width,this.cvs.height);
 
-		//if(!this.player.img){ this.ctx.restore(); return false; }
-
 		this.ctx.save(); 
 
-		this.cam.update(
-			[this.player.x, this.player.y], 
-			[this.player.width*0.5, 0],
-			this.level.bounds,
-		);
+		this.updateCamera();
 
 		this.addObjectsToMap(this.level.backgrounds.filter(background => background.layer === 0));
 		this.addObjectsToMap(this.level.clouds);
@@ -114,19 +126,13 @@ class World{
 		this.addObjectsToMap(this.level.projectiles.filter(projectile => !projectile.falling && projectile.name === 'Cannonball'));
 		this.addObjectsToMap(this.level.effects.filter(effect => effect.name === 'Explosion'));
 
-		
-		
 		this.addObjectsToMap(this.level.backgrounds.filter(background => background.layer === 2));
 
-
-		
 		this.addObjectsToMap(this.level.projectiles.filter(projectile => projectile.name === 'XMark'));
-
-		this.addObjectsToMap(this.level.items.filter(item => item.name === 'Doubloon'));
 
 		this.addObjectsToMap(this.level.enemies.filter(enemy => enemy.name === 'SeaTurtle'));
 
-		
+		this.addObjectsToMap(this.level.items.filter(item => item.name === 'Doubloon'));
 
 		this.addObjectsToMap(this.level.enemies.filter(enemy => enemy.dead && enemy.name === 'Crab'));
 		this.addToMap(this.player);
@@ -136,10 +142,7 @@ class World{
 		
 		this.addObjectsToMap(this.level.projectiles.filter(projectile => projectile.falling && projectile.name === 'Cannonball'));
 
-
 		this.addObjectsToMap(this.level.backgrounds.filter(background => background.layer === 3));
-
-		
 
 		this.ctx.restore();
 
@@ -151,6 +154,14 @@ class World{
 		requestAnimationFrame(function(){
 			self.draw();
 		});
+	}
+
+	updateCamera(){
+		this.cam.update(
+			[this.player.x, this.player.y], 
+			[this.player.width*0.5, 0],
+			this.level.bounds,
+		);
 	}
 
 	addObjectsToMap(objects){
@@ -174,6 +185,7 @@ class World{
 	checkBossTestKey(){
 		if(!this.boss && !this.bosstest && this.keyboard.TAB){
 			let self = this; this.level.preloadBoss(function(){
+				
 				console.log('Boss Loaded');
 
 				self.boss = new SeaTurtle(1);
@@ -187,7 +199,7 @@ class World{
 			});
 
 		}
-		this.bosstest = this.keyboard.TAB;
+		//this.bosstest = this.keyboard.TAB;
 	}
 
 	checkDebugKey(){

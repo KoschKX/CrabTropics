@@ -243,4 +243,9 @@
 	16:00
 		Working on boss's behavior code.
 
-		
+	17:00 
+		Made Turtle's head boppable.
+
+	18:30 
+		Ran into some bugs with the boss code. Fixed.
+

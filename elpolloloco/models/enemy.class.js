@@ -1,6 +1,6 @@
 class Enemy extends Character{
 
-	name = 'Enemy'; isboss = false;
+	name = 'Enemy'; isBoss = false;
 
 	dead = false; dying = false; 
 

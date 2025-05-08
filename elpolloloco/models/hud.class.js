@@ -8,55 +8,66 @@ class HUD{
 		this.ctx = world.ctx;
 	}
 
-    print(world){
+    continue(){
         let statusText = '';
-        if(this.world.player.dead){
-            let wpct = this.cvs.width * 0.1;
-            this.ctx.font = "bold "+wpct+"px Arial";
-            this.ctx.fillStyle = "white";   
-            this.ctx.strokeStyle = "black";  
-            this.ctx.lineWidth = 2;     
+        let wpct = this.cvs.width * 0.1;
+        this.ctx.font = "bold "+wpct+"px Arial";
+        this.ctx.fillStyle = "white";   
+        this.ctx.strokeStyle = "black";  
+        this.ctx.lineWidth = 2;     
 
-            this.ctx.textAlign = "center"; 
-            this.ctx.textBaseline = "middle";
+        this.ctx.textAlign = "center"; 
+        this.ctx.textBaseline = "middle";
 
-            let cTime =(this.world.player.deadTime(true));
-            if(cTime==0){ this.world.keyboard.setBlocked(true); }
-            if(cTime<=10){
-                this.world.keyboard.setBlocked(false);
-                statusText='CONTINUE? '+(10-cTime);
+        let cTime =(this.world.player.deadTime(true));
+        if(cTime==0){ this.world.keyboard.setBlocked(true); }
+        if(cTime<=10){
+            this.world.keyboard.setBlocked(false);
+            statusText='CONTINUE? '+(10-cTime);
 
-                if(this.world.keyboard.SPACE){
-                    this.world.level.enemies.forEach((enemy) => {
+            if(this.world.keyboard.SPACE){
+                this.world.level.enemies.forEach((enemy) => {
+                    if(!enemy.isBoss){
                         enemy.health=1;
-                        enemy.isHit();
-                        enemy.revive(3000);
-                    });
-                    this.world.player.setInvincible(1000);
-                    this.world.player.revive();
-                }
+                    }
+                    enemy.isHit();
+                    enemy.revive(3000);
+                });
+                this.world.player.setInvincible(1000);
+                this.world.player.revive();
             }
-            if(cTime>10){
-                this.world.gameover=true;
-                statusText='GAME OVER';
-            }
-            this.ctx.fillText(statusText, this.cvs.width * 0.5, this.cvs.height * 0.5);
-            this.ctx.strokeText(statusText, this.cvs.width * 0.5, this.cvs.height * 0.5);
+        }
+        if(cTime>10){
+            this.world.gameover=true;
+            statusText='GAME OVER';
+        }
+        this.ctx.fillText(statusText, this.cvs.width * 0.5, this.cvs.height * 0.5);
+        this.ctx.strokeText(statusText, this.cvs.width * 0.5, this.cvs.height * 0.5);
+    }
+
+    status(){
+        let statusText = '';
+        this.ctx.font = "30px Arial";
+        this.ctx.fillStyle = "red"; 
+        this.ctx.strokeStyle = "white"; 
+        this.ctx.lineWidth = 1;  
+
+        this.ctx.textAlign = "left"; 
+        this.ctx.textBaseline = "middle";
+
+        statusText += '♥'.repeat(this.world.player.health);
+        statusText += '\n';
+        statusText += '$' + (this.world.player.doubloons);
+        
+        this.ctx.fillText(statusText, 20, 40);
+        this.ctx.strokeText(statusText, 20, 40);
+    }
+
+    print(world){
+        if(this.world.player.dead){
+            this.continue();
         }else{
-            this.ctx.font = "30px Arial";
-            this.ctx.fillStyle = "red"; 
-            this.ctx.strokeStyle = "white"; 
-            this.ctx.lineWidth = 1;  
-
-            this.ctx.textAlign = "left"; 
-            this.ctx.textBaseline = "middle";
-
-            statusText += '♥'.repeat(this.world.player.health);
-            statusText += '\n';
-            statusText += '$' + (this.world.player.doubloons);
-            
-            this.ctx.fillText(statusText, 20, 40);
-            this.ctx.strokeText(statusText, 20, 40);
+            this.status();
         }
         
     }
