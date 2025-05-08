@@ -1,7 +1,7 @@
 class Titlescreen{
 
 	cvs; ctx;
-	keyboard; screen; background;
+	keyboard; screen; background; world;
 
 	drawInterval; tlInterval;
 

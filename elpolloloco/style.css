@@ -22,8 +22,6 @@
   font-style: normal;
 }
 
-
-
 /* LAYOUT */
 
 html,body{
@@ -127,6 +125,17 @@ canvas{
     #menu .button .icon.active{
         display: block;
     }
+
+    #menu #debug,
+    #menu #boss{
+        display: none;
+    }
+
+    body[data-loaded="true"] #menu #debug,
+    body[data-loaded="true"] #menu #boss{
+        display: block;
+    }
+
 
 /* CONTROLS */
 

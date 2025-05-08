@@ -33,10 +33,8 @@ class World{
 
 	load(level){
 		this.level = level;
-
 		this.player = this.level.player;
 	    this.ground = this.level.ground;
-
 		this.level.setWorld(this); 
 		this.level.preload(function(){
 			this.world.init();
@@ -185,25 +183,29 @@ class World{
 
 	checkBossTestKey(){
 		if(!this.boss && !this.bosstest && this.keyboard.TAB){
-			let self = this; this.level.preloadBoss(function(){
-				
-				console.log('Boss Loaded');
-
-				self.boss = new SeaTurtle(1);
-			  	self.boss.world = self;
-			  	self.boss.init();
-
-			  	self.boss.appearing = false; self.boss.static = true;
-			  	self.level.enemies.push(self.boss);
-
-				self.bosstest = true;
-			});
-
+			callBoss();
 		}
-		//this.bosstest = this.keyboard.TAB;
+	}
+
+	callBoss(){
+		let self = this; this.level.preloadBoss(function(){
+			console.log('Boss Loaded');
+			self.boss = new SeaTurtle(1);
+		  	self.boss.world = self;
+		  	self.boss.init();
+
+		  	self.boss.appearing = false; self.boss.static = true;
+		  	self.level.enemies.push(self.boss);
+
+			self.bosstest = true;
+		});
+	}
+
+	toggleDebug(onoff){
+		this.debug = onoff;
 	}
 
 	checkDebugKey(){
-		this.debug = this.keyboard.CAPSLOCK
+		// this.toggleDebug(this.keyboard.CAPSLOCK);
 	}
 }

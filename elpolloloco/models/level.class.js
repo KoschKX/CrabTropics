@@ -1,6 +1,8 @@
 class Level{
 	world;
 
+	name;
+
 	player
 	enemies = [];
 	clouds = [];
@@ -19,7 +21,7 @@ class Level{
 	totalAssets = 0; loadedAssets = 0;
 	loaded = false;
 
-	constructor(player, enemies, clouds, backgrounds, items, projectiles, effects, bounds, ground){
+	constructor(name, player, enemies, clouds, backgrounds, items, projectiles, effects, bounds, ground){
 		this.player = player;
 		this.enemies = enemies;
 		this.clouds = clouds;
@@ -113,6 +115,8 @@ class Level{
 				let blankImage = new Image(); blankImage.src = './img/blank.png'; cacheDiv.appendChild(blankImage);
 			}
 
+			document.querySelector('body').setAttribute('data-level', this.name );
+
 			images.forEach(function(image) {
 				let checkCache = document.querySelector('#cache img[src="' + image + '"]');
 				
@@ -139,6 +143,8 @@ class Level{
 								self.loaded = true;
 								self.init();
 							//}, 100);
+
+							document.querySelector('body').setAttribute('data-loaded', 'true' );
 							
 						}
 						cachedImage.onload = null;

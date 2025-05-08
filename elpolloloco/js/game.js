@@ -29,7 +29,6 @@ function init(){
 
     titlescreen = new Titlescreen(canvas, screen, keyboard, audio);
 
-
     window.addEventListener('keydown', (e) => {
         if(e.key=='Tab'){ e.preventDefault(); }
         keyboard.keyDown(e.keyCode);
@@ -59,6 +58,21 @@ function init(){
         }, { passive: false });
     });
 
+    /* DEBUG */
+    ['click'].forEach(eventType => {
+        document.querySelector('#debug').addEventListener(eventType, (e) => {
+            e.stopPropagation(); e.preventDefault();
+            if( titlescreen.world.debug ){ titlescreen.world.toggleDebug(false); }else{ titlescreen.world.toggleDebug(true); }
+        }, { passive: false });
+    });
+
+    /* BOSS */
+    ['click'].forEach(eventType => {
+        document.querySelector('#boss').addEventListener(eventType, (e) => {
+            e.stopPropagation(); e.preventDefault();
+            if( !titlescreen.world.boss ){ titlescreen.world.callBoss(); }
+        }, { passive: false });
+    });
 
     /* MOBILE */
     ['touchstart','mousedown'].forEach(eventType => {

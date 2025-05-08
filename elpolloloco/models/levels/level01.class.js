@@ -1,4 +1,5 @@
 const level01 = new Level(
+	'Level 01',
 	new Pirate(),
 	[
 		new Crab(randomInt(0,2)),
