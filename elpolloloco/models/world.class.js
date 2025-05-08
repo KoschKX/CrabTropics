@@ -10,7 +10,8 @@ class World{
 	constructor(cvs,scr,kbd,aud){
 		this.cvs = cvs;  this.ctx = cvs.getContext('2d');
     	this.screen = scr; this.keyboard = kbd; this.audio = aud;
-    	this.loadicon = new Loadicon(canvas);
+    	this.loadicon = new LoadIcon(canvas);
+    	this.loadbar = new ProgressBar(canvas);
     	this.cam = new Camera(this);
     	this.hud = new HUD(this);
 	}

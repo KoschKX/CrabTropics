@@ -14,7 +14,7 @@ const level01 = new Level(
 	],
 	[
 		new Background('./img/sky/skyA.jpg', 0, 0 ,0 , 740, 300 ),
-		new Movie('./img/waves/ROLL_001.jpg', 1, cutFrames(157,2), 0, 300, 740, 150, 15),
+		new Movie('./img/waves/ROLL_001.jpg', 1, 157, 0, 300, 740, 150, 30),
 		new Background('./img/trees/palms.png', 2, 0 , 0),
 		new Background('./img/beach/beachA.png', 2, 0 , 0),
 	],

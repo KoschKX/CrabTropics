@@ -1,4 +1,4 @@
-class Loadicon extends icon{
+class LoadIcon extends Icon{
 	
 	imgpath = './img/icons/wheel.png';
 

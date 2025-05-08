@@ -1,4 +1,4 @@
-class icon{
+class Icon{
 	name = 'Icon';
 	category = 'icon';
 

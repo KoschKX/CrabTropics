@@ -80,6 +80,7 @@ class Titlescreen{
 		return img;
 	}
 
+
 	draw(){
 		this.ctx.clearRect(0,0,this.cvs.width,this.cvs.height);
 		// this.addToMap(this.background);

@@ -115,6 +115,7 @@ class Level{
 
 			images.forEach(function(image) {
 				let checkCache = document.querySelector('#cache img[src="' + image + '"]');
+				
 
 				if (!checkCache) {
 					let cachedImage = new Image();
@@ -125,9 +126,20 @@ class Level{
 
 					cachedImage.onload = function(){
 						self.loadedAssets += 1;
+
+						let name = this.src.split('/').pop().split('.').shift();
+
+						document.querySelector('#cache').setAttribute('data-progress',self.loadedAssets / self.totalAssets);
+						document.querySelector('#cache').setAttribute('data-task', name);
+
 						if(self.loadedAssets === self.totalAssets){
-							self.loaded = true;
-							self.init();
+
+							document.querySelector('#cache').setAttribute('data-task', 'Complete');
+							//setTimeout(function(){
+								self.loaded = true;
+								self.init();
+							//}, 100);
+							
 						}
 						cachedImage.onload = null;
 					};

@@ -257,3 +257,6 @@
 
 	21:15
 		Reduced loading time by cutting wave frames.
+
+	22:30
+		Added a progress bar to the loading screen.
