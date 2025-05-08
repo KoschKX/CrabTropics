@@ -59,3 +59,7 @@ function colorToHex(color) {
     "#" + [r, g, b] .map(x => parseInt(x).toString(16).padStart(2, "0")).join("")
   );
 }
+
+function cutFrames(frames,cut){
+    return Array.from({ length: Math.floor((frames - cut) / cut) + 1 }, (_, i) => (i + 1) * cut);
+}

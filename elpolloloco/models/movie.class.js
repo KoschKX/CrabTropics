@@ -14,10 +14,12 @@ class Movie extends Background{
 	
 	isPlaying = false;
 
-	constructor(imagePath, layer, frames,x,y,width, height){
+	constructor(imagePath,layer,frames,x,y,width,height,frameRate=30){
 		super(imagePath,layer, x, y, width, height);
 		this.frames = frames;
 		this.imagePath = imagePath;
+
+		this.frameRate=frameRate;
 
 		this.IMAGES_ANIM = new Anim(imagePath, frames, '' );
 		this.imagesLib = [ this.IMAGES_ANIM ]; this.cacheAnim(this.IMAGES_ANIM);
