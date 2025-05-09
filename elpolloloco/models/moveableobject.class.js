@@ -19,14 +19,8 @@ class MovableObject{
 	facingRight = true; useGravity = false; 
 	falling = false; bouncing = false; static = false; appearing = false; useGround = true;  
 
-	constructor(name,world){
-		if(world){ this.world = world; }
-		this.generateStamp('Object');
-	}
-
-	destroy(){
-		clearInterval(this.gvtyInterval); clearInterval(this.animInterval); clearInterval(this.mainInterval); 
-	}
+	constructor(name,world){ this.world = world; this.generateStamp('Object'); }
+	destroy(){ clearInterval(this.gvtyInterval); clearInterval(this.animInterval); clearInterval(this.mainInterval); }
 
 	init(){
 		if(this.useGravity){
@@ -36,11 +30,11 @@ class MovableObject{
 	    clearInterval(this.mainInterval); this.mainInterval = setInterval(() => { this.main(); }, 1000 / 60 );
 	}
 
-	generateStamp(name){
-		let now = new Date().getTime();
-		let prc = Math.floor(performance.now() * 1000);
-		let rnd = Math.floor(Math.random() * 1000);
-		this.stamp = name+'_'+now+"_"+prc+"_"+rnd;
+	generateStamp(name) {
+	  this.stamp =
+	    Date.now().toString(36) + '_' +
+	    Math.floor(performance.now()).toString(36) + '_' +
+	    Math.random().toString(36).slice(2, 8);
 	}
 
 	main(){}

@@ -17,6 +17,7 @@ class Character extends MovableObject{
 	constructor() { super(); }
 		   init() { super.init(); this.starthealth = this.health; this.initCollisionBoxes(); }
 		   main() { super.main(); }
+		destroy() { super.destroy(); clearTimeout(this.reviveTimout); clearTimeout(this.dieTimout); }
 
 /* COLLISIONS */
 
@@ -50,9 +51,9 @@ class Character extends MovableObject{
 		if(!this.boxes[idxA][5] || !this.boxes[idxB][5] || idxA>this.boxes.length-1 || idxB>mo.boxes.length-1 ){ return; }
 		if((this.dead || this.invincible || !mo.hostile || mo.dead || mo.hurt) && idxA==0){ return; }
 
-		let offset = this.getOffset(); let moffset = mo.getOffset();	
-		let tx = this.x - offset[0]; let ty = this.y - offset[1]; 		
-		let mx = mo.x - moffset[0]; let my = mo.y - moffset[1];		
+		let offset = this.getOffset(); let moffset = mo.getOffset();	//
+		let tx = this.x - offset[0]; let ty = this.y - offset[1]; 		// ACCOUNT FOR OFFSETS 
+		let mx = mo.x - moffset[0]; let my = mo.y - moffset[1];			//
 
 		let dir = 0; 
 		let isColliding = (
@@ -70,7 +71,6 @@ class Character extends MovableObject{
 				if(dir==3){ tdir = 'bottom'; } if(dir==4){ tdir = 'left'; }
 			}
 		}
-
 		return dir;
 	}
 
@@ -96,7 +96,7 @@ class Character extends MovableObject{
 		ctx.rect(this.boxes[idx][0], this.boxes[idx][1],this.boxes[idx][2],this.boxes[idx][3]);
 		ctx.stroke();
 	}
-	
+
 	drawColliders(ctx){
 		if(!this.boxes || !this.boxes.length){ return; } 
 		this.boxes.forEach((box, idx) => this.drawCollider(ctx, idx, box));

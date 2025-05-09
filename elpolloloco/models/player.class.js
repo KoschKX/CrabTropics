@@ -4,12 +4,7 @@ class Player extends Character{
 
 	health = 3; starthealth = 3;
 
-	box = [
-		this.width,
-		this.height,
-		this.width,
-		this.height
-	];
+	box = [ this.width, this.height, this.width, this.height ];
 
 	ctrlInterval;
 
@@ -18,6 +13,15 @@ class Player extends Character{
 		clearInterval(this.ctrlInterval); this.ctrlInterval = setInterval(() => { this.handleControls(); }, 1000 / 60 );
 	}
 	main() { super.main(); }
+
+	destroy(){
+		super.destroy();
+		clearInterval(this.ctrlInterval); 
+	}
+
+	reset(){
+		clearInterval(this.ctrlInterval); 
+	}
 
 	handleControls(){
 		if(!this.world || ! this.world.keyboard){ return; }

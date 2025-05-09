@@ -57,15 +57,14 @@ class Titlescreen{
 	selfDestruct(){ 
 		clearInterval(this.drawInterval); clearInterval(this.ctlInterval); 
 		this.ctx.clearRect(0,0,this.cvs.width,this.cvs.height);
-		this.audio.playSound('ocean',1.0, false, true);
-		this.audio.playSound('royalty_free',0.4, false, true);
+//		this.audio.playSound('ocean', 1.0, false, true);
+//		this.audio.playSound('royalty_free', 0.4, false, true);
 		this.screen.hideControls();
 		this.video.remove();
 	}
 
 	start(){
-    	this.world = new World(this.cvs,this.screen,this.keyboard,this.audio);
-    	//this.bounds = level01.bounds;
+    	this.world = new World(this.cvs, this.screen, this.keyboard, this.audio);
     	this.world.load(level01);
     	this.screen.setWorld(this.world);
     	this.screen.resizeCanvas(this.world);

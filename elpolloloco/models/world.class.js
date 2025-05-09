@@ -21,13 +21,17 @@ class World{
 	destroy(){
 		clearInterval(this.clsnInterval);
 		cancelAnimationFrame(this.drawFramesId);
-		this.level.unload();
 	}
 
 	restart(){
-		this.destroy();
+		this.gameover = false; 
+		this.debug = false; this.bosstest = false;
+		this.audio.reset();
 		this.level.reset();
+		this.destroy();
 		this.init();
+		this.player = this.level.player;
+		this.player.revive(0);
 	}
 
 	init(){
@@ -38,6 +42,9 @@ class World{
 		    	this.player.img.onload = () => { this.draw(); this.player.img.onload = null; };
 			}
 	    };
+	    this.audio.playSound(this.level.ambient[0], 1.0, false, true);
+		this.audio.playSound(this.level.music[0], 0.4, false, true);
+		
 	    this.main();
 	}
 
@@ -55,6 +62,8 @@ class World{
 		this.level.preload(function(){
 			this.world.init();
 			this.world.screen.showControls();
+
+
 		}); 
 
 	}

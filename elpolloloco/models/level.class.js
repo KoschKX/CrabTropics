@@ -6,12 +6,11 @@ class Level{
 	player
 	enemies = [];
 	clouds = [];
-	backgroundA;
-	backgroundB;
-	backgroundC;
 	items = [];
 	projectiles = [];
 	effects = [];
+	ambient = [];
+	music = [];
 	tmp = [];
 
 	bounds = [0,0,0,0]
@@ -23,21 +22,26 @@ class Level{
 
 	levelmap;
 
+	cacheDiv;
+
 	constructor(levelmap){
+		this.cacheDiv = document.querySelector('#cache');
 		this.buildMap(levelmap);
 	}
 
 	buildMap(levelmap, reset=false){
-		this.levelmap = levelmap;
-		this.name = this.parseObj(levelmap.name);
+		this.levelmap 	 = levelmap;
+		this.name 		 = this.parseObj(levelmap.name);
 		this.backgrounds = this.parseObj(levelmap.backgrounds);
-		this.player = this.parseObj(levelmap.players)[0];
-		this.enemies = this.parseObj(levelmap.enemies);
-		this.clouds = this.parseObj(levelmap.clouds);
-		this.bounds = this.parseObj(levelmap.bounds);
-		this.ground = 410;
+		this.player  	 = this.parseObj(levelmap.players)[0];
+		this.enemies 	 = this.parseObj(levelmap.enemies);
+		this.clouds  	 = this.parseObj(levelmap.clouds);
+		this.bounds  	 = this.parseObj(levelmap.bounds);
+		this.ambient 	 = this.parseObj(levelmap.ambient);
+		this.music   	 = this.parseObj(levelmap.music);
+		this.ground  	 = this.parseObj(levelmap.ground);
 
-		if(reset){ return;}
+		if(reset){ return; }
 
 		this.projectiles = this.parseObj(levelmap.projectiles);
 		this.effects = this.parseObj(levelmap.effects);
@@ -46,9 +50,7 @@ class Level{
 
 	parseObj(obj){
 		let out;
-		if(Number.isNaN(obj)){
-			out = obj;
-		}else if(typeof obj === 'string') {
+		if(typeof obj === 'string') {
 			out = obj;
 		}else if(Array.isArray(obj)){
 			out = [];
@@ -61,6 +63,8 @@ class Level{
 					out.push(cobj);
 				}
 			}
+		}else if(!Number.isNaN(obj)){
+			out = parseFloat(obj);
 		}
 		return out;
 	}
@@ -96,27 +100,26 @@ class Level{
 	}
 
 	unload(){
-
+		this.player.destroy();
 		this.enemies.forEach((enemy) => { enemy.destroy(); });
 		this.items.forEach((item) => { item.destroy(); });
 		this.projectiles.forEach((projectile) => { projectile.destroy(); });
 		this.backgrounds.forEach((background) => { background.destroy(); });
-
 		this.name='';
-		this.player=[];
+		this.player=null;
 		this.enemies=[];
 		this.clouds=[];
 		this.backgrounds=[];
 		this.items=[];
 		this.effects=[];
 		this.projectiles=[];
+		this.ambient=[];
+		this.music=[];
 		this.bounds=[0,0,0,0];
 		this.ground=0;
 	}
 
 	reset(){
-		//this.loaded = false; this.loadedCallback =null; 
-		//this.totalAssets = 0; this.loadedAssets = 0;
 		this.unload();
 		this.buildMap(this.levelmap, true);
 		this.init(true);
@@ -163,86 +166,90 @@ class Level{
 		if(images){ this.cacheAssets(images, onDemand); }
 	}
 
-	createVideo(obj, path){
+	createVideo(obj, path, addToDOM = false){
 		let vid = document.createElement("video");
-		vid.id = obj.stamp;
+		vid.setAttribute('object-id', obj.stamp);
 		vid.classList.add('bg_video');
 		vid.src = path;
 		vid.preload = 'auto'; vid.autoplay = true; 
 		vid.muted = true; vid.loop = true; 
 		vid.playsInline = true;
+		if(addToDOM){ this.cacheDiv.appendChild(vid); }
 		return vid;
 	}
 
-	createImage(obj, path){
+	createImage(obj, path, addToDOM = false){
 		let img = new Image();
-		img.id = obj.stamp;
+		img.setAttribute('object_id', obj.stamp);
 		img.src = path;
+		if(addToDOM){ this.cacheDiv.appendChild(img); }
 		return img;
 	}
 
-	cacheAssets(images, onDemand=false) {
-		if(!images || !images.length){ return; }
+	sanitizeTaskName(task){
+ 		task = task.replaceAll('_',' ');
+		return task;
+	}
+
+	updateAttributes(progress, task, loaded){
+		let taskname = task.split('/').pop().split('.').shift();
+ 		document.querySelector('#cache').setAttribute('data-progress', progress);
+		document.querySelector('#cache').setAttribute('data-file', task);
+		document.querySelector('#cache').setAttribute('data-task', this.sanitizeTaskName(taskname));
+		if(loaded){ document.querySelector('body').setAttribute('data-loaded', loaded ); }
+	}
+
+	checkCache(path){
+		let ext  = path.split('.').pop(); 
+		let check;
+		if(ext == 'mp4'){
+			check = document.querySelector('#cache video[src="' + path + '"]');
+		}else{
+			check = document.querySelector('#cache img[src="' + path + '"]');
+		}
+		return check;
+	}
+
+	processAsset(image, onDemand){
+		if(!image || !this.cacheDiv){ return; }
 		let self = this;
-		let cacheDiv = document.querySelector('#cache');
-		if (cacheDiv) {
-			
-			let checkBlank = document.querySelector('#cache img[src="' + './img/blank.png' + '"]');
-			if(!checkBlank){
-				let blankImage = new Image(); blankImage.src = './img/blank.png'; cacheDiv.appendChild(blankImage);
+		let checkCache; let cachedImage; let cachedVideo; 
+		let obj  = image[0]; let path = image[1];
+		let ext  = path.split('.').pop(); 
+		const check= this.checkCache(path);
+		if (!check) {
+			if(ext == 'mp4'){
+				cachedVideo = self.createVideo(obj, path, true);
+				self.loadedAssets += 1;
+			}else{
+				cachedImage = self.createImage(obj, path, true);
 			}
-			document.querySelector('body').setAttribute('data-level', this.name );
-
-			images.forEach(function(image) {
-				let checkCache;
-				let cachedImage; let cachedVideo;
-				let obj  = image[0];
-				let path = image[1];
-				let ext  = path.split('.').pop(); 
-
-				if(ext == 'mp4'){
-					checkCache = document.querySelector('#cache video[src="' + path + '"]');
-				}else{
-					checkCache = document.querySelector('#cache img[src="' + path + '"]');
+			if(!cachedImage || onDemand){ return; }
+			cachedImage.onload = () => {
+				self.loadedAssets++;
+				self.updateAttributes(self.loadedAssets / self.totalAssets, cachedImage.src);
+				if (self.loadedAssets === self.totalAssets) {
+					self.updateAttributes(1.0, 'Complete', true);
+					self.loaded = true;
+					self.init();
 				}
+				cachedImage.onload = null; 
+			};
+			self.totalAssets += 1;
+		}
+	}
 
-				if (!checkCache) {
-					if(ext == 'mp4'){
-						cachedVideo=self.createVideo(obj, path);
-						cacheDiv.appendChild(cachedVideo);
-						self.loadedAssets += 1;
-					}else{
-						cachedImage=self.createImage(obj, path);
-						cacheDiv.appendChild(cachedImage);
-					}
-					
-					if(!cachedImage || onDemand){ return; }
-
-					cachedImage.onload = function(){
-						self.loadedAssets += 1;
-
-						let name = this.src.split('/').pop().split('.').shift();
-
-						document.querySelector('#cache').setAttribute('data-progress',self.loadedAssets / self.totalAssets);
-						document.querySelector('#cache').setAttribute('data-task', name);
-
-						if(self.loadedAssets === self.totalAssets){
-
-							document.querySelector('#cache').setAttribute('data-task', 'Complete');
-							//setTimeout(function(){
-								self.loaded = true; self.init();
-							//}, 100);
-
-							document.querySelector('body').setAttribute('data-loaded', 'true' );
-							
-						}
-						cachedImage.onload = null;
-					};
-					self.totalAssets += 1;
-				}
-				
-			});
-		}	
+	cacheAssets(images, onDemand=false) {
+		if(!images || !images.length || !this.cacheDiv){ return; }
+		let self = this;
+		let checkBlank = document.querySelector('#cache img[src="' + './img/blank.png' + '"]');
+		if(!checkBlank){
+			let blankImage = new Image(); blankImage.src = './img/blank.png'; this.cacheDiv.appendChild(blankImage);
+		}
+		document.querySelector('body').setAttribute('data-level', this.name );
+		images.forEach(function(image) {
+			self.processAsset(image, onDemand);
+		});
 	}
 
 }

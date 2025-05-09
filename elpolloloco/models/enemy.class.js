@@ -1,9 +1,7 @@
 class Enemy extends Character{
 
 	name = 'Enemy'; isBoss = false;
-
 	dead = false; dying = false; 
-
 	variant = 0;
 
 	mvmtInterval;
@@ -12,6 +10,8 @@ class Enemy extends Character{
 		super.init();
 		clearInterval(this.mvmtInterval); this.mvmtInterval = setInterval(() => { this.handleMovement(); }, 1000 / 60 );
 	}
+	destroy(){ super.destroy(); clearInterval(this.mvmtInterval); }
+
 	main(){ super.main(); }
 
 	handleAnimation(){ super.handleAnimation();}

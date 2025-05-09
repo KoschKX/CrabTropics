@@ -24,7 +24,6 @@ class AudioManager {
         './audio/shovel_digA.mp3',
         './audio/doubloon_findA.mp3',
         './audio/doubloon_getA.mp3'
-      
     ];
 
     MUSIC_BANK = [
@@ -46,24 +45,23 @@ class AudioManager {
 
     constructor(callback) {
         this.init(callback);
-        clearInterval(this.mainInterval); 
-        this.mainInterval = setInterval(() => { this.main(); }, 1000 / 60 );
-        clearInterval(this.debugInterval); 
-        this.debugInterval = setInterval(() => { this.debug(); }, 1000 / 30 );
     }
 
     main(){}
 
     debug(){
-        // this.printcurrSounds('crab_walkA');
+       // this.printCurrSounds('jump');
     }
 
     async init(callback) {
+        clearInterval(this.mainInterval); 
+        this.mainInterval = setInterval(() => { this.main(); }, 1000 / 60 );
+        clearInterval(this.debugInterval); 
+        this.debugInterval = setInterval(() => { this.debug(); }, 1000 / 30 );
         if (!this.context) {
             this.context = new (window.AudioContext || window.webkitAudioContext)();
             this.gainNode = this.context.createGain();
             this.gainNode.connect(this.context.destination);
-
             await this.loadSounds();
             this.isReady = true;
             if (callback && typeof callback === 'function') callback();
@@ -79,12 +77,13 @@ class AudioManager {
             const label = path.split('/').pop().split('.')[0];
             this.sounds[label] = audioBuffer;
         });
-
         await Promise.all(promises);
     }
 
 	playSound(name, vol = 1.0, overlap = true, loop = false) {
-	    if (!this.isReady) return null;
+	    if (!this.isReady || !this.context || this.context.state === 'closed') { return null; }
+
+       // if(name=='jump'){ console.trace();}
 
 	    let label = Array.isArray(name) ? name[Math.floor(Math.random() * name.length)] : name;
 	    const soundBuffer = this.sounds[label];
@@ -110,10 +109,13 @@ class AudioManager {
 	    const instance = { id, source };
 	    this.currSounds[label].push(instance);
 
-	    source.onended = () => {
-	        this.currSounds[label] = this.currSounds[label].filter(s => s.id !== id);
-	        if (this.currSounds[label].length === 0) delete this.currSounds[label];
-	    };
+
+        source.onended = () => {
+            if (this.currSounds[label]) {
+                this.currSounds[label] = this.currSounds[label].filter(s => s.id !== id);
+                if (this.currSounds[label].length === 0) delete this.currSounds[label];
+            }
+        };
 
 	    return id;
 	}
@@ -149,18 +151,14 @@ class AudioManager {
             this.musicSource.stop();
             this.musicSource.disconnect();
         }
-
         const source = this.context.createBufferSource();
         source.buffer = musicBuffer;
         source.loop = loop;
-
         const gain = this.context.createGain();
         gain.gain.value = vol;
-
         source.connect(gain);
         gain.connect(this.gainNode);
         source.start();
-
         this.musicSource = source;
         this.musicGain = gain;
     }
@@ -171,6 +169,45 @@ class AudioManager {
             this.musicSource.disconnect();
             this.musicSource = null;
         }
+    }
+
+    stopAllSounds() {
+        for (const label in this.currSounds) {
+            const sources = this.currSounds[label];
+            if (Array.isArray(sources)) {
+                sources.forEach(sound => {
+                    sound.source.stop();
+                    sound.source.disconnect();
+                });
+            }
+        }
+    }
+
+    reset() {
+        this.destroy();
+        if (this.context) { this.context.close(); }
+        this.context = new (window.AudioContext || window.webkitAudioContext)();
+        this.gainNode = this.context.createGain();
+        this.gainNode.connect(this.context.destination); 
+        this.sounds = {};
+        this.loadSounds(); 
+    }
+
+    destroy() {
+        this.stopAllSounds();
+        if (this.musicSource) {
+            this.musicSource.stop();
+            this.musicSource.disconnect();
+            this.musicSource = null;
+        }
+        this.currSounds = {};
+        this.muted = false;
+        this.setMasterVolume(1);
+        if (this.context) {
+            this.context.close(); 
+            this.context = null;
+        }
+        this.sounds = {};
     }
 
     setMasterVolume(vol) {
@@ -198,7 +235,7 @@ class AudioManager {
 
 /* DEBUG */
 
-    printcurrSounds(name) {
+    printCurrSounds(name) {
         const allLabels = Object.keys(this.sounds);
         for (const label of allLabels) {
             if (name && label !== name) continue;

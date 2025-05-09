@@ -3,9 +3,7 @@ class AnimatedHitbox{
 	name = 'AnimatedHitbox';
 
 	cachedImages = []; loadedImages = 0; totalImages = 0; loaded = false; anim;
-
 	boxes = []; boxcolors = [];
-
 	buried = true;
 
 	constructor(obj, anim, generate=false){

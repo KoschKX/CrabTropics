@@ -30,10 +30,8 @@ class Pirate extends Player{
 
 	lastMark = 0; maxMarks = 3; spotting = true;
 
-	constructor(){
-		super();
-		this.generateStamp(this.name);
-	}
+	constructor(){ super(); this.generateStamp(this.name); }
+	destroy(){ super.destroy(); }
 
 	init() {
 		super.init();

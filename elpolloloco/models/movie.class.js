@@ -25,9 +25,11 @@ class Movie extends Background{
 		this.generateStamp(this.name);
 	}
 
+	destroy(){ super.destroy(); clearInterval(this.animInterval); }
+
 	init(){
 		let ext  = this.imagePath.split('.').pop(); 
-		if(ext == 'mp4'){ this.vid = document.querySelector('#'+this.stamp); }
+		this.vid = document.querySelector('#cache [src="' + this.imagePath + '"]');
 		clearInterval(this.animInterval); this.animInterval = setInterval(() => { this.handleAnimation(); }, 1000 / this.frameRate ); 
 		this.play();
 	}
