@@ -17,6 +17,7 @@ function destroy(object, arr=[], world){
 }
 
 function concat(arr){
+    if(!arr || !arr.length){ return []; }
     let out=[];
     arr.forEach((a) => { out = out.concat(a); });
     return out;

@@ -5,7 +5,9 @@ class World{
 	gameover = false; 
 	cache = true; debug = false; bosstest = false;
 
-	level; boss;
+	level; levelmap; boss;
+
+	clsnInterval; drawFramesId;
 
 	constructor(cvs,scr,kbd,aud){
 		this.cvs = cvs;  this.ctx = cvs.getContext('2d');
@@ -14,6 +16,18 @@ class World{
     	this.loadbar = new ProgressBar(canvas);
     	this.cam = new Camera(this);
     	this.hud = new HUD(this);
+	}
+
+	destroy(){
+		clearInterval(this.clsnInterval);
+		cancelAnimationFrame(this.drawFramesId);
+		this.level.unload();
+	}
+
+	restart(){
+		this.destroy();
+		this.level.reset();
+		this.init();
 	}
 
 	init(){
@@ -31,8 +45,10 @@ class World{
 		this.checkCollisions();
 	}
 
-	load(level){
-		this.level = level;
+	load(levelmap){
+		let newlevel = new Level(levelmap);
+		this.level = newlevel;
+		this.levelmap = levelmap;
 		this.player = this.level.player;
 	    this.ground = this.level.ground;
 		this.level.setWorld(this); 
@@ -44,7 +60,7 @@ class World{
 	}
 
 	checkCollisions(){
-		setInterval(() => {
+		this.clsnInterval = setInterval(() => {
 			this.checkCollisionsItem();
 			this.checkCollisionsProjectile();
 			this.checkCollisionsEnemy();
@@ -150,7 +166,7 @@ class World{
 		this.checkBossTestKey();
 
 		self=this;
-		requestAnimationFrame(function(){
+		this.drawFramesId = requestAnimationFrame(function(){
 			self.draw();
 		});
 	}
@@ -183,7 +199,7 @@ class World{
 
 	checkBossTestKey(){
 		if(!this.boss && !this.bosstest && this.keyboard.TAB){
-			callBoss();
+			this.callBoss();
 		}
 	}
 
@@ -193,6 +209,8 @@ class World{
 			self.boss = new SeaTurtle(1);
 		  	self.boss.world = self;
 		  	self.boss.init();
+
+		  	self.boss.callBoss();
 
 		  	self.boss.appearing = false; self.boss.static = true;
 		  	self.level.enemies.push(self.boss);

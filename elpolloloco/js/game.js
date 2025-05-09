@@ -50,6 +50,14 @@ function init(){
         }, { passive: false });
     });
 
+    /* RESTART */
+    ['click'].forEach(eventType => {
+        document.querySelector('#restart').addEventListener(eventType, (e) => {
+            e.stopPropagation(); e.preventDefault();
+            if( titlescreen.world ){ titlescreen.world.restart(); }
+        }, { passive: false });
+    });
+
     /* SOUND MUTE */
     ['click'].forEach(eventType => {
         document.querySelector('#sound').addEventListener(eventType, (e) => {

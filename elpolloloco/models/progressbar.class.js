@@ -5,34 +5,42 @@ class ProgressBar{
 
 	cvs; ctx;
 
-	drawInterval;
+	drawFramesId;
 
 	centered = true;
+	activated = false;
 
 	constructor(canvas,x=0,y=0){
 		this.cvs = canvas;
 		this.ctx = canvas.getContext('2d');
 		this.x = x; this.y = y;
 
-		
-
 		this.init();
 	}
 
 	init(){
-		clearInterval(self.drawInterval); self.drawInterval = setInterval(() => { this.draw(); }, 1000 / 60 );
-
+		this.activated = true;
 		this.drawFrames = () => {
 			this.draw();
-			requestAnimationFrame(this.drawFrames);
+			this.drawFramesId = requestAnimationFrame(this.drawFrames);
 		};
 		this.drawFrames();
 	}
 
 	draw(){
+		if(!this.activated){ return; }
 		let progress = document.querySelector('#cache').getAttribute('data-progress');
     	let task = document.querySelector('#cache').getAttribute('data-task')
     	this.loadingBar(progress, task);
+    	if(progress == 1){ this.stop(); }
+	}
+
+	stop() {
+	    if (this.drawFramesId !== null) {
+	        cancelAnimationFrame(this.drawFramesId);
+	        this.drawFramesId = null;
+	        this.activated = false;
+	    }
 	}
 
 	loadingBar(progress, task) {
@@ -84,7 +92,6 @@ class ProgressBar{
 			by + bheight / 2
 		);
 
-
 		// TASK
 		const textY = by + bheight + 20; 
 		ctx.fillStyle = '#fff';
@@ -97,6 +104,6 @@ class ProgressBar{
 			textY
 		);
 
-
 	}
+
 }

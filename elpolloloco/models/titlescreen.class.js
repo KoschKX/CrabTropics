@@ -65,12 +65,16 @@ class Titlescreen{
 
 	start(){
     	this.world = new World(this.cvs,this.screen,this.keyboard,this.audio);
-    	bounds = level01.bounds;
+    	//this.bounds = level01.bounds;
     	this.world.load(level01);
     	this.screen.setWorld(this.world);
     	this.screen.resizeCanvas(this.world);
 	}
 
+	restart(){
+		this.world = null;
+		init();
+	}
 
 	loadImage(path, callback){
 		let img = new Image(); img.src = path;

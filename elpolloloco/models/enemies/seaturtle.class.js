@@ -45,10 +45,11 @@ class SeaTurtle extends Enemy{
 
 	init() {
 		super.init();
-		//this.intro();
-
 		this.getAnimatedHitBoxes();
+	}
 
+	callBoss(){
+		//this.intro();
 		this.activate();
 	}
 

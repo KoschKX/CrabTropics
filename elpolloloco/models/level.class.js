@@ -1,7 +1,7 @@
 class Level{
 	world;
 
-	name;
+	name = '';
 
 	player
 	enemies = [];
@@ -21,19 +21,52 @@ class Level{
 	totalAssets = 0; loadedAssets = 0;
 	loaded = false;
 
-	constructor(name, player, enemies, clouds, backgrounds, items, projectiles, effects, bounds, ground){
-		this.player = player;
-		this.enemies = enemies;
-		this.clouds = clouds;
-		this.backgrounds = backgrounds;
-		this.items = items;
-		this.projectiles = projectiles;
-		this.effects = effects;
-		this.bounds = bounds;
+	levelmap;
+
+	constructor(levelmap){
+		this.buildMap(levelmap);
+	}
+
+	buildMap(levelmap, reset=false){
+		this.levelmap = levelmap;
+		this.name = this.parseObj(levelmap.name);
+		this.backgrounds = this.parseObj(levelmap.backgrounds);
+		this.player = this.parseObj(levelmap.players)[0];
+		this.enemies = this.parseObj(levelmap.enemies);
+		this.clouds = this.parseObj(levelmap.clouds);
+		this.bounds = this.parseObj(levelmap.bounds);
 		this.ground = 410;
+
+		if(reset){ return;}
+
+		this.projectiles = this.parseObj(levelmap.projectiles);
+		this.effects = this.parseObj(levelmap.effects);
+		this.items = this.parseObj(levelmap.items);
+	}
+
+	parseObj(obj){
+		let out;
+		if(Number.isNaN(obj)){
+			out = obj;
+		}else if(typeof obj === 'string') {
+			out = obj;
+		}else if(Array.isArray(obj)){
+			out = [];
+			if(!obj.length){ return out; }
+			for(let o = 0; o<obj.length; o++){
+				let cobj=obj[o];
+				if (typeof cobj === 'string' && cobj.includes('(') && cobj.includes(')')) {
+					out.push( eval('new '+cobj));
+				}else if(!Number.isNaN(cobj)){
+					out.push(cobj);
+				}
+			}
+		}
+		return out;
 	}
 
 	setWorld(world){
+		if(!world){ return; }
 		this.world = world;
 		this.player.world = this.world;
 		this.enemies.forEach((enemy) => { enemy.world = this.world; });
@@ -62,6 +95,33 @@ class Level{
 
 	}
 
+	unload(){
+
+		this.enemies.forEach((enemy) => { enemy.destroy(); });
+		this.items.forEach((item) => { item.destroy(); });
+		this.projectiles.forEach((projectile) => { projectile.destroy(); });
+		this.backgrounds.forEach((background) => { background.destroy(); });
+
+		this.name='';
+		this.player=[];
+		this.enemies=[];
+		this.clouds=[];
+		this.backgrounds=[];
+		this.items=[];
+		this.effects=[];
+		this.projectiles=[];
+		this.bounds=[0,0,0,0];
+		this.ground=0;
+	}
+
+	reset(){
+		//this.loaded = false; this.loadedCallback =null; 
+		//this.totalAssets = 0; this.loadedAssets = 0;
+		this.unload();
+		this.buildMap(this.levelmap, true);
+		this.init(true);
+	}
+
 	preloadBoss(callback){
 		if(!this.tmp.length){ return; }
 		console.log('preloading boss');
@@ -75,22 +135,21 @@ class Level{
 		}
 	}
 
-	init(){
-		if(!this.loaded){ return; }
+	init(force = false){
+		if(!this.loaded && !force){ return; }
+		this.setWorld(this.world);
 		this.enemies.forEach((enemy) => { enemy.init(); });
 		this.backgrounds.forEach((background) => { background.init(); });
 		this.items.forEach((item) => { item.init(); });
 	    this.projectiles.forEach((projectile) => { projectile.init(); });
 		this.effects.forEach((effect) => { effect.init(); });
 		this.player.init();
-
 		if(this.loadedCallback && typeof this.loadedCallback === 'function') {
 			let self = this; setTimeout(function(){
 				self.loadedCallback();
 			}, 1000);
 		}
 	}
-
 
 	cacheImageLib(imagesLib, onDemand=false) {
 		let libs = concat(imagesLib);
@@ -119,7 +178,6 @@ class Level{
 
 			images.forEach(function(image) {
 				let checkCache = document.querySelector('#cache img[src="' + image + '"]');
-				
 
 				if (!checkCache) {
 					let cachedImage = new Image();

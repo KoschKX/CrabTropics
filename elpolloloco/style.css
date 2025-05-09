@@ -36,7 +36,7 @@ body{
     justify-content: center;
     margin: 0;
 
-    /* background: url(./img/ui/background.jpg); */
+    background: url(./img/ui/BG_001.jpg);
     background-repeat: no-repeat;
     background-size: cover;
 }
@@ -83,6 +83,7 @@ canvas{
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
 }
 
 /* MENU */
@@ -121,19 +122,19 @@ canvas{
     #menu .button .icon{
         display:none;
         font-family: "Symbols";
-        user-select: none;
-        pointer-events: none;
     }
 
     #menu .button .icon.active{
         display: block;
     }
 
+    #menu #restart,
     #menu #debug,
     #menu #boss{
         display: none;
     }
 
+    body[data-loaded="true"] #menu #restart,
     body[data-loaded="true"] #menu #debug,
     body[data-loaded="true"] #menu #boss{
         display: block;

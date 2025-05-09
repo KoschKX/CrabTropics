@@ -47,8 +47,13 @@ class Crab extends Enemy{
 
 	constructor(variant){
 		super();
-		this.variant=variant;
-		
+
+		if(Array.isArray(variant) && variant.length >= 2){
+			this.variant = randomInt(variant[0],variant[1]);
+		}else{
+			this.variant = variant;
+		}
+
 		this.x = 200 + random(0,  500); this.y = 64;  
 		this.speed = random(0.5, 1); this.originalspeed = this.speed;
 	}
