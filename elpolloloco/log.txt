@@ -273,3 +273,6 @@
 
 	17:00
 		Refactored canvas drawing, rect and text.
+
+	20:45
+		Fixed some nasty bugs with the instances.
