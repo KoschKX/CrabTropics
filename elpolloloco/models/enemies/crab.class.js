@@ -125,15 +125,12 @@ class Crab extends Enemy{
 			  this.changeAnimation((this.invincible || this.dead) || this.hurt ? invincible : move, (this.invincible || this.dead) || this.hurt ? undefined : offsets);
 			} 
 		}
-
 		this.playAnimation(this.currImageSet);
-
-		if (   this.currImageSet == this.IMAGES_MOVEB 
+		if (    this.currImageSet == this.IMAGES_MOVEB 
 			|| (this.currImageSet == this.IMAGES_MOVEA1 || this.currImageSet == this.IMAGES_MOVEA2 || this.currImageSet == this.IMAGES_MOVEA3)
 		){
 			this.applyAnimationOffsets(this.currOffsetSet);
 		}	
-
 		if(this.appearing && this.currImage == this.currImageSet.files.length - 1){
 			this.appearing = false; this.static=false;
 		}
@@ -144,7 +141,6 @@ class Crab extends Enemy{
 		this.world.level.enemies = destroy(this, this.world.level.enemies, this.world);
 		clearTimeout(this.dieTimeout); clearTimeout(this.reviveTimout);
 	}
-
 
 	die(){
 		if(this.stomp) { return; }

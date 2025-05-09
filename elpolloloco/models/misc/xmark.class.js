@@ -39,6 +39,7 @@ class XMark extends Enemy{
 	}
 
 	moveLeft(){}
+	
 	moveRight(){}
 
 	handleAnimation(){

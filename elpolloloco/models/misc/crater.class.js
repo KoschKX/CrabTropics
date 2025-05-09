@@ -39,6 +39,7 @@ class Crater extends Enemy{
 	}
 
 	moveLeft(){}
+	
 	moveRight(){}
 
 	handleAnimation(){

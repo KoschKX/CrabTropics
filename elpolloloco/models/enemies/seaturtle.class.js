@@ -106,13 +106,13 @@ class SeaTurtle extends Enemy{
 		this.changeAnimation(this.IMAGES_SHELL);
 		this.introPlaying=true;
 	}
+
 	playIntro(){
 		if(!this.introPlaying){ return; }
 		this.scale = Math.min(this.scale + 0.0025, 1.0);
 		this.x = (this.world.cvs.width  - this.width) * 0.5; 
 		this.y = (this.world.cvs.height  - this.height) * (0.62 + (0.066 * this.scale)); 
 		this.width = 320 * this.scale; this.height = 88 * this.scale; 
-
 		if(this.scale>0.9 && !this.splashes){
 			this.splashes  = new Movie('./img/waves/SPLASH_001.png', 3, 30, 0, 0, 740, 544);
 			this.splashes.init();
@@ -147,33 +147,15 @@ class SeaTurtle extends Enemy{
 		}, 2000 ); 	
 	}
 
-	changeState(state){
-		if(state == this.state){ return; }
-		switch(state){
-			case 0:
-				this.idle();
-				break;
-			case 1:
-				this.eat();
-				break;
-			case 2:
-				this.fling();
-				break;
-			case 3:
-				this.slap();
-				break;
-			case 4:
-				this.retreat();
-				break;
-			case 5:
-				this.collapse();
-				break;
-			case 6:
-				this.die();
-				break;
-		}
+	changeState(state) {
+		if (state === this.state) return;
+		const actions = [
+			this.idle, this.eat, this.fling, this.slap, this.retreat, this.collapse, this.die
+		];
+		const action = actions[state];
+		if (action) action.call(this);
 	}
-
+	
 	appear(){
 		if(this.state == 0){ return; }
 		this.state = 0; this.currImage = 0; 
@@ -236,6 +218,7 @@ class SeaTurtle extends Enemy{
 	}
 
 	moveLeft(){}
+
 	moveRight(){}
 
 }

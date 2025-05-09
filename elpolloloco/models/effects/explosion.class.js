@@ -26,9 +26,7 @@ class Explosion extends MovableObject{
 
 	init() {
 		super.init();
-
 		this.speed = random(0.25, 0.5); this.originalspeed = this.speed;
-
 		this.loadImage(this.IMAGES_EXPLODE.files[0]);
 		this.changeAnimation(this.IMAGES_EXPLODE);
 	}

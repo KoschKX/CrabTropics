@@ -50,9 +50,9 @@ class Character extends MovableObject{
 		if(!this.boxes[idxA][5] || !this.boxes[idxB][5] || idxA>this.boxes.length-1 || idxB>mo.boxes.length-1 ){ return; }
 		if((this.dead || this.invincible || !mo.hostile || mo.dead || mo.hurt) && idxA==0){ return; }
 
-		let offset = this.getOffset(); let moffset = mo.getOffset();	//
-		let tx = this.x - offset[0]; let ty = this.y - offset[1]; 		// ACCOUNT FOR SPRITE OFFSETS
-		let mx = mo.x - moffset[0]; let my = mo.y - moffset[1];			//
+		let offset = this.getOffset(); let moffset = mo.getOffset();	
+		let tx = this.x - offset[0]; let ty = this.y - offset[1]; 		
+		let mx = mo.x - moffset[0]; let my = mo.y - moffset[1];		
 
 		let dir = 0; 
 		let isColliding = (
@@ -68,7 +68,6 @@ class Character extends MovableObject{
 				let tdir = '';
 				if(dir==1){ tdir = 'top'; } if(dir==2){ tdir = 'right'; }
 				if(dir==3){ tdir = 'bottom'; } if(dir==4){ tdir = 'left'; }
-				//console.log('Collision with ['+this.name+':'+idxA+']['+mo.name+':'+idxB+']'+' : '+tdir);
 			}
 		}
 
@@ -83,9 +82,11 @@ class Character extends MovableObject{
 	activateColliders(){
 		this.boxes.forEach((box) => { box[5]=true;});
 	}
+
 	deactivateColliders(){
 		this.boxes.forEach((box) => { box[5]=false;});
 	}
+
 	drawCollider(ctx, idx){
 		if(!ctx || !this.boxes || this.boxes.length<idx){ return; }
 		ctx.beginPath();
@@ -95,6 +96,7 @@ class Character extends MovableObject{
 		ctx.rect(this.boxes[idx][0], this.boxes[idx][1],this.boxes[idx][2],this.boxes[idx][3]);
 		ctx.stroke();
 	}
+	
 	drawColliders(ctx){
 		if(!this.boxes || !this.boxes.length){ return; } 
 		this.boxes.forEach((box, idx) => this.drawCollider(ctx, idx, box));
@@ -107,6 +109,7 @@ class Character extends MovableObject{
 			self.aboxesLib[anim.name]=ahb;
 		});
 	}
+
 	animateCollisionBoxes(){
 		this.alib = this.aboxesLib[this.currImageSet.name];
 		this.boxes=[];

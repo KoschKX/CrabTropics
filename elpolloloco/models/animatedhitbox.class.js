@@ -2,16 +2,12 @@ class AnimatedHitbox{
 
 	name = 'AnimatedHitbox';
 
-	anim;
+	cachedImages = []; loadedImages = 0; totalImages = 0; loaded = false; anim;
 
-	boxes = [];
-
-	boxcolors = [];
+	boxes = []; boxcolors = [];
 
 	buried = true;
 
-	cachedImages = []; loadedImages = 0; totalImages = 0; loaded = false;
-	
 	constructor(obj, anim, generate=false){
 		if(!anim.files.length || !obj.boxcolors) { return; }
 		
@@ -88,8 +84,6 @@ class AnimatedHitbox{
  		if (typeof fcol === 'string' && fcol.includes('#')) { fcol = hexToRgb(fcol); }
  		if(!fcol){return;}
 
- 		// if(!img){return [0, 0, 0, 0, '\''+col+'\'', false, 0, 0]; }
-
 	    cvs.width = img.width; cvs.height = img.height;
 	    ctx.drawImage(img, 0, 0);
 
@@ -112,7 +106,6 @@ class AnimatedHitbox{
 	}
 
 	cacheImages(images, callback) {
-
 		if(!images || !images.length){ return; }
 		let self = this;
 		let cacheDiv = document.querySelector('#cache');

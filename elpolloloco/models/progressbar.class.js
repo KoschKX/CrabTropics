@@ -44,65 +44,16 @@ class ProgressBar{
 	}
 
 	loadingBar(progress, task) {
-
 		const ctx = this.ctx;
-
-		if(this.centered){
-			this.x = 50 - this.width / 2; this.y = 50 - this.height / 2;
-		}
-
-		const bx = this.cvs.width * (this.x / 100);
-		const by = this.cvs.height * (this.y / 100);
-		const bwidth = this.cvs.width * (this.width / 100);
-		const bheight = this.cvs.height * (this.height / 100);
-
-		//CLAMP
+		if(this.centered){ this.x = 50 - this.width / 2; this.y = 50 - this.height / 2; }
+		const bx = this.cvs.width * (this.x / 100); const by = this.cvs.height * (this.y / 100);
+		const bw = this.cvs.width * (this.width / 100); const bh = this.cvs.height * (this.height / 100);
 		progress = Math.max(0, Math.min(1, progress));
 
-		// BACKGROUND
-		ctx.fillStyle = 'transparent';
-		ctx.fillRect(bx, by, bwidth, bheight);
-
-		// OUTLINE
-		ctx.strokeStyle = '#ffffff';
-		ctx.lineWidth = 2;
-		ctx.strokeRect(bx, by, bwidth, bheight);
-
-		// BAR
-		ctx.fillStyle = '#ffffff';
-		ctx.fillRect(bx, by, bwidth * progress, bheight);
-
-		// TEXT
-		ctx.fillStyle = '#000';
-		ctx.font = Math.floor(bheight * 0.6)+'px Arial'; 
-		ctx.textAlign = 'center';
-		ctx.textBaseline = 'middle';
-		ctx.fillText(
-			Math.round(progress * 100) + '%',
-			bx + bwidth / 2,
-			by + bheight / 2
-		);
-
-		// TEXT OUTLINE
-		ctx.strokeStyle = '#fff';
-		ctx.lineWidth = 2;
-		ctx.strokeText(
-			Math.round(progress * 100) + '%', 
-			bx + bwidth / 2, 
-			by + bheight / 2
-		);
-
-		// TASK
-		const textY = by + bheight + 20; 
-		ctx.fillStyle = '#fff';
-		ctx.font = '16px Arial'; 
-		ctx.textAlign = 'center';
-		ctx.textBaseline = 'middle';
-		ctx.fillText(
-			task || 'Loading...', 
-			bx + bwidth / 2,
-			textY
-		);
+		drawRect( ctx, bx, by, bw, bh, 'transparent','#fff', 2 ); // BACKGROUND
+		drawRect( ctx, bx, by, bw * progress, bh, '#fff'); 		// BAR
+		drawText( ctx, bx + bw / 2, by + bh / 2, bw, bh, Math.round(progress * 100) + '%', '#000', Math.floor(bh * 0.6)+'px Arial', 'center', 'middle', '#fff'); // TEXT
+		drawText( ctx, bx + bw / 2, by + bh + 20, bw, bh, task || 'Loading...', '#fff', Math.floor(bh * 0.2)+'px Arial', 'center', 'middle' ) 					 // TASK
 
 	}
 

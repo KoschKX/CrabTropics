@@ -16,16 +16,12 @@ class Movie extends Background{
 
 	constructor(imagePath,layer,frames,x,y,width,height,frameRate=30){
 		super(imagePath,layer, x, y, width, height);
-
 		this.frames = frames;
 		this.imagePath = imagePath;
 		this.frameRate=frameRate;
-
 		this.IMAGES_ANIM = new Anim(imagePath, frames, '' );
 		this.imagesLib = [ this.IMAGES_ANIM ]; this.cacheAnim(this.IMAGES_ANIM);
-
 		this.x = x; this.y = y; this.width = width; this.height = height;
-
 		this.generateStamp(this.name);
 	}
 
@@ -39,6 +35,7 @@ class Movie extends Background{
 	play(){
 		this.isPlaying=true;
 	}
+	
 	pause(){
 		this.isPlaying=false;
 	}

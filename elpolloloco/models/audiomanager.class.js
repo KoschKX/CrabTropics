@@ -1,6 +1,6 @@
 class AudioManager {
+    
     SOUND_BANK = [
-    	
         './audio/jump.mp3',
         './audio/pirate_hitA.mp3',
         './audio/pirate_hitB.mp3',
@@ -9,9 +9,7 @@ class AudioManager {
         './audio/crab_hitA.mp3',
         './audio/crab_hitB.mp3',
         './audio/crab_hitC.mp3',
-      
         './audio/crab_walkA.mp3',
-       
         './audio/crab_walkB.mp3',
         './audio/cannon_fireA.mp3',
         './audio/cannon_fireB.mp3',

@@ -17,9 +17,7 @@ class Doubloon extends Enemy{
 	
 	constructor(immediate = false){
 		super();
-		if(immediate){
-			this.init();
-		}
+		if(immediate){ this.init(); }
 		this.generateStamp(this.name);
 	}
 	
@@ -39,6 +37,7 @@ class Doubloon extends Enemy{
 	}
 
 	moveLeft(){}
+
 	moveRight(){}
 
 	handleAnimation(){

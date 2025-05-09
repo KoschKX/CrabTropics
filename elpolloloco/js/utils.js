@@ -38,6 +38,30 @@ function createNamedClass(className) {
   }[className];
 }
 
+/* GRAPHICS */
+
+function drawRect(ctx,x,y,w,h,color,ocolor,othick=1){
+    ctx.fillStyle = color;
+    ctx.fillRect(x,y,w,h);
+    if(ocolor){ 
+      ctx.strokeStyle = ocolor; 
+      ctx.lineWidth = othick; 
+      ctx.strokeRect(x,y,w,h);
+    }
+  }
+
+function drawText(ctx,x,y,w,h,text,color,font,align,baseline,ocolor,othick=1){
+    ctx.fillStyle = color;
+    ctx.font = font; 
+    ctx.textAlign = align;
+    ctx.textBaseline = baseline;
+    ctx.fillText( text, x, y);
+    if(ocolor){ 
+      ctx.fillStyle = ocolor;
+      ctx.strokeText( text, x, y);
+    }
+}
+
 function hexToRgb(hex) {
   hex = hex.replace(/^#/, '');
   if (hex.length === 3) {

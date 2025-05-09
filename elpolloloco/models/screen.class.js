@@ -17,6 +17,7 @@ class Screen{
         document.querySelector('#menu #maximize').classList.remove('active');
         document.querySelector('#menu #minimize').classList.add('active');
     }
+
     exitFullscreen() {
       	if (document.exitFullscreen) { document.exitFullscreen(); this.resizeCanvas(); } 
         document.querySelector('#menu #maximize').classList.add('active');
@@ -38,20 +39,18 @@ class Screen{
         if(cvsH>this.bounds[3]){cvsH=this.bounds[3];}
         
         this.cvs.width = cvsW; this.cvs.height = cvsH;
-        
     	document.querySelector(':root').style.setProperty('--app-width', cvsW + 'px');
     	document.querySelector(':root').style.setProperty('--app-height', cvsH +'px');
 
         /* PIXEL SCALE */
 		this.cvs.style.width = cvsW + "px";
 		this.cvs.style.height = cvsH + "px";
-	
-        //if(this.world){this.world.draw();}
     }
 
     hideMenu(){
         document.querySelector('#menu').classList.remove('show');    
     }
+
     showMenu(){
         document.querySelector('#menu').classList.add('show');    
     }
@@ -59,6 +58,7 @@ class Screen{
     hideControls(){
         document.querySelector('#controls').classList.remove('show');    
     }
+
     showControls(){
         document.querySelector('#controls').classList.add('show');    
     }

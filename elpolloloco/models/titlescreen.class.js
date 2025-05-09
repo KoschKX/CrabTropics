@@ -100,60 +100,47 @@ class Titlescreen{
 
 	drawTitle(x,y){
 		let wpct = this.cvs.width * 0.1;
-		this.ctx.font = "bold "+wpct+"px Reggae";
-        this.ctx.fillStyle = "red";   
-        this.ctx.strokeStyle = "#f0b94d";  
-        this.ctx.lineWidth = 1;     
-
-        this.ctx.textAlign = "center"; 
-        this.ctx.textBaseline = "middle";
-
-        let titleText=document.title.toUpperCase();;
-        
-        this.ctx.fillText(titleText, x, y);
-        this.ctx.strokeText(titleText, x, y);
+		let font = "bold "+wpct+"px Reggae";
+        let text=document.title.toUpperCase();;
+        drawText(this.ctx, 
+				  x, y, 0, 0 , 
+				  text, 'red', 
+				  font, 'center', 'middle',
+				  '#f0b94d',
+				  1
+				);
 	}
 
 	drawMenus(x, y) {
-	    let wpct = this.cvs.width * 0.05;
-	    this.ctx.font = "bold " + wpct + "px Arial";
-	    this.ctx.fillStyle = "white"; this.ctx.strokeStyle = "black"; this.ctx.lineWidth = 1;     
+		const wpct = this.cvs.width * 0.02;
+		const lineh = wpct * 3.5; 
+		const pad = [ wpct * 0.25, wpct * 0.66 ];
+		const font = (wpct*3)+'px Arial'; this.ctx.font = font;
 
-	    this.ctx.textAlign = "center"; 
-	    this.ctx.textBaseline = "middle";
+		/* GET MAX WIDTH AND MENU HEIGHT */
+		const maxw = this.menuItems.reduce((max, item) => { return Math.max(max, this.ctx.measureText('★  '+item+'  ★').width); }, 0);
+		const mnuh = this.menuItems.length * lineh;
+		const bx   = x - maxw / 2 - pad[0]; const by = y - lineh / 2;
+		const bw   = maxw + pad[0] * 2;     const bh = mnuh + pad[1] * 2;
+	
+		// BACKGROUND
+		drawRect( this.ctx, bx, by, bw, bh, 'rgba(0, 0, 0, 0.66)', '#f0b94d', 3 ); 
 
-	    let lineHeight = wpct * 1.2;
-	    let menuHeight = this.menuItems.length * lineHeight;
+		// TEXT
+		this.menuItems.forEach((item, idx) => {  
+			const ly = y + idx * lineh + pad[1];
+			const isDisabled = this.menuItemsDisabled.includes(item);
+			const isSelected = idx === this.selected;
 
-	    let maxWidth = 0;
-	    this.menuItems.forEach(item => {
-	        let width = this.ctx.measureText(item).width;
-	        if (width > maxWidth) maxWidth = width;
-	    });
+			let text = item.replace('//', '');
+			if (isSelected) text = '★  '+text+'  ★';
 
-	    let padding = [ 66, 25 ];
-	    let bgRect =  [x - maxWidth / 2 - padding[0], y - lineHeight / 2, maxWidth + padding[0] * 2, menuHeight + (padding[1] *2)];
-
-	    this.ctx.fillStyle = "rgba(0, 0, 0, 0.66)";
-	    this.ctx.fillRect(bgRect[0],bgRect[1],bgRect[2],bgRect[3]);
-	    this.ctx.strokeStyle = "#f0b94d"; this.ctx.lineWidth = 2; 
-	    this.ctx.strokeRect(bgRect[0],bgRect[1],bgRect[2],bgRect[3]);
-	    this.ctx.strokeStyle = "transparent";  
-	    
-	    this.menuItems.forEach((item, idx) => {
-	        let lineY = y + idx * lineHeight + padding[1];
-	        if(this.menuItemsDisabled.includes(this.menuItems[idx])){
-	        	this.ctx.fillStyle = "rgba(255,255, 255, 0.33)";   
-	    	}else{
-	    		this.ctx.fillStyle = "white";  
-	    	}
-
-	    	let mtext = item.replace('//','');
-	        if(idx === this.selected){ mtext = "★  " +mtext + "  ★"; }
-
-	        this.ctx.fillText(mtext, x, lineY);
-	        this.ctx.strokeText(mtext, x, lineY);
-	    });
+			drawText( this.ctx, 
+					  x, ly, 0, 0 , 
+					  text, isDisabled ? '#FFFFFF54' : "white", 
+					  font, 'center', 'middle'
+					);
+		}); 
 	}
 
 	addToMap(mo) {

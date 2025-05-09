@@ -9,32 +9,20 @@ class Cloud extends MovableObject{
 
 	randx = 720; randy = 200;
 	
-	constructor(variant,randx,randy){
-
-		switch(variant){
-			case 0:
-				super().loadImage('./img/beach/cloudA.png');
-				this.width = 150*this.scale; this.height = 60*this.scale;
-				break;
-
-			case 1:
-				super().loadImage('./img/beach/cloudB.png');
-				this.width = 200*this.scale; this.height = 75*this.scale;
-				break;
-			case 2:
-				super().loadImage('./img/beach/cloudC.png');
-				this.width = 250*this.scale; this.height = 120*this.scale;
-				break;
-			default:
-				console.log('Variant doesn\'t exist');
-				break;
+	constructor(variant, randx, randy) {
+		const variants = [
+			{ img: './img/beach/cloudA.png', width: 150, height: 60 },
+			{ img: './img/beach/cloudB.png', width: 200, height: 75 },
+			{ img: './img/beach/cloudC.png', width: 250, height: 120 },
+		];
+		if (variants[variant]) {
+			const { img, width, height } = variants[variant];
+			super().loadImage(img);
+			this.width = width * this.scale; this.height = height * this.scale;
 		}
 		this.variant = variant;
-
 		this.randx = randx; this.randy = randy;
-		
 		this.reset(true);
-
 		this.animate();
 	}
 

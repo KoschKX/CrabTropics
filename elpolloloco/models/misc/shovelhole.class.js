@@ -49,75 +49,58 @@ class ShovelHole extends Enemy{
 			self.createobj = new Doubloon();
 		  	self.createobj.world = self.world;
 		  	self.createobj.init();
-
 		  	self.createobj.x = self.x + (self.width - self.createobj.width) * 0.5; self.createobj.y = self.y - self.height;
 		  	self.createobj.changeAnimation(self.createobj.IMAGES_SPIN);
-		  	//self.createobj.static = true;
 		  	self.world.level.items.push(self.createobj);
-
 		  	self.world.audio.playSound('doubloon_findA', 1.0);
 		 }, 1000);
 	}
 
-	createCrab(){
-		let self = this; setTimeout(function(){
-			if(self.createobj){ return; }
-			
-			self.createobj = new Crab([0,2]);
-		  	self.createobj.world = self.world;
-		  	self.createobj.init();
-
-		  	self.createobj.x = self.x + (self.width - self.createobj.width) * 0.5; self.createobj.y = self.y;
-		  	switch(self.createobj.variant){
-		  		case 0:
-		  			self.createobj.changeAnimation(self.createobj.IMAGES_APPEARA1);
-		  			break;
-		  		case 1:
-		  			self.createobj.changeAnimation(self.createobj.IMAGES_APPEARA2);
-		  			break;
-		  		case 2:
-		  			self.createobj.changeAnimation(self.createobj.IMAGES_APPEARA3);
-		  			break;
-		  	}
-		  	
-		  	self.createobj.appearing = true; self.createobj.static = true;
-		  	self.world.level.enemies.push(self.createobj);
-		 }, 1500);
+	createCrab() {
+		setTimeout(() => {
+			if (this.createobj) return;
+			this.createobj = new Crab([0, 2]);
+			this.createobj.world = this.world;
+			this.createobj.init();
+			this.createobj.x = this.x + (this.width - this.createobj.width) * 0.5;
+			this.createobj.y = this.y;
+			const animations = [
+				this.createobj.IMAGES_APPEARA1, this.createobj.IMAGES_APPEARA2, this.createobj.IMAGES_APPEARA3
+			];
+			const anim = animations[this.createobj.variant];
+			if (anim) this.createobj.changeAnimation(anim);
+			this.createobj.appearing = true;
+			this.createobj.static = true;
+			this.world.level.enemies.push(this.createobj);
+		}, 1500);
 	}
 
 	moveLeft(){}
+
 	moveRight(){}
 
 	handleAnimation(){
 		this.playAnimation(this.currImageSet);
 	}
 
-	playAnimation(anim){
-		if( !this.world || !anim ){ return; }
-		let i = this.currImage % anim.files.length;
-        let path = anim.files[i];
-        if(!this.imageCache[path]){ return; }
-        this.img.src = this.imageCache[path];
-        if(i==0){
-	    	switch(this.objtype){
-	    		case 0:
-	    			// empty;
-	    			break;
-	    		case 1:
-	    			this.createCrab();
-	    			break;
-	    		case 2:
-	    			this.createDoubloon();
-	    			break;
-	    	}
-        }
-    	if(i < anim.files.length-1){
-    		this.currImage++;
-		}else{
-			if(anim==this.IMAGES_CLOSE){
-        		this.destroy();
-        	}
-        }
+	playAnimation(anim) {
+		if (!this.world || !anim) return;
+		const i = this.currImage % anim.files.length;
+		const path = anim.files[i];
+		if (!this.imageCache[path]) return;
+		this.img.src = this.imageCache[path];
+		if (i === 0) {
+			const actions = {
+				1: this.createCrab, 2: this.createDoubloon
+			};
+			const action = actions[this.objtype];
+			if (action) action.call(this);
+		}
+		if (i < anim.files.length - 1) {
+			this.currImage++;
+		} else if (anim === this.IMAGES_CLOSE) {
+			this.destroy();
+		}
 	}
 
 }
