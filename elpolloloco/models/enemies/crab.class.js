@@ -137,13 +137,11 @@ class Crab extends Enemy{
 		if(this.appearing && this.currImage == this.currImageSet.files.length - 1){
 			this.appearing = false; this.static=false;
 		}
-		if(this.variant==3){console.log( this.world.level.enemies); }
 	}
 
 	destroy(){
 		super.destroy();
 		this.world.level.enemies = destroy(this, this.world.level.enemies, this.world);
-		
 		clearTimeout(this.dieTimeout); clearTimeout(this.reviveTimout);
 	}
 
