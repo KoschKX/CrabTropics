@@ -19,6 +19,7 @@ class ShovelHole extends Enemy{
 		if(immediate){
 			this.init();
 		}
+		this.generateStamp(this.name);
 	}
 	
 	destroy(){

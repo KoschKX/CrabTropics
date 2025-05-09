@@ -15,7 +15,8 @@ const level01 = {
 	clouds: [],
 	backgrounds: [
 		'Background("./img/sky/skyA.jpg", 0, 0 ,0 , 740, 300)',
-		'Movie("./img/waves/ROLL_001.jpg", 1, 157, 0, 300, 740, 150, 30)',
+		//'Movie("./img/waves/ROLL_001.jpg", 1, 157, 0, 300, 740, 150, 30)',
+		'Movie("./img/waves/ROLL_001.mp4", 1, 0, 0, 300, 740, 150, 30)',
 		'Background("./img/trees/palms.png", 2, 0 , 0)',
 		'Background("./img/beach/beachA.png", 2, 0 , 0)',
 	],

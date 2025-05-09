@@ -41,6 +41,7 @@ class SeaTurtle extends Enemy{
 
 	constructor(){
 		super(); 
+		this.generateStamp(this.name);
 	}
 
 	init() {

@@ -260,3 +260,13 @@
 
 	22:30
 		Added a progress bar to the loading screen.
+
+09. May. 2025
+	11:00
+		Fixed bug with random crab generation. Added background to page.
+
+	13:30
+		Added background video support.
+
+	14:00
+		Made stamp system more accurate.

@@ -28,6 +28,7 @@ class Ship extends Enemy{
 	constructor(){
 		super();
 		//this.init();
+		this.generateStamp(this.name);
 	}
 	
 	init() {

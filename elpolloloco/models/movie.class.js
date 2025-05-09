@@ -6,7 +6,7 @@ class Movie extends Background{
 	IMAGES_ANIM = new Anim('./img/blank.png',0,'');
 	imagePath; imageCache = []; imagesLib = [];
 
-	currImage = 0; anim = [];
+	currImage = 0; anim = []; vid;
 
 	frames=1; frameRate=30;
 
@@ -16,19 +16,23 @@ class Movie extends Background{
 
 	constructor(imagePath,layer,frames,x,y,width,height,frameRate=30){
 		super(imagePath,layer, x, y, width, height);
+
 		this.frames = frames;
 		this.imagePath = imagePath;
-
 		this.frameRate=frameRate;
 
 		this.IMAGES_ANIM = new Anim(imagePath, frames, '' );
 		this.imagesLib = [ this.IMAGES_ANIM ]; this.cacheAnim(this.IMAGES_ANIM);
 
 		this.x = x; this.y = y; this.width = width; this.height = height;
+
+		this.generateStamp(this.name);
 	}
 
 	init(){
-		clearInterval(this.animInterval); this.animInterval = setInterval(() => { this.handleAnimation(); }, 1000 / this.frameRate );
+		let ext  = this.imagePath.split('.').pop(); 
+		if(ext == 'mp4'){ this.vid = document.querySelector('#'+this.stamp); }
+		clearInterval(this.animInterval); this.animInterval = setInterval(() => { this.handleAnimation(); }, 1000 / this.frameRate ); 
 		this.play();
 	}
 
@@ -37,6 +41,11 @@ class Movie extends Background{
 	}
 	pause(){
 		this.isPlaying=false;
+	}
+
+	loadVideo(path){
+		if(!path.startsWith('*')){ const vid = new Image();  vid.src = path; }
+		this.imageCache[path] = path;
 	}
 
 	cacheAnim(anim){
@@ -56,8 +65,13 @@ class Movie extends Background{
 	}
 
 	draw(ctx){
-		if(!this.anim || !this.img ){ return; }
-	    ctx.drawImage(this.img, this.x, this.y, this.width, this.height); 
+		if(this.vid){
+			if(this.isPlaying){ this.vid.play(); }
+			ctx.drawImage(this.vid, this.x, this.y, this.width, this.height);
+		}else{
+			if(!this.anim || !this.img ){ return; }
+	    	ctx.drawImage(this.img, this.x, this.y, this.width, this.height); 
+	    }
 	}
 
 	fit(){

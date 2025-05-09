@@ -20,6 +20,7 @@ class XMark extends Enemy{
 		if(immediate){
 			this.init();
 		}
+		this.generateStamp(this.name);
 	}
 	
 	destroy(){

@@ -18,6 +18,8 @@ class Background extends MovableObject{
 		this.x = x; this.y = y; this.layer = layer;
 		if(width){ this.width = width; }
 		if(height){ this.height = height; }
+
+		this.generateStamp(this.name);
 	}
 
 	fit(){

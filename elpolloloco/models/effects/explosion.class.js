@@ -16,6 +16,7 @@ class Explosion extends MovableObject{
 		if(immediate){
 			this.init();
 		}
+		this.generateStamp(this.name);
 	}
 	
 	destroy(){

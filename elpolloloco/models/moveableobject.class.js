@@ -19,12 +19,9 @@ class MovableObject{
 	facingRight = true; useGravity = false; 
 	falling = false; bouncing = false; static = false; appearing = false; useGround = true;  
 
-	constructor(world){
-		if(world){
-			this.world = world;
-			this.ground = world.ground;
-		}
-		this.stamp = new Date();
+	constructor(name,world){
+		if(world){ this.world = world; }
+		this.generateStamp('Object');
 	}
 
 	destroy(){
@@ -39,18 +36,29 @@ class MovableObject{
 	    clearInterval(this.mainInterval); this.mainInterval = setInterval(() => { this.main(); }, 1000 / 60 );
 	}
 
+	generateStamp(name){
+		let now = new Date().getTime();
+		let prc = Math.floor(performance.now() * 1000);
+		let rnd = Math.floor(Math.random() * 1000);
+		this.stamp = name+'_'+now+"_"+prc+"_"+rnd;
+	}
+
 	main(){}
 
 /* SPRITE */
 
 	loadImage(path){
-		// if(!path){ return; }
+		const ext = path.split('.').pop(); 
+		if(ext != 'png' && ext != 'jpg') { return; }
+		if(!path || path.startsWith('*')){ return; }
 		this.img = new Image(); this.img.src = path;
 	}
 
 	loadImages(arr){
 		if(!arr){ return; }
 		arr.forEach((path) => {
+			const ext = path.split('.').pop(); 
+			if(ext != 'png' && ext != 'jpg') { return; }
 			if(!path || path=='' || this.imageCache?.[path]){ return; };
 			if(!path.startsWith('*')){ const img = new Image();  img.src = path; }
 			this.imageCache[path] = path;

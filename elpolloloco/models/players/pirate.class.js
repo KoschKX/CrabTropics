@@ -32,6 +32,7 @@ class Pirate extends Player{
 
 	constructor(){
 		super();
+		this.generateStamp(this.name);
 	}
 
 	init() {
