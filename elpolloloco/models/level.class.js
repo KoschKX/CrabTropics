@@ -16,7 +16,7 @@ class Level{
 	bounds = [0,0,0,0]
 	ground;
 
-	loadedCallback;
+	loadedCallback;  onDemandCallback;
 	totalAssets = 0; loadedAssets = 0;
 	loaded = false;
 
@@ -76,6 +76,7 @@ class Level{
 		this.backgrounds.forEach((background) => { background.world = this.world; });
 		this.enemies.forEach((enemy) => { enemy.world = this.world; });
 		this.items.forEach((item) => { item.world = this.world; });
+		this.effects.forEach((effect) => { effect.world = this.world; });
 		this.projectiles.forEach((projectile) => { projectile.world = this.world; });
 	}
 
@@ -94,9 +95,9 @@ class Level{
 	    this.backgrounds.forEach((background) => { this.cacheImageLib( background, background.imagesLib); });
 
 	    let self = this;
-	    this.items.forEach((item) => { this.cacheImageLib( item, item.imagesLib ); self.items=[]; });
-	    this.effects.forEach((effect) => { this.cacheImageLib( effect, effect.imagesLib ); self.effects=[]; });
-	    this.projectiles.forEach((projectile) => { this.cacheImageLib( projectile, projectile.imagesLib ); self.projectiles=[]; });
+	    this.items.forEach((item) => { this.cacheImageLib( item, item.imagesLib ); item.destroy(); self.items=[]; });
+	    this.effects.forEach((effect) => { this.cacheImageLib( effect, effect.imagesLib ); effect.destroy(); self.effects=[]; });
+	    this.projectiles.forEach((projectile) => { this.cacheImageLib( projectile, projectile.imagesLib ); projectile.destroy(); self.projectiles=[]; });
 	}
 
 	unload(){
@@ -127,15 +128,18 @@ class Level{
 
 	preloadBoss(callback){
 		if(!this.tmp.length){ return; }
-		console.log('preloading boss');
+		console.log('Preloading boss');
+		this.onDemandCallback = callback;
 		this.tmp.forEach((boss) => { this.cacheImageLib( boss, boss.imagesLib, true); });
-		this.tmp = [];
+		//this.tmp = [];
+		/*
 		if(callback && typeof callback === 'function') {
 			let self = this;
 			setTimeout(function(){
 				callback();
 			}, 1000);
 		}
+		*/
 	}
 
 	init(force = false){
@@ -166,13 +170,13 @@ class Level{
 		if(images){ this.cacheAssets(images, onDemand); }
 	}
 
-	createVideo(obj, path, addToDOM = false){
+	createVideo(obj, path, addToDOM = false, autoplay = true, loop = true){
 		let vid = document.createElement("video");
 		vid.setAttribute('object-id', obj.stamp);
 		vid.classList.add('bg_video');
 		vid.src = path;
-		vid.preload = 'auto'; vid.autoplay = true; 
-		vid.muted = true; vid.loop = true; 
+		vid.preload = 'auto'; vid.autoplay = autoplay; 
+		vid.muted = true; vid.loop = loop; 
 		vid.playsInline = true;
 		if(addToDOM){ this.cacheDiv.appendChild(vid); }
 		return vid;
@@ -202,7 +206,7 @@ class Level{
 	checkCache(path){
 		let ext  = path.split('.').pop(); 
 		let check;
-		if(ext == 'mp4'){
+		if(ext == 'mp4' || ext == 'webm'){
 			check = document.querySelector('#cache video[src="' + path + '"]');
 		}else{
 			check = document.querySelector('#cache img[src="' + path + '"]');
@@ -218,20 +222,27 @@ class Level{
 		let ext  = path.split('.').pop(); 
 		const check= this.checkCache(path);
 		if (!check) {
-			if(ext == 'mp4'){
+			if(ext == 'mp4' || ext == 'webm'){
 				cachedVideo = self.createVideo(obj, path, true);
 				self.loadedAssets += 1;
 			}else{
 				cachedImage = self.createImage(obj, path, true);
 			}
-			if(!cachedImage || onDemand){ return; }
+			if(!cachedImage){ return; }
 			cachedImage.onload = () => {
 				self.loadedAssets++;
 				self.updateAttributes(self.loadedAssets / self.totalAssets, cachedImage.src);
 				if (self.loadedAssets === self.totalAssets) {
-					self.updateAttributes(1.0, 'Complete', true);
-					self.loaded = true;
-					self.init();
+					
+					if(onDemand){
+						if(this.onDemandCallback) {
+							this.onDemandCallback(); this.onDemandCallback = null;
+						}
+					}else{
+						self.updateAttributes(1.0, 'Complete', true);
+						self.loaded = true;
+						self.init();
+					}
 				}
 				cachedImage.onload = null; 
 			};

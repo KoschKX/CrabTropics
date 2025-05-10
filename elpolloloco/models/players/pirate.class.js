@@ -97,6 +97,7 @@ class Pirate extends Player{
 	}
 
 	replenishBigCrab(){
+		if(!this.world){ return; }
 		let crabsB = this.world.level.enemies.filter(enemy => enemy.name === 'Crab' && enemy.variant === 3);
 		if(!crabsB.length){
 			let crabB = new Crab(3); crabB.world = this.world; 
@@ -125,7 +126,6 @@ class Pirate extends Player{
 	}
 
 	xMarkSpotting() {
-
 		if(!this.world || !this.world.level){ return; }
 		if(!this.spotting){ return; }
 

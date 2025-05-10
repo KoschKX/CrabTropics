@@ -22,6 +22,8 @@ class Background extends MovableObject{
 		this.generateStamp(this.name);
 	}
 
+	handleAnimation(){}
+
 	fit(){
 		this.width = this.cvs.width; this.height = this.cvs.height;
 	}

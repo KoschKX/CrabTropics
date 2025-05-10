@@ -21,6 +21,11 @@ class Titlescreen{
 		this.init();
 	}
 
+	destroy(){
+		clearInterval(this.drawInterval); clearInterval(this.ctlInterval); 
+		this.ctx.clearRect(0,0,this.cvs.width,this.cvs.height);
+	}
+
 	init(){
 		this.menuItemsDisabled = this.menuItems.filter(item => item.startsWith('//'));
 		let self = this;
@@ -55,10 +60,7 @@ class Titlescreen{
 	}
 
 	selfDestruct(){ 
-		clearInterval(this.drawInterval); clearInterval(this.ctlInterval); 
-		this.ctx.clearRect(0,0,this.cvs.width,this.cvs.height);
-//		this.audio.playSound('ocean', 1.0, false, true);
-//		this.audio.playSound('royalty_free', 0.4, false, true);
+		this.destroy();
 		this.screen.hideControls();
 		this.video.remove();
 	}
@@ -105,7 +107,7 @@ class Titlescreen{
 				  x, y, 0, 0 , 
 				  text, 'red', 
 				  font, 'center', 'middle',
-				  '#f0b94d',
+				  'orange',
 				  1
 				);
 	}

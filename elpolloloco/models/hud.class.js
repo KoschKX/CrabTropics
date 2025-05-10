@@ -57,14 +57,14 @@ class HUD{
 
     displayHealth(){
         let text = '♥'.repeat(this.world.player.health);
-        let font = '30px Arial';
-        drawText( this.ctx,  20, 40, 0, 0 , text, 'red', font, 'left', 'middle','white', 1 );
+        let font = 'bold 30px Arial';
+        drawText( this.ctx,  20, 40, 0, 0 , text, 'red', font, 'left', 'middle', 'white', 1 );
     }
 
     displayWealth(){
         let text = '$' + (this.world.player.doubloons);
-        let font = '30px Arial';
-        drawText( this.ctx,  20, 70, 0, 0 , text, 'red', font, 'left', 'middle','white', 1 );
+        let font = 'bold 30px Arial';
+        drawText( this.ctx,  20, 70, 0, 0 , text, 'white', font, 'left', 'middle', '', 1 );
     }
 
     status(){

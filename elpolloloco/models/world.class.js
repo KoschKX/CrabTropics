@@ -25,7 +25,8 @@ class World{
 
 	restart(){
 		this.gameover = false; 
-		this.debug = false; this.bosstest = false;
+		this.debug = false; 
+		this.bosstest = false; this.boss = null;
 		this.audio.reset();
 		this.level.reset();
 		this.destroy();
@@ -44,7 +45,7 @@ class World{
 	    };
 	    this.audio.playSound(this.level.ambient[0], 1.0, false, true);
 		this.audio.playSound(this.level.music[0], 0.4, false, true);
-		
+
 	    this.main();
 	}
 
@@ -62,10 +63,7 @@ class World{
 		this.level.preload(function(){
 			this.world.init();
 			this.world.screen.showControls();
-
-
 		}); 
-
 	}
 
 	checkCollisions(){

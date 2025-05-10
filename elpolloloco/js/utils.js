@@ -57,7 +57,8 @@ function drawText(ctx,x,y,w,h,text,color,font,align,baseline,ocolor,othick=1){
     ctx.textBaseline = baseline;
     ctx.fillText( text, x, y);
     if(ocolor){ 
-      ctx.fillStyle = ocolor;
+      ctx.fillStyle = 'transparent';
+      ctx.strokeStyle = ocolor;
       ctx.strokeText( text, x, y);
     }
 }

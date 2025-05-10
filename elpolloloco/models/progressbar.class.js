@@ -14,8 +14,11 @@ class ProgressBar{
 		this.cvs = canvas;
 		this.ctx = canvas.getContext('2d');
 		this.x = x; this.y = y;
-
 		this.init();
+	}
+
+	destroy(){
+		cancelAnimationFrame(this.drawFramesId);
 	}
 
 	init(){
@@ -36,11 +39,10 @@ class ProgressBar{
 	}
 
 	stop() {
-	    if (this.drawFramesId !== null) {
-	        cancelAnimationFrame(this.drawFramesId);
-	        this.drawFramesId = null;
-	        this.activated = false;
-	    }
+	    if (!this.drawFramesId) { return; }
+	    cancelAnimationFrame(this.drawFramesId);
+	    this.drawFramesId = null;
+	    this.activated = false;
 	}
 
 	loadingBar(progress, task) {
@@ -50,6 +52,10 @@ class ProgressBar{
 		const bw = this.cvs.width * (this.width / 100); const bh = this.cvs.height * (this.height / 100);
 
 		progress = Math.max(0, Math.min(1, progress));
+
+		ctx.clearRect(0,0,this.cvs.width,this.cvs.height);
+
+		if(progress == 1){ this.stop(); this.destroy(); }
 
 		drawRect( ctx, bx, by, bw, bh, 'transparent','#fff', 2 ); // BACKGROUND
 		drawRect( ctx, bx, by, bw * progress, bh, '#fff'); 		  // BAR

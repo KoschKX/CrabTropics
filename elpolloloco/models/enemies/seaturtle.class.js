@@ -23,11 +23,8 @@ class SeaTurtle extends Enemy{
 	IMAGES_RETREAT = new Anim('./img/seaturtle/RETREAT_001.png', 16, 'repeat=0');
 	IMAGES_DIE = new Anim('./img/seaturtle/DIE_001.png', 45, 'repeat=0');
 
-	IMAGES_SPLASH = new Anim('./img/waves/SPLASH_001.png', 30, 'repeat=0');
-	
 	imagesLib = [
 		this.IMAGES_SHELL, this.IMAGES_IDLE, this.IMAGES_FLING, this.IMAGES_EAT, this.IMAGES_COLLAPSE, this.IMAGES_RETREAT, this.IMAGES_SLAP, this.IMAGES_DIE,
-		this.IMAGES_SPLASH,
 	]
 	aboxesLib = [this.IMAGES_EAT, this.IMAGES_FLING, this.IMAGES_COLLAPSE, this.IMAGES_DIE];
 
@@ -36,22 +33,40 @@ class SeaTurtle extends Enemy{
 	scale = 1;
 	startwidth = this.width;
 	startheight = this.height;
-
-	splashes;
+	splashes; splashType = 1; splashStopFrame = 30;
 
 	constructor(){
 		super(); 
 		this.generateStamp(this.name);
+
+		if(this.splashType==0){
+			this.IMAGES_SPLASH = new Anim('./img/waves/SPLASH_001.png', 40, 'repeat=0');
+			this.imagesLib.push(this.IMAGES_SPLASH);
+		}
+		if(this.splashType==1){
+			this.splashStopFrame -= 1;
+		}
+	}
+
+	destroy(){
+		super.destroy();
+		clearInterval(this.sttInterval); clearTimeout(this.retreatTimeout);
+		this.world.level.enemies = destroy(this, this.world.level.enemies, this.world);
+		if(this.splashes){ this.splashes.destroy; this.splashes = null; }
 	}
 
 	init() {
 		super.init();
+
+		this.introPlaying=false; this.introTick = 0; this.scale = 1;
+		this.width = this.startwidth; this.height = this.startheight;
+
 		this.getAnimatedHitBoxes();
 	}
 
 	callBoss(){
-		//this.intro();
-		this.activate();
+		this.intro();
+		//this.activate();
 	}
 
 	main(){
@@ -93,6 +108,27 @@ class SeaTurtle extends Enemy{
 			this.currImage == 20;
 			this.retreat();
 		}
+		if(this.splashes){ 
+			this.world.player.invincible = true;
+			this.world.player.flickering = true;
+			if(this.scale < 1.0 && this.splashes.currImage > 15){  
+				this.world.level.enemies.forEach((enemy) => {
+		            if(!enemy.isBoss && enemy.health>0 && enemy.hostile){ enemy.health=1; enemy.isHit(); }
+		        });}
+			if(this.scale < 1.0 && (this.splashes.currImage == this.splashStopFrame)){ 
+				this.splashes.pause(); 
+				this.splashes.videoSeek(this.splashStopFrame);
+			}
+			if(this.scale >= 1.0 && !this.splashes.isPlaying){ 
+				this.splashes.play(); 
+			}
+			if(this.splashes.currImage>0 && this.splashes.currImage >= this.splashes.frames){ 
+				this.splashes.destroy(); 
+				this.splashes=null;
+				this.world.player.flickering = false;
+				this.world.player.invincible = false;
+			}
+		}
 		this.animateCollisionBoxes();
 	}
 
@@ -110,11 +146,18 @@ class SeaTurtle extends Enemy{
 	playIntro(){
 		if(!this.introPlaying){ return; }
 		this.scale = Math.min(this.scale + 0.0025, 1.0);
-		this.x = (this.world.cvs.width  - this.width) * 0.5; 
-		this.y = (this.world.cvs.height  - this.height) * (0.62 + (0.066 * this.scale)); 
+		this.x = (this.world.level.bounds[2] - this.width) * 0.5; 
+		this.y = (this.world.level.bounds[3]  - this.height) * (0.62 + (0.066 * this.scale)); 
 		this.width = 320 * this.scale; this.height = 88 * this.scale; 
-		if(this.scale>0.9 && !this.splashes){
-			this.splashes  = new Movie('./img/waves/SPLASH_001.png', 3, 30, 0, 0, 740, 544);
+		if(this.scale>0.5 && !this.splashes){
+			if(this.splashType==1){
+				let check = document.querySelector('#cache [src="' + this.path + '"]');
+				this.splashes  = new Movie('./img/waves/SPLASH_001.webm', 3, 0, 0, 0, 740, 544, 30, true);
+				this.world.level.createVideo(this.splashes, './img/waves/SPLASH_001.webm', !check, false, false);
+			}else {
+				this.splashes  = new Movie('./img/waves/SPLASH_001.png', 3, 40, 0, 0, 740, 544);
+			}
+			this.splashes.world = this.world;
 			this.splashes.init();
 			this.world.level.backgrounds.push(this.splashes);
 		}
@@ -127,8 +170,8 @@ class SeaTurtle extends Enemy{
 		this.boxes = []; 
 
 		this.width = this.startwidth; this.height = this.startheight; 
-		this.x = (this.world.cvs.width  - this.width) * 0.5; 
-		this.y = (this.world.cvs.height  - this.height) * 0.33; 
+		this.x = (this.world.level.bounds[2] - this.width) * 0.5; 
+		this.y = (this.world.level.bounds[3] - this.height) * 0.33; 
 		this.introPlaying = false;
 
 		this.appear(); 
@@ -210,11 +253,6 @@ class SeaTurtle extends Enemy{
 		this.state = 6; this.currImage = 0; 
 		this.changeAnimation(this.IMAGES_DIE);
 		this.dead = true;
-	}
-
-	destroy(){
-		clearInterval(this.sttInterval); clearTimeout(this.retreatTimeout);
-		this.world.level.enemies = destroy(this, this.world.level.enemies, this.world);
 	}
 
 	moveLeft(){}
