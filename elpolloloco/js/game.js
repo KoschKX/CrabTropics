@@ -50,6 +50,14 @@ function init(){
         }, { passive: false });
     });
 
+     /* PAUSE */
+    ['click'].forEach(eventType => {
+        document.querySelector('#pause').addEventListener(eventType, (e) => {
+            e.stopPropagation(); e.preventDefault();
+            if( screen.paused ){ screen.unpause(); } else {screen.pause(); }
+        }, { passive: false });
+    });
+
     /* RESTART */
     ['click'].forEach(eventType => {
         document.querySelector('#restart').addEventListener(eventType, (e) => {
@@ -139,6 +147,17 @@ function init(){
 
     document.querySelector('#controls .button').addEventListener('pointerdown', (e) => {
        // e.preventDefault(); e.stopPropagation();
+    });
+
+    window.addEventListener('blur', () => {
+        screen.hasFocus = false;
+        audio.mute(false)
+        screen.pause(false);
+    });
+    window.addEventListener('focus', () => {
+        screen.hasFocus = true;
+        if( audio.mute    && !audio.wasMuted )  { audio.unmute(false); }
+        if( screen.paused && !screen.wasPaused ){ screen.unpause(false); }
     });
 
     runHitBoxGrabber();

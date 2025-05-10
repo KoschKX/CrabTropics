@@ -16,7 +16,7 @@ class Character extends MovableObject{
 
 	constructor() { super(); }
 		   init() { super.init(); this.starthealth = this.health; this.initCollisionBoxes(); }
-		   main() { super.main(); }
+	  main(delta) { super.main(delta); }
 		destroy() { super.destroy(); clearTimeout(this.reviveTimout); clearTimeout(this.dieTimout); }
 
 /* COLLISIONS */
@@ -162,7 +162,7 @@ class Character extends MovableObject{
 
         this.img.src = this.imageCache[path];
 	}
-
+	
 /* MOVEMENT */
 
 	jump(){
@@ -175,19 +175,19 @@ class Character extends MovableObject{
 	isHit(makeInvincible){
 		if(this.hurt || this.willInvincible){ return; }
 		this.hurt=true;   this.health--;
-		this.health < 0 ? this.health = 0 : this.lastHit = Date.now();
+		this.health < 0 ? this.health = 0 : this.lastHit = this.now()
 		if(makeInvincible){ this.willInvincible = true; }
 	}
 
 	isHurt(){
-		let timepassed = new Date().getTime() - this.lastHit;
+		let timepassed = this.now() - this.lastHit;
 		timepassed = timepassed / 1000;
 		return timepassed < 1;
 	}
 
 	deadTime(inSeconds) {
 		if (!this.dead){ return -1; }
-		let timepassed = new Date().getTime() - this.lastHit;
+		let timepassed = this.now() - this.lastHit;
 		timepassed = timepassed / 1000; 
 		inSeconds && (timepassed = timepassed.toFixed(0));
 		return timepassed;
@@ -209,7 +209,7 @@ class Character extends MovableObject{
 	}
 
 	isInvincible(){
-		let timepassed = new Date().getTime() - this.hit;
+		let timepassed = his.now(true) - this.hit;
 		timepassed = timepassed / 1000;
 		return timepassed < 1;
 	}

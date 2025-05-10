@@ -70,8 +70,8 @@ class SeaTurtle extends Enemy{
 		//this.activate();
 	}
 
-	main(){
-		super.main();
+	main(delta){
+		super.main(delta);
 		
 		if(this.introPlaying){
 			this.playIntro();
@@ -90,7 +90,6 @@ class SeaTurtle extends Enemy{
 	}
 
 	handleAnimation(){
-
 		if(this.dead && this.currImage == this.currImageSet.files.length - 1){ this.animateCollisionBoxes(); return; }
 
 		this.playAnimation(this.currImageSet);

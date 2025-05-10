@@ -67,8 +67,8 @@ class Crab extends Enemy{
 		this.hostile = true;
 	}
 
-	main(){
-		super.main();
+	main(delta){
+		super.main(delta);
 		
 		let self = this; 
 

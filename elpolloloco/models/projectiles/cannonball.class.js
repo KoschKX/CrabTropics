@@ -10,8 +10,7 @@ class Cannonball extends Enemy{
 
 	scale = 1;
 	width = 5; height = 5;
-	maxWidth = 33; maxHeight = 33;
-	maxZoomWidth = 66; maxZoomHeight = 66;
+	maxSize = 33; maxZoomSize = 66; 
 
 	IMAGES_ROLL = new Anim('./img/cannonballA/ROLL_001.png'	,1 , '' );
 	imagesLib = [
@@ -22,7 +21,6 @@ class Cannonball extends Enemy{
 
 	hostile = true;
 	madeGroundContact = false;
-	scaleInterval;
 
 	constructor(immediate = false){
 		super();
@@ -33,7 +31,6 @@ class Cannonball extends Enemy{
 
 	destroy(){
 		this.world.level.projectiles = destroy(this,this.world.level.projectiles, this.world);
-		clearInterval(this.scaleInterval);
 	    super.destroy();
 	}
 	
@@ -43,15 +40,15 @@ class Cannonball extends Enemy{
 		this.loadImage(this.IMAGES_ROLL.files[0]);
 		this.changeAnimation(this.IMAGES_ROLL);
 
-		clearInterval(this.scaleInterval); this.scaleInterval = setInterval(() => { this.handleScaling(); }, 1000 / 24 );
-
 		this.jump();
 
 		this.hostile = false;
 	}
 
-	main(){
-		super.main();
+	main(delta){
+		super.main(delta);
+
+		this.handleScaling(delta); 
 
 		this.updateCollisionBoxes();
 
@@ -93,29 +90,33 @@ class Cannonball extends Enemy{
 	    }
 	}
 
-	handleScaling() {
-	    let mxw, mxh;
+	handleScaling(delta) {
+		let mxw, mxh;
+		let scaleRate;
 
-	    if (this.madeGroundContact) {
-	        mxw = this.maxZoomWidth; mxh = this.maxZoomHeight;
-	        this.scale += 0.05;
-	    } else {
-	        mxw = this.maxWidth;  mxh = this.maxHeight;
-	        this.scale += 0.01;
-	    }
+		if (this.madeGroundContact) {
+			mxw = this.maxZoomSize; mxh = this.maxZoomSize;
+			scaleRate = 0.25;
+		} else {
+			mxw = this.maxSize; mxh = this.maxSize;
+			scaleRate = 0.1;
+		}
 
-	    const centerX = this.x + this.width / 2;
-	    const centerY = this.y + this.height / 2;
+		const scaleIncrement = scaleRate * (delta / 1000);
+		this.scale += scaleIncrement;
 
-	    if (this.width * this.scale < mxw) {
-	        this.width *= this.scale;
-	    }
-	    if (this.height * this.scale < mxh) {
-	        this.height *= this.scale;
-	    }
+		const centerX = this.x + this.width / 2;
+		const centerY = this.y + this.height / 2;
 
-	    this.x = centerX - this.width / 2;
-	    this.y = centerY - this.height / 2;
+		if (this.width * this.scale < mxw) {
+			this.width *= this.scale;
+		}
+		if (this.height * this.scale < mxh) {
+			this.height *= this.scale;
+		}
+
+		this.x = centerX - this.width / 2;
+		this.y = centerY - this.height / 2;
 	}
 
 	updateCollisionBoxes(){

@@ -38,8 +38,8 @@ class ShovelHole extends Enemy{
 		this.setContent();
 	}
 
-	main(){
-		super.main();
+	main(delta){
+		super.main(delta);
 	}
 
 	setContent(){
@@ -104,12 +104,9 @@ class ShovelHole extends Enemy{
 
 	moveRight(){}
 
-	handleAnimation(){
-		this.playAnimation(this.currImageSet);
-	}
-
 	playAnimation(anim) {
 		if (!this.world || !anim) return;
+
 		const i = this.currImage % anim.files.length;
 		const path = anim.files[i];
 		if (!this.imageCache[path]) return;

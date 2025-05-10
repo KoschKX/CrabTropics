@@ -3,7 +3,7 @@ class MovableObject{
 	name = ''; stamp = 0; world;
 
 	x = 120; y = 350; width = 128; height = 128;
-	speed = 1; speedY = 0; acceleration =1;
+	speed = 1;  acceleration = 1; speedY = 0;
 	currDirection = 1; currImage = 0;
 
 	IMAGES_BLANK = new Anim('./img/blank.png'); imagesLib = [this.IMAGES_BLANK]; imageCache = []; 
@@ -12,7 +12,7 @@ class MovableObject{
 	img; cache; 
 	flipOffset = [0, 0];
 	
-	frameRate=60; gvtyInterval; animInterval; mainInterval;
+	frameRate=60; animInterval;
 
 	groundOffset = 0; 
 
@@ -20,14 +20,11 @@ class MovableObject{
 	falling = false; bouncing = false; static = false; appearing = false; useGround = true;  
 
 	constructor(name,world){ this.world = world; this.generateStamp('Object'); }
-	destroy(){ clearInterval(this.gvtyInterval); clearInterval(this.animInterval); clearInterval(this.mainInterval); }
+	destroy(){ clearInterval(this.animInterval); }
 
 	init(){
-		if(this.useGravity){
-			clearInterval(this.gvtyInterval); this.gvtyInterval = setInterval(() => { this.handleGravity(); }, 1000 / 60 );
-		}
-		clearInterval(this.animInterval); this.animInterval = setInterval(() => { this.handleAnimation(); }, 1000 / this.frameRate );
-	    clearInterval(this.mainInterval); this.mainInterval = setInterval(() => { this.main(); }, 1000 / 60 );
+		this.delta = 0;
+		clearInterval(this.animInterval); this.animInterval = setInterval(() => { this.animate(); }, 1000 / this.frameRate );
 	}
 
 	generateStamp(name) {
@@ -37,7 +34,19 @@ class MovableObject{
 	    Math.random().toString(36).slice(2, 8);
 	}
 
-	main(){}
+	main(){
+		if(this.useGravity){ this.handleGravity(); }
+	}
+
+	animate(){
+		if(this.world && this.world.paused){ return; }
+		this.handleAnimation();
+	}
+
+	now(){
+		if( !this.world ) { return 0; }
+		return this.world.elapsedTime;
+	}
 
 /* SPRITE */
 
@@ -75,6 +84,7 @@ class MovableObject{
 	}
 
 	handleAnimation(){
+		if(this.world && this.world.paused){ return; }
 		this.playAnimation(this.currImageSet);
 	}
 
@@ -86,6 +96,7 @@ class MovableObject{
 	}
 
 	playAnimation(anim){
+		if(this.world && this.world.paused){ return; }
 		if(!anim || !anim.files || !this.img){ return; }
     	let i = this.currImage % anim.files.length; 
         let path = anim.files[i];
@@ -131,6 +142,7 @@ class MovableObject{
 			this.y = this.world.ground + this.groundOffset;
 		}
 	}
+
 	bounce(spd,point){
 		this.speedY = spd;
 		this.bouncing = true; this.falling = false; this.currImage = 0;
@@ -142,6 +154,7 @@ class MovableObject{
 		if(this.x<this.world.level.bounds[0]-(this.width*0.5)){return;}
 		this.x -= this.speed; this.currDirection = 0;     
 	}
+
 	moveRight(){
 		if(!this.world || this.static || this.dead){ return; }
 		if(this.x>this.world.level.bounds[2]-(this.width*0.5)){return;}

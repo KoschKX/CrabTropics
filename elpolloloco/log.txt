@@ -280,3 +280,12 @@
 10. May, 2025
 	13:30
 		Added Catnip item. Removed keyboard info on mobile devices.
+
+	15:30
+		Added probability to item creation
+
+	17:00	
+		Unified object main loops.
+
+	19:00
+		Added Pause button. Improved responsive menu.

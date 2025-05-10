@@ -34,17 +34,13 @@ class Crater extends Enemy{
 		this.objtype = randomInt(0,2);
 	}
 
-	main(){
-		super.main();
+	main(delta){
+		super.main(delta);
 	}
 
 	moveLeft(){}
 	
 	moveRight(){}
-
-	handleAnimation(){
-		this.playAnimation(this.currImageSet);
-	}
 
 	playAnimation(anim){
 		if( !this.world || !anim ){ return; }

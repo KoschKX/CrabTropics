@@ -19,7 +19,8 @@ class Ship extends Enemy{
 
 	cannonLocs = [[  33, -165 ], [ -33, -165 ],];
 
-	lastShot = 0; maxShots = 2; firing = true;
+	maxShots =  2; minShotFreq = 500; maxShotFreq = 100000;
+	lastShot = this.now(); firing = true;
 
 	hostile = false; 
 
@@ -38,15 +39,11 @@ class Ship extends Enemy{
 		this.changeAnimation(this.IMAGES_FLOAT);
 	}
 
-	main(){
-		super.main();
+	main(delta){
+		super.main(delta);
 		this.cannonFire();
 	}
 	
-	handleAnimation(){
-		this.playAnimation(this.currImageSet);
-	}
-
 	getShotLocation(shot){
 		let cann = randomInt(0, this.cannonLocs.length-1);
 		let shipCenterX = this.x + (this.width*0.5);
@@ -61,12 +58,12 @@ class Ship extends Enemy{
 	cannonFire() {
 		if(!this.world || !this.world.level || !this.firing){ return; }
 
-	 	const rDelay = randomInt(100,100000);
-	 	const now = Date.now();
+	 	const rDelay = randomInt(this.minShotFreq, this.maxShotFreq);
+	 	const now 	 = this.now();
 
   		this.explosions = this.world.level.effects.filter(effect => effect.name === 'Explosion');
 
-  		if(now - this.lastShot < rDelay || this.explosions.length>=this.maxShots){ return; }
+  		if(now - this.lastShot < rDelay || this.explosions.length >= this.maxShots){ return; }
 
 	  	let shot = new Explosion(true);
   			shot.scale = random(0.25, 0.1);
@@ -82,6 +79,6 @@ class Ship extends Enemy{
 
   		this.world.audio.playSound(['cannon_fireA','cannon_fireB','cannon_fireC'])
 
-  		this.lastShot = new Date().getTime();
+  		this.lastShot = this.now();
 	}
 }

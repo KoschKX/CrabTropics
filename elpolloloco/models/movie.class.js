@@ -59,6 +59,7 @@ class Movie extends Background{
 	}
 
 	handleAnimation(){
+		if(this.world && this.world.paused){ return; }
 		if(this.isPlaying){ this.playAnimation(this.currImageSet); }
 	};
 

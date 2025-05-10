@@ -31,12 +31,8 @@ class Explosion extends MovableObject{
 		this.changeAnimation(this.IMAGES_EXPLODE);
 	}
 
-	main(){
-		super.main();
-	}
-	
-	handleAnimation(){
-		this.playAnimation(this.currImageSet);
+	main(delta){
+		super.main(delta);
 	}
 
 	playAnimation(anim){

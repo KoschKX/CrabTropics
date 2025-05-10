@@ -34,16 +34,12 @@ class XMark extends Enemy{
 		this.changeAnimation(this.IMAGES_MARK);
 	}
 
-	main(){
-		super.main();
+	main(delta){
+		super.main(delta);
 	}
 
 	moveLeft(){}
 	
 	moveRight(){}
-
-	handleAnimation(){
-		this.playAnimation(this.currImageSet);
-	}
 
 }

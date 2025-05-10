@@ -4,7 +4,7 @@ class Pirate extends Player{
 
 	health = 3;  maxHealth = 6; starthealth = 3; 
 	frameRate = 24; useGravity = true; 
-	speed = 3; frameRate = 24;
+	speed = 4; frameRate = 24;
 
 	groundOffset = -64;
 	//flipOffset = [-this.width*0.25, 0];
@@ -39,8 +39,8 @@ class Pirate extends Player{
 		this.changeAnimation(this.IMAGES_IDLE);
 	}
 
-	main(){
-		super.main();
+	main(delta){
+		super.main(delta);
 		this.xMarkSpotting();
 		this.replenishBigCrab();
 	}
@@ -128,7 +128,7 @@ class Pirate extends Player{
 		if(!this.spotting){ return; }
 
 	 	const rDelay = randomInt(100,100000);
-	 	const now = Date.now();
+	 	const now = this.now();
 
   		this.xmarks = this.world.level.projectiles.filter(projectile => projectile.name === 'XMark');
 
@@ -148,7 +148,7 @@ class Pirate extends Player{
 
   		this.world.audio.playSound('xmark_appearA', 0.5);
 
-  		this.lastMark = new Date().getTime();
+  		this.lastMark = this.now();
 		  		
 	}
 

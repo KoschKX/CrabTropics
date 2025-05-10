@@ -32,16 +32,12 @@ class Catnip extends Enemy{
 		this.changeAnimation(this.IMAGES_SPARKLE);
 	}
 
-	main(){
-		super.main();
+	main(delta){
+		super.main(delta);
 	}
 
 	moveLeft(){}
 
 	moveRight(){}
-
-	handleAnimation(){
-		this.playAnimation(this.currImageSet);
-	}
 
 }

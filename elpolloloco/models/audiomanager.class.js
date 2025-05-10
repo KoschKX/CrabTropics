@@ -41,7 +41,7 @@ class AudioManager {
     musicGain = null;
     isReady = false;
 
-    muted = false;
+    muted = false; wasMuted = false;
 
     mainInterval; debugInterval;
 
@@ -220,15 +220,17 @@ class AudioManager {
 
 /* EVENTS */
 
-    mute() {
+    mute(ui=true) {
+        if(!ui){ this.wasMuted = this.muted; }
     	this.muted = true;
         this.setMasterVolume(0);
         document.querySelector('#menu #sound_on').classList.remove('active');
         document.querySelector('#menu #sound_off').classList.add('active');
     }
     
-    unmute() {
-    	this.muted = false;
+    unmute(ui=true) {
+        if(!ui){ this.wasMuted = this.muted; }
+    	this.muted = this.false;
       	this.setMasterVolume(1);
         document.querySelector('#menu #sound_on').classList.add('active');
         document.querySelector('#menu #sound_off').classList.remove('active');

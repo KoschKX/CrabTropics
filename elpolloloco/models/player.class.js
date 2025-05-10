@@ -6,22 +6,16 @@ class Player extends Character{
 
 	box = [ this.width, this.height, this.width, this.height ];
 
-	ctrlInterval;
-
 	init() {
 		super.init();
-		clearInterval(this.ctrlInterval); this.ctrlInterval = setInterval(() => { this.handleControls(); }, 1000 / 60 );
 	}
-	main() { super.main(); }
+	main() { super.main(); this.handleControls(); }
 
 	destroy(){
 		super.destroy();
-		clearInterval(this.ctrlInterval); 
 	}
 
-	reset(){
-		clearInterval(this.ctrlInterval); 
-	}
+	reset(){}
 
 	handleControls(){
 		if(!this.world || ! this.world.keyboard){ return; }

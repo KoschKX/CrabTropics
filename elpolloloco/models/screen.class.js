@@ -3,6 +3,8 @@ class Screen{
 	world;
     bounds;
 
+    paused; wasPaused;
+
 	constructor(canvas, world){
 		this.cvs = canvas; this.world = world;
 		this.ctx = canvas.getContext('2d');
@@ -65,6 +67,22 @@ class Screen{
 
     showControls(){
         document.querySelector('#controls').classList.add('show');    
+    }
+
+    pause(ui=true){
+        if(!this.world){ return; }
+        if(!ui){ this.wasPaused = this.world.paused; }
+        this.paused = this.world.pause();
+        document.querySelector('#menu #pause_on').classList.remove('active');
+        document.querySelector('#menu #pause_off').classList.add('active');
+    }
+
+    unpause(ui=true){
+        if(!this.world){ return; }
+        if(!ui){ this.wasPaused = this.world.paused; }
+        this.paused = this.world.unpause();
+        document.querySelector('#menu #pause_off').classList.remove('active');
+        document.querySelector('#menu #pause_on').classList.add('active');
     }
 
 }
