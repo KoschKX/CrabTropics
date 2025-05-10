@@ -45,7 +45,7 @@ class Movie extends Background{
 	play(){
 		this.isPlaying=true;
 		if(this.vid){
-			this.vid.play().catch(error => {} );
+			//this.vid.play().catch(error => {} );
 		} 
 		clearInterval(this.animInterval); this.animInterval = setInterval(() => { this.handleAnimation(); }, 1000 / this.frameRate ); 
 	}
@@ -53,7 +53,7 @@ class Movie extends Background{
 	pause(){
 		this.isPlaying=false;
 		if(this.vid){ 
-			this.vid.pause();
+			//this.vid.pause();
 		}
 		clearInterval(this.animInterval);
 	}

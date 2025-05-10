@@ -38,7 +38,6 @@ class SeaTurtle extends Enemy{
 	constructor(){
 		super(); 
 		this.generateStamp(this.name);
-
 		if(this.splashType==0){
 			this.IMAGES_SPLASH = new Anim('./img/waves/SPLASH_001.png', 40, 'repeat=0');
 			this.imagesLib.push(this.IMAGES_SPLASH);
@@ -120,6 +119,7 @@ class SeaTurtle extends Enemy{
 				this.splashes.videoSeek(this.splashStopFrame);
 			}
 			if(this.scale >= 1.0 && !this.splashes.isPlaying){ 
+				console.log(this.splashes.isPlaying);
 				this.splashes.play(); 
 			}
 			if(this.splashes.currImage>0 && this.splashes.currImage >= this.splashes.frames){ 
