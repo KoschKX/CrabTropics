@@ -26,17 +26,20 @@ class AudioManager {
         './audio/catnip_getA.mp3',
         './audio/doubloon_findA.mp3',
         './audio/doubloon_getA.mp3',
+        './audio/seaturtle_hornA.mp3',
     ];
 
     MUSIC_BANK = [
         './audio/ocean.mp3',
-        './audio/royalty_free.mp3'
+        './audio/island_lover.mp3',
+        './audio/sueno_tropical.mp3'
     ];
 
 	context = null;
     gainNode = null;
     sounds = {};
     currSounds = {};
+    activeMusicSources = [];
     musicSource = null;
     musicGain = null;
     isReady = false;
@@ -149,10 +152,8 @@ class AudioManager {
         const musicBuffer = this.sounds[name];
         if (!musicBuffer) return;
 
-        if (this.musicSource) {
-            this.musicSource.stop();
-            this.musicSource.disconnect();
-        }
+        this.stopAllMusic();
+
         const source = this.context.createBufferSource();
         source.buffer = musicBuffer;
         source.loop = loop;
@@ -161,7 +162,7 @@ class AudioManager {
         source.connect(gain);
         gain.connect(this.gainNode);
         source.start();
-        this.musicSource = source;
+        this.activeMusicSources.push(source);
         this.musicGain = gain;
     }
 
@@ -183,6 +184,14 @@ class AudioManager {
                 });
             }
         }
+    }
+
+    stopAllMusic() {
+        this.activeMusicSources.forEach(source => {
+            source.stop();
+            source.disconnect();
+        });
+        this.activeMusicSources = []; 
     }
 
     reset() {

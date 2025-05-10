@@ -37,6 +37,6 @@ const level01 = {
 		'ocean',
 	],
 	music: [
-		'royalty_free',
+		'island_lover',
 	]
 }

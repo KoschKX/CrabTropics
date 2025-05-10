@@ -39,7 +39,7 @@ class World{
 			}
 	    };
 	    this.audio.playSound(this.level.ambient[0], 1.0, false, true);
-		this.audio.playSound(this.level.music[0], 0.4, false, true);
+		this.audio.playMusic(this.level.music[0], 0.4, true);
 	}
 
 	restart(){
@@ -260,6 +260,9 @@ class World{
 
 	callBoss(){
 		if(this.bosstest){ return; } 
+
+		this.audio.playSound('seaturtle_hornA', 0.5, true);
+
 		let self = this; this.level.preloadBoss(function(){
 			console.log('Boss Loaded');
 			self.boss = new SeaTurtle(1);

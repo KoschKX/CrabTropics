@@ -66,6 +66,9 @@ class SeaTurtle extends Enemy{
 	}
 
 	callBoss(){
+		
+		this.world.audio.playSound('seaturtle_hornA', 0.5, true);
+
 		this.intro();
 		//this.activate();
 	}
@@ -178,6 +181,9 @@ class SeaTurtle extends Enemy{
 
 		this.appear(); 
 		this.behavior();
+
+		this.world.audio.stopAllMusic();
+		this.world.audio.playMusic('sueno_tropical');
 
 		this.hostile = true;
 	}
