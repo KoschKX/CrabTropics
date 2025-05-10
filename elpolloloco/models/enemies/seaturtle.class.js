@@ -110,7 +110,7 @@ class SeaTurtle extends Enemy{
 			this.world.audio.playSound('seaturtle_flingA', 1.0);
 		}
 		if(this.state == 5 && this.currImage == 0){
-			this.world.audio.playSound('seaturtle_collapseA', 0.5);
+			this.world.audio.playSound('seaturtle_collapseA', 0.33);
 		}
 		if((this.state == 1 || this.state == 2 || this.state == 4) && this.currImage == this.currImageSet.files.length - 1){
 			this.idle();
