@@ -1,10 +1,4 @@
-function random(min, max) {
-    return min + Math.random() * (max - min);
-}
-    
-function randomInt(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+
 
 function destroy(object, arr=[], world){
     if(!arr){ return; }
@@ -37,6 +31,21 @@ function createNamedClass(className) {
     }
   }[className];
 }
+
+
+/* MATH */
+
+  function random(min, max) {
+      return min + Math.random() * (max - min);
+  }
+      
+  function randomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  function rollChance(percent) {
+    return Math.random() < (percent / 100);
+  }
 
 /* GRAPHICS */
 

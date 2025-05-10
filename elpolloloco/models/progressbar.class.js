@@ -8,7 +8,10 @@ class ProgressBar{
 	drawFramesId;
 
 	centered = true;
-	activated = false;
+	active = false;
+
+	progress = 0.0;
+	task = '';
 
 	constructor(canvas,x=0,y=0){
 		this.cvs = canvas;
@@ -22,7 +25,7 @@ class ProgressBar{
 	}
 
 	init(){
-		this.activated = true;
+		this.active = true;
 		this.drawFrames = () => {
 			this.draw();
 			this.drawFramesId = requestAnimationFrame(this.drawFrames);
@@ -31,18 +34,22 @@ class ProgressBar{
 	}
 
 	draw(){
-		if(!this.activated){ return; }
-		let progress = document.querySelector('#cache').getAttribute('data-progress');
-    	let task = document.querySelector('#cache').getAttribute('data-task');
+		if(!this.active){ return; }
+		let progress = document.querySelector('#cache').getAttribute('data-progress'); this.progress = progress;
+    	let task = document.querySelector('#cache').getAttribute('data-task'); this.task = task;
     	this.loadingBar(progress, task);
-    	if(progress == 1){ this.stop(); }
+    	if(progress >= 1){ 
+    		let self = this; setTimeout(function(){ 
+    			if(self.active){ self.stop(); self.destroy(); self.active = false; }
+    		}, 1000);
+    	}
 	}
 
 	stop() {
 	    if (!this.drawFramesId) { return; }
 	    cancelAnimationFrame(this.drawFramesId);
 	    this.drawFramesId = null;
-	    this.activated = false;
+	    this.active = false;
 	}
 
 	loadingBar(progress, task) {
@@ -54,8 +61,6 @@ class ProgressBar{
 		progress = Math.max(0, Math.min(1, progress));
 
 		ctx.clearRect(0,0,this.cvs.width,this.cvs.height);
-
-		if(progress == 1){ this.stop(); this.destroy(); }
 
 		drawRect( ctx, bx, by, bw, bh, 'transparent','#fff', 2 ); // BACKGROUND
 		drawRect( ctx, bx, by, bw * progress, bh, '#fff'); 		  // BAR

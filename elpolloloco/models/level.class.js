@@ -215,7 +215,6 @@ class Level{
 		let obj  = image[0]; let path = image[1];
 		let ext  = path.split('.').pop(); 
 		const check= this.checkCache(path);
-
 		if (!check) {
 			if(ext == 'mp4' || ext == 'webm'){
 				cachedVideo = self.createVideo(obj, path, true);
@@ -226,9 +225,9 @@ class Level{
 			if(!cachedImage){ return; }
 			cachedImage.onload = () => {
 				self.loadedAssets++;
-				self.updateAttributes(self.loadedAssets / self.totalAssets, cachedImage.src);
-				if (self.loadedAssets === self.totalAssets) {
-					
+				let progress = (self.loadedAssets / self.totalAssets).toFixed(2);
+					self.updateAttributes(progress, cachedImage.src);
+				if (self.loadedAssets >= self.totalAssets) {
 					if(onDemand){
 						if(this.onDemandCallback) {
 							this.onDemandCallback(); this.onDemandCallback = null;

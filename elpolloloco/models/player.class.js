@@ -44,9 +44,9 @@ class Player extends Character{
 	isHit(makeInvincible){
 		super.isHit(makeInvincible);
 		if(this.health==0){
-			this.world.audio.playSound('pirate_dieA',1.0, false);
+			this.world.audio.playSound('pirate_dieA', 1.0, false);
 		}else{
-			this.world.audio.playSound(['pirate_hitA', 'pirate_hitB', 'pirate_hitC'],1.0, false);
+			this.world.audio.playSound(['pirate_hitA', 'pirate_hitB', 'pirate_hitC'], 1.0, false);
 		}
 	}
 

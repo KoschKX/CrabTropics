@@ -61,7 +61,7 @@ class MovableObject{
 	}
 
 	draw(ctx){
-		if(!this.img){ return; }
+		if(!this.img || !(this.img instanceof HTMLImageElement)){ return; }
 		let offX = 0;
 		if(this.facingRight){ offX = this.flipOffset[0]; }
 		if (this.currDirection == 0) {

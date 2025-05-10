@@ -35,12 +35,24 @@ class ShovelHole extends Enemy{
 			self.changeAnimation(self.IMAGES_CLOSE);
 		}, 2000);
 
-		this.objtype = randomInt(0,3);
-    	
+		this.setContent();
 	}
 
 	main(){
 		super.main();
+	}
+
+	setContent(){
+  		const roll = Math.random() * 100;
+		if (roll < 5) {
+			this.objtype = 0; // 5% EMPTY
+		} else if (roll < 15) {
+			this.objtype = 3; // 10% CATNIP
+		} else if (roll < 30) {
+			this.objtype = 1; // 15% CRABS
+		} else {
+			this.objtype = 2; // 70% DOUBLOONS
+		}
 	}
 
 	createDoubloon(){
