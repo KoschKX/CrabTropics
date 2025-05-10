@@ -51,7 +51,7 @@ class SeaTurtle extends Enemy{
 		super.destroy();
 		clearInterval(this.sttInterval); clearTimeout(this.retreatTimeout);
 		this.world.level.enemies = destroy(this, this.world.level.enemies, this.world);
-		if(this.splashes){ this.splashes.destroy; this.splashes = null; }
+		if(this.splashes){ this.splashes.destroy(); this.splashes = null; }
 	}
 
 	init() {
@@ -119,7 +119,6 @@ class SeaTurtle extends Enemy{
 				this.splashes.videoSeek(this.splashStopFrame);
 			}
 			if(this.scale >= 1.0 && !this.splashes.isPlaying){ 
-				console.log(this.splashes.isPlaying);
 				this.splashes.play(); 
 			}
 			if(this.splashes.currImage>0 && this.splashes.currImage >= this.splashes.frames){ 

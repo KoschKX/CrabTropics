@@ -14,6 +14,8 @@ class Titlescreen{
 
 	bounds = [0,0,0,0]
 
+	width = 720; height = 480;
+
 	constructor(cvs,scr,kbd,aud){
 		this.cvs = cvs;  this.ctx = cvs.getContext('2d');
     	this.screen = scr; this.keyboard = kbd; this.audio = aud;
@@ -95,8 +97,8 @@ class Titlescreen{
 	}
 
 	drawVideo(){
-		if (this.video.currentTime >= this.video.duration - 0.2) { this.video.currentTime = 0; this.video.play(); }
-		this.ctx.drawImage(this.video, 0, 0, this.cvs.width, this.cvs.height);
+		if (this.video.currentTime >= this.video.duration - 0.2) { this.video.currentTime = 0;  }
+		this.ctx.drawImage(this.video, (this.cvs.width - this.width) * 0.5, (this.cvs.height - this.height) * 0.5, this.width, this.height);
 	}
 
 	drawTitle(x,y){

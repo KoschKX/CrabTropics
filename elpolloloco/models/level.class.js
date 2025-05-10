@@ -132,14 +132,6 @@ class Level{
 		this.onDemandCallback = callback;
 		this.tmp.forEach((boss) => { this.cacheImageLib( boss, boss.imagesLib, true); });
 		//this.tmp = [];
-		/*
-		if(callback && typeof callback === 'function') {
-			let self = this;
-			setTimeout(function(){
-				callback();
-			}, 1000);
-		}
-		*/
 	}
 
 	init(force = false){
@@ -161,6 +153,7 @@ class Level{
 	cacheImageLib(obj, imagesLib, onDemand=false) {
 		let libs = concat(imagesLib);
 		let images = [];
+
 		libs.forEach(lib => { 
 			if(!lib.files || !lib.files.length){ return; }
 			lib.files.forEach(img => { 
@@ -211,6 +204,7 @@ class Level{
 		}else{
 			check = document.querySelector('#cache img[src="' + path + '"]');
 		}
+
 		return check;
 	}
 
@@ -221,6 +215,7 @@ class Level{
 		let obj  = image[0]; let path = image[1];
 		let ext  = path.split('.').pop(); 
 		const check= this.checkCache(path);
+
 		if (!check) {
 			if(ext == 'mp4' || ext == 'webm'){
 				cachedVideo = self.createVideo(obj, path, true);
@@ -247,6 +242,10 @@ class Level{
 				cachedImage.onload = null; 
 			};
 			self.totalAssets += 1;
+		}else if(onDemand){
+			if(this.onDemandCallback) {
+				this.onDemandCallback(); this.onDemandCallback = null;
+			}
 		}
 	}
 

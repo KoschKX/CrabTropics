@@ -42,6 +42,10 @@ class Screen{
     	document.querySelector(':root').style.setProperty('--app-width', cvsW + 'px');
     	document.querySelector(':root').style.setProperty('--app-height', cvsH +'px');
 
+        if(titlescreen){
+            titlescreen.draw();
+        }
+
         /* PIXEL SCALE */
 		this.cvs.style.width = cvsW + "px";
 		this.cvs.style.height = cvsH + "px";

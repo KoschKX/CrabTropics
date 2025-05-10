@@ -4,7 +4,16 @@
     font-family: 'Reggae'; 
     src: url('fonts/reggae.woff2') format('woff2'),
          url('fonts/reggae.woff') format('woff'),
-         url('fonts/reggae.tff') format('ttf'),
+         url('fonts/reggae.ttf') format('ttf'),
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Keyboard'; 
+    src: url('fonts/keyboard.woff2') format('woff2'),
+         url('fonts/keyboard.woff') format('woff'),
+         url('fonts/reggae.ttf') format('ttf'),
     font-weight: normal;
     font-style: normal;
 }
@@ -122,6 +131,8 @@ canvas{
     #menu .button .icon{
         display:none;
         font-family: "Symbols";
+        text-align: center;
+        width: 1em;
     }
 
     #menu .button .icon.active{
@@ -218,6 +229,29 @@ canvas{
     #controls .buttoon{
     	touch-action: none; touch-action: none; -webkit-touch-callout: none;    
     	user-select: none; -webkit-user-select: none;
+    }
+
+/* INSTRUCTIONS */
+    
+    #instructions{
+        align-items: center;
+        justify-content: center;
+        padding: 1em;
+        text-align: center;
+    }
+
+    #instructions .spacer{
+        display: inline-block;
+        width: 2em;
+    }
+    #instructions .keylabel{
+        display: inline-block;
+    }
+    #instructions .keys{
+        font-family: "Keyboard";
+        font-size: 3em;
+        vertical-align: middle;
+        margin-left: 0.2em;
     }
 
 /* BG VIDEO */

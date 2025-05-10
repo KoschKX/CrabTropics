@@ -86,7 +86,7 @@ class Movie extends Background{
 	videoSeek(frameIndex) {
 		if(!this.vid){ return; }
 	  	const time = frameIndex / this.frameRate;
-	  	this.vid.currentTime = time;
+	  	if(time){ this.vid.currentTime = time; }
 	}
 
 	playAnimation(){
