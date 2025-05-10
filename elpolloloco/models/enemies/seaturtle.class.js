@@ -87,9 +87,8 @@ class SeaTurtle extends Enemy{
 
 	isHit(){
 		super.isHit(); 
-		if(!this.dead){ this.currImage=0; }
+		if(!this.dead){ this.currImage=0; this.world.audio.playSound('seaturtle_hitA', 1.0); }
 		if(this.health <= 0) clearTimeout(this.reviveTimout);
-		this.world.audio.playSound('seaturtle_hitA', 1.0);
 	}
 
 	handleAnimation(){
