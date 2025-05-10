@@ -236,7 +236,7 @@
 	18:00
 		Wave splash animationss.
 
-08. May. 2025
+08. May, 2025
 	12:00
 		Animated collision box code. Making a parser that can grab boxes from png files, so I don't have to enter in each frame manually.
 
@@ -261,7 +261,7 @@
 	22:30
 		Added a progress bar to the loading screen.
 
-09. May. 2025
+09. May, 2025
 	11:00
 		Fixed bug with random crab generation. Added background to page.
 
@@ -276,3 +276,7 @@
 
 	20:45
 		Fixed some nasty bugs with the instances.
+
+10. May, 2025
+	13:30
+		Added Catnip item. Removed keyboard info on mobile devices.
