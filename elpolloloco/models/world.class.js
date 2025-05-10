@@ -155,6 +155,7 @@ class World{
 		this.addObjectsToMap(this.level.enemies.filter(enemy => enemy.name === 'SeaTurtle'));
 
 		this.addObjectsToMap(this.level.items.filter(item => item.name === 'Doubloon'));
+		this.addObjectsToMap(this.level.items.filter(item => item.name === 'Catnip'));
 
 		this.addObjectsToMap(this.level.enemies.filter(enemy => enemy.dead && enemy.name === 'Crab'));
 		this.addToMap(this.player);
@@ -211,6 +212,7 @@ class World{
 	}
 
 	callBoss(){
+		if(this.bosstest){ return; } 
 		let self = this; this.level.preloadBoss(function(){
 			console.log('Boss Loaded');
 			self.boss = new SeaTurtle(1);
@@ -221,9 +223,8 @@ class World{
 
 		  	self.boss.appearing = false; self.boss.static = true;
 		  	self.level.enemies.push(self.boss);
-
-			self.bosstest = true;
 		});
+		this.bosstest = true;
 	}
 
 	toggleDebug(onoff){
@@ -231,6 +232,7 @@ class World{
 	}
 
 	checkDebugKey(){
-		// this.toggleDebug(this.keyboard.CAPSLOCK);
+		if(!this.keyboard.KEYDOWN){ return; }
+		this.toggleDebug(this.keyboard.CAPSLOCK);
 	}
 }

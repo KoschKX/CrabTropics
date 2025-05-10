@@ -54,8 +54,12 @@ class Player extends Character{
 		if(item.name=="Doubloon"){
 			this.doubloons+=1;
 			this.world.audio.playSound('doubloon_getA');
+		}else if(item.name=="Catnip"){
+			this.health+=1;
+			if( this.health > this.maxHealth){ this.health = this.maxHealth; }
+			this.world.audio.playSound('catnip_getA');
 		}
-		 item.destroy();
+		item.destroy();
 	}
 
 	bounce(spd,point){

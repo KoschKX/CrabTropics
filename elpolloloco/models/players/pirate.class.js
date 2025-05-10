@@ -2,7 +2,7 @@ class Pirate extends Player{
 
 	name = 'Pirate';
 
-	health = 3; starthealth = 3; 
+	health = 3;  maxHealth = 6; starthealth = 3; 
 	frameRate = 24; useGravity = true; 
 	speed = 3; frameRate = 24;
 
@@ -102,16 +102,14 @@ class Pirate extends Player{
 		if(!crabsB.length){
 			let crabB = new Crab(3); crabB.world = this.world; 
 			this.world.level.enemies.push(crabB);
+			let rndDir = randomInt(0,1);
+			if(rndDir==1){
+				crabB.x = this.world.level.bounds[0]-crabB.width; crabB.currDirection = 1;
+			}else{
+				crabB.x = this.world.level.bounds[2]+crabB.width; crabB.currDirection = 0;
+			}
 			let self = this; setTimeout( function(){
 				crabB.init();
-				let rndDir = randomInt(0,1);
-				if(rndDir==1){
-					crabB.x = self.world.level.bounds[0]-crabB.width;
-					crabB.currDirection = 1;
-				}else{
-					crabB.x = self.world.level.bounds[2]+crabB.width;
-					crabB.currDirection = 0;
-				}
 			}, randomInt(1,10)*1000 );
 		}
 	}

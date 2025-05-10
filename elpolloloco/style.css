@@ -45,6 +45,8 @@ body{
     justify-content: center;
     margin: 0;
 
+    font-family: "Arial";
+
     background: url(./img/ui/BG_001.jpg);
     background-repeat: no-repeat;
     background-size: cover;
@@ -239,6 +241,9 @@ canvas{
         padding: 1em;
         text-align: center;
     }
+    #instructions #keys{
+        display: none;
+    }
 
     #instructions .spacer{
         display: inline-block;
@@ -247,7 +252,7 @@ canvas{
     #instructions .keylabel{
         display: inline-block;
     }
-    #instructions .keys{
+    #instructions .key{
         font-family: "Keyboard";
         font-size: 3em;
         vertical-align: middle;
@@ -268,5 +273,8 @@ canvas{
     @media screen and (min-width: 1000px){
     	#ui #controls{
     		display: none;
+        }
+        #instructions #keys{
+            display: block;
         }
     }

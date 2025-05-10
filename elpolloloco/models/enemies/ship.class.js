@@ -15,8 +15,7 @@ class Ship extends Enemy{
 		this.IMAGES_FLOAT,
 	]
 
-	explosions = [];
-	cballs = [];
+	explosions = []; cballs = [];
 
 	cannonLocs = [[  33, -165 ], [ -33, -165 ],];
 

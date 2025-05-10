@@ -2,7 +2,7 @@ class Crab extends Enemy{
 
 	name = 'Crab';
 
-	health = 3;
+	health = 3; maxHealth = 3; 
 
 	height = 64; width = 192; groundOffset = 0;
 
@@ -19,9 +19,9 @@ class Crab extends Enemy{
 					[this.width*0.37, this.height*0.45, this.width*0.25, this.height*0.20, 'yellow', true]
 				 ]
 
-	boxes=this.boxes_fine;
+	boxes=[];
 
-	hostile = true; bounceoninjured = true;
+	hostile = false; bounceoninjured = true;
 
 	IMAGES_MOVEA1 	= new Anim('./img/crabA/YELLOW_MOVE_001.png',    12, 					 ''				);
 	IMAGES_MOVEA2 	= new Anim('./img/crabA/BLUE_MOVE_001.png',   	 12, 					 ''				);
@@ -62,6 +62,9 @@ class Crab extends Enemy{
 		super.init();
 		this.loadImage(this.IMAGES_BLANK.files[0]);
 		this.currImageSet = this.IMAGES_BLANK;
+
+		this.boxes=[this.boxes_fine];
+		this.hostile = true;
 	}
 
 	main(){

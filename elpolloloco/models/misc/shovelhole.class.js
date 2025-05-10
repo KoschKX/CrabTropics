@@ -35,7 +35,7 @@ class ShovelHole extends Enemy{
 			self.changeAnimation(self.IMAGES_CLOSE);
 		}, 2000);
 
-		this.objtype = randomInt(0,2);
+		this.objtype = randomInt(0,3);
     	
 	}
 
@@ -53,6 +53,19 @@ class ShovelHole extends Enemy{
 		  	self.createobj.changeAnimation(self.createobj.IMAGES_SPIN);
 		  	self.world.level.items.push(self.createobj);
 		  	self.world.audio.playSound('doubloon_findA', 1.0);
+		 }, 1000);
+	}
+
+	createCatnip(){
+		let self = this; setTimeout(function(){
+			if(self.createobj){ return; }
+			self.createobj = new Catnip();
+		  	self.createobj.world = self.world;
+		  	self.createobj.init();
+		  	self.createobj.x = self.x + (self.width - self.createobj.width) * 0.5; self.createobj.y = self.y - (self.height * 2);
+		  	self.createobj.changeAnimation(self.createobj.IMAGES_SPARKLE);
+		  	self.world.level.items.push(self.createobj);
+		  	self.world.audio.playSound('catnip_findA', 1.0);
 		 }, 1000);
 	}
 
@@ -91,7 +104,7 @@ class ShovelHole extends Enemy{
 		this.img.src = this.imageCache[path];
 		if (i === 0) {
 			const actions = {
-				1: this.createCrab, 2: this.createDoubloon
+				1: this.createCrab, 2: this.createDoubloon, 3: this.createCatnip
 			};
 			const action = actions[this.objtype];
 			if (action) action.call(this);

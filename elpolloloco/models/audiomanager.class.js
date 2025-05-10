@@ -22,8 +22,10 @@ class AudioManager {
         './audio/cannon_thudC.mp3',
         './audio/xmark_appearA.mp3',
         './audio/shovel_digA.mp3',
+        './audio/catnip_findA.mp3',
+        './audio/catnip_getA.mp3',
         './audio/doubloon_findA.mp3',
-        './audio/doubloon_getA.mp3'
+        './audio/doubloon_getA.mp3',
     ];
 
     MUSIC_BANK = [

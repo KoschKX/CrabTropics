@@ -9,6 +9,7 @@ class Keyboard{
 	CAPSLOCK;
 
 	BLOCKED = false;
+    KEYDOWN = false;
 
 	reset(){
 		this.LEFT = false;
@@ -61,6 +62,7 @@ class Keyboard{
                 keyboard.CAPSLOCK = !keyboard.CAPSLOCK;
                 break;
         }
+        this.KEYDOWN = true;
 	}
 
 	keyUp(key){
@@ -106,6 +108,7 @@ class Keyboard{
                 if(keyboard.TAB)   { keyboard.TAB   = false; }
                 break;
         }
+        this.KEYDOWN = false;
     }
 
 

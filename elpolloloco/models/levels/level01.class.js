@@ -21,6 +21,7 @@ const level01 = {
 		'Background("./img/beach/beachA.png", 2, 0 , 0)',
 	],
 	items: [
+		'Catnip()',
 		'Doubloon()',
 	],
 	projectiles: [

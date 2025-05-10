@@ -42,18 +42,18 @@ class Movie extends Background{
 		this.play();
 	}
 
-	play(){
+	play(force){
 		this.isPlaying=true;
-		if(this.vid){
-			//this.vid.play().catch(error => {} );
+		if(this.vid && !this.isVideoPlaying() && force){
+			this.vid.play().catch(error => {} );
 		} 
 		clearInterval(this.animInterval); this.animInterval = setInterval(() => { this.handleAnimation(); }, 1000 / this.frameRate ); 
 	}
 	
-	pause(){
+	pause(force){
 		this.isPlaying=false;
-		if(this.vid){ 
-			//this.vid.pause();
+		if(this.vid && force){ 
+			this.vid.pause();
 		}
 		clearInterval(this.animInterval);
 	}
@@ -83,6 +83,11 @@ class Movie extends Background{
 		this.time = this.currImage / this.frameRate;
 	}
 
+	isVideoPlaying(){
+		return ( this.vid && this.vid.currentTime > 0 && !this.vid.paused &&
+	  			!this.vid.ended && this.vid.readyState >= 2
+		);
+	}
 	videoSeek(frameIndex) {
 		if(!this.vid){ return; }
 	  	const time = frameIndex / this.frameRate;

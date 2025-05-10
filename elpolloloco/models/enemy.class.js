@@ -10,6 +10,7 @@ class Enemy extends Character{
 		super.init();
 		clearInterval(this.mvmtInterval); this.mvmtInterval = setInterval(() => { this.handleMovement(); }, 1000 / 60 );
 	}
+	
 	destroy(){ super.destroy(); clearInterval(this.mvmtInterval); }
 
 	main(){ super.main(); }

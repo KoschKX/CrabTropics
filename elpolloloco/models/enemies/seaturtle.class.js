@@ -2,7 +2,7 @@ class SeaTurtle extends Enemy{
 
 	name = 'SeaTurtle'; isBoss = true;
 
-	health = 9;
+	health = 9;  maxHealth = 9; 
 
 	x=0; y=0; width = 1000; height = 1000; groundOffset = 0;
 
@@ -26,7 +26,9 @@ class SeaTurtle extends Enemy{
 	imagesLib = [
 		this.IMAGES_SHELL, this.IMAGES_IDLE, this.IMAGES_FLING, this.IMAGES_EAT, this.IMAGES_COLLAPSE, this.IMAGES_RETREAT, this.IMAGES_SLAP, this.IMAGES_DIE,
 	]
-	aboxesLib = [this.IMAGES_EAT, this.IMAGES_FLING, this.IMAGES_COLLAPSE, this.IMAGES_DIE];
+	aboxesLib = [ 
+		this.IMAGES_EAT, this.IMAGES_FLING, this.IMAGES_COLLAPSE, this.IMAGES_DIE 
+	];
 
 	introPlaying = false;
 	introTick = 0;
@@ -107,27 +109,8 @@ class SeaTurtle extends Enemy{
 			this.currImage == 20;
 			this.retreat();
 		}
-		if(this.splashes){ 
-			this.world.player.invincible = true;
-			this.world.player.flickering = true;
-			if(this.scale < 1.0 && this.splashes.currImage > 15){  
-				this.world.level.enemies.forEach((enemy) => {
-		            if(!enemy.isBoss && enemy.health>0 && enemy.hostile){ enemy.health=1; enemy.isHit(); }
-		        });}
-			if(this.scale < 1.0 && (this.splashes.currImage == this.splashStopFrame)){ 
-				this.splashes.pause(); 
-				this.splashes.videoSeek(this.splashStopFrame);
-			}
-			if(this.scale >= 1.0 && !this.splashes.isPlaying){ 
-				this.splashes.play(); 
-			}
-			if(this.splashes.currImage>0 && this.splashes.currImage >= this.splashes.frames){ 
-				this.splashes.destroy(); 
-				this.splashes=null;
-				this.world.player.flickering = false;
-				this.world.player.invincible = false;
-			}
-		}
+		if(this.splashes){ this.playCrash(); }
+
 		this.animateCollisionBoxes();
 	}
 
@@ -153,6 +136,7 @@ class SeaTurtle extends Enemy{
 				let check = document.querySelector('#cache [src="' + this.path + '"]');
 				this.splashes  = new Movie('./img/waves/SPLASH_001.webm', 3, 0, 0, 0, 740, 544, 30, true);
 				this.world.level.createVideo(this.splashes, './img/waves/SPLASH_001.webm', !check, false, false);
+				this.splashes.pause(true);
 			}else {
 				this.splashes  = new Movie('./img/waves/SPLASH_001.png', 3, 40, 0, 0, 740, 544);
 			}
@@ -162,6 +146,26 @@ class SeaTurtle extends Enemy{
 		}
 		if(this.scale==1.0){
 			this.activate();
+		}
+	}
+
+	playCrash(){
+		if(!this.splashes){ return; }
+		this.world.player.invincible = true; this.world.player.flickering = true;
+		if(this.scale < 1.0 && this.splashes.currImage > 15){  
+			this.world.level.enemies.forEach((enemy) => {
+	            if(!enemy.isBoss && enemy.health>0 && enemy.hostile){ enemy.health=1; enemy.isHit(); }
+	        });}
+		if(this.scale < 1.0 && (this.splashes.currImage == this.splashStopFrame)){ 
+			if(this.splashes.isPlaying){ this.splashes.pause(true); } 
+			this.splashes.videoSeek(this.splashStopFrame);
+		}
+		if(this.scale >= 1.0 && !this.splashes.isPlaying){ 
+			this.splashes.play(true); 
+		}
+		if(this.splashes.currImage>0 && this.splashes.currImage >= this.splashes.frames){ 
+			this.splashes.destroy(); this.splashes=null;
+			this.world.player.flickering = false; this.world.player.invincible = false;
 		}
 	}
 
