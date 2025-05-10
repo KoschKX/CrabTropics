@@ -292,3 +292,6 @@
 
 	20:00
 		Added Boss Music.
+
+	21:00
+		Added Boss Sounds.
