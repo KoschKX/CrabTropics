@@ -27,6 +27,11 @@ class AudioManager {
         './audio/doubloon_findA.mp3',
         './audio/doubloon_getA.mp3',
         './audio/seaturtle_hornA.mp3',
+        './audio/seaturtle_hitA.mp3',
+        './audio/seaturtle_biteA.mp3',
+        './audio/seaturtle_flingA.mp3',
+        './audio/seaturtle_collapseA.mp3',
+        './audio/seaturtle_growlA.mp3',
     ];
 
     MUSIC_BANK = [

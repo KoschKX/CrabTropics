@@ -89,7 +89,7 @@ class SeaTurtle extends Enemy{
 		super.isHit(); 
 		if(!this.dead){ this.currImage=0; }
 		if(this.health <= 0) clearTimeout(this.reviveTimout);
-		this.world.audio.playSound(['crab_hitA','crab_hitB','crab_hitC']);
+		this.world.audio.playSound('seaturtle_hitA', 1.0);
 	}
 
 	handleAnimation(){
@@ -102,7 +102,15 @@ class SeaTurtle extends Enemy{
 		}
 		if(this.state == 1 && this.currImage == 10){
 			let rstate = randomInt(0,100);
-			if(rstate>66){ this.collapse(); }
+			if(rstate>66){ this.collapse(); } else { 
+				this.world.audio.playSound('seaturtle_biteA', 0.66); 
+			}
+		}
+		if(this.state == 2 && this.currImage == 15){
+			this.world.audio.playSound('seaturtle_flingA', 1.0);
+		}
+		if(this.state == 5 && this.currImage == 0){
+			this.world.audio.playSound('seaturtle_collapseA', 0.5);
 		}
 		if((this.state == 1 || this.state == 2 || this.state == 4) && this.currImage == this.currImageSet.files.length - 1){
 			this.idle();
@@ -201,7 +209,7 @@ class SeaTurtle extends Enemy{
 	changeState(state) {
 		if (state === this.state) return;
 		const actions = [
-			this.idle, this.eat, this.fling, this.slap, this.retreat, this.collapse, this.die
+			this.idle, this.bite, this.fling, this.slap, this.retreat, this.collapse, this.die
 		];
 		const action = actions[state];
 		if (action) action.call(this);
@@ -220,7 +228,7 @@ class SeaTurtle extends Enemy{
 		this.changeAnimation(this.IMAGES_IDLE);
 	}
 
-	eat(){
+	bite(){
 		if(this.state == 1){ return; }
 		this.state = 1; this.currImage = 0; 
 		this.changeAnimation(this.IMAGES_EAT);
@@ -261,6 +269,8 @@ class SeaTurtle extends Enemy{
 		this.state = 6; this.currImage = 0; 
 		this.changeAnimation(this.IMAGES_DIE);
 		this.dead = true;
+
+		this.world.audio.playSound('seaturtle_growlA', 1.0);
 	}
 
 	moveLeft(){}
