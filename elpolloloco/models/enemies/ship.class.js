@@ -24,9 +24,8 @@ class Ship extends Enemy{
 
 	hostile = false; 
 
-	constructor(){
-		super();
-		this.generateStamp(this.name);
+	constructor(world){
+		super(world); this.generateStamp(this.name);
 	}
 	
 	init() {
@@ -56,7 +55,7 @@ class Ship extends Enemy{
 	}
 
 	cannonFire() {
-		if(!this.world || !this.world.level || !this.firing){ return; }
+		if(!this.firing){ return; }
 
 	 	const rDelay = randomInt(this.minShotFreq, this.maxShotFreq);
 	 	const now 	 = this.now();
@@ -65,15 +64,13 @@ class Ship extends Enemy{
 
   		if(now - this.lastShot < rDelay || this.explosions.length >= this.maxShots){ return; }
 
-	  	let shot = new Explosion(true);
+	  	let shot = new Explosion(this.world, true);
   			shot.scale = random(0.25, 0.1);
   		let shotLoc = this.getShotLocation(shot);
   			shot.x = shotLoc[0]; shot.y = shotLoc[1];	
 
-		let cball = new Cannonball(true);
+		let cball = new Cannonball(this.world, true);
 			cball.x = shot.x + (cball.x*0.5); cball.y = shot.y;
-
-  			shot.world = this.world; cball.world = this.world;
 
   		this.world.level.effects.push(shot); this.world.level.projectiles.push(cball);
 

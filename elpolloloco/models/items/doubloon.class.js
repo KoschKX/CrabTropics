@@ -6,19 +6,26 @@ class Doubloon extends Enemy{
 
 	width = 32; height = 32;
 
-	IMAGES_SPIN = new Anim('./img/doubloon/DOUBLOON_SPIN_001.png',29 , '');
+	IMAGES_SPINA = new Anim('./img/doubloon/SMALL_GOLD_SPIN_001.png', 29 , '');
+	IMAGES_SPINB = new Anim('./img/doubloon/SMALL_SILVER_SPIN_001.png', 29 , '');
 	imagesLib = [
-		this.IMAGES_SPIN,
+		this.IMAGES_SPINA, this.IMAGES_SPINB
 	]
 	
 	boxes = [[0, 0, this.width, this.height, 'lime', true]];
 
-	buried = true; hostile = true;
+	buried = true; hostile = true; value = 0;
 	
-	constructor(immediate = false){
-		super();
+	constructor(world, variant=0, immediate = false){
+		super(world); this.generateStamp(this.name);
+		
+		if(Array.isArray(variant) && variant.length >= 2){
+			this.variant = randomInt(variant[0],variant[1]);
+		}else{
+			this.variant = variant;
+		}
+
 		if(immediate){ this.init(); }
-		this.generateStamp(this.name);
 	}
 	
 	destroy(){
@@ -28,8 +35,15 @@ class Doubloon extends Enemy{
 
 	init() {
 		super.init();
-		this.loadImage(this.IMAGES_SPIN.files[0]);
-		this.changeAnimation(this.IMAGES_SPIN);
+
+		const variantData = [this.IMAGES_SPINA, this.IMAGES_SPINB];
+
+		this.loadImage( variantData[this.variant].files[0] );
+
+		if(this.variant == 0){ this.value = 1; }
+		if(this.variant == 1){ this.value = 5; }
+
+		this.changeAnimation( variantData[this.variant] );
 	}
 
 	main(delta){

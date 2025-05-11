@@ -14,12 +14,10 @@ class ShovelHole extends Enemy{
 
 	createobj; objtype;
 
-	constructor(immediate = false){
-		super();
-		if(immediate){
-			this.init();
-		}
-		this.generateStamp(this.name);
+	constructor(world, immediate){
+		super(world); this.generateStamp(this.name);
+
+		if(immediate){ this.init(); }
 	}
 	
 	destroy(){
@@ -31,7 +29,7 @@ class ShovelHole extends Enemy{
 		super.init();
 		this.loadImage(this.IMAGES_OPEN.files[0]);
 		this.changeAnimation(this.IMAGES_OPEN);
-		let self = this; setTimeout(function(){
+		let self = this; this.world.setTimer(function(){
 			self.changeAnimation(self.IMAGES_CLOSE);
 		}, 2000);
 
@@ -56,24 +54,34 @@ class ShovelHole extends Enemy{
 	}
 
 	createDoubloon(){
-		let self = this; setTimeout(function(){
+		if(!this.world){ return; }
+		let self = this; this.world.setTimer(function(){
 			if(self.createobj){ return; }
-			self.createobj = new Doubloon();
-		  	self.createobj.world = self.world;
-		  	self.createobj.init();
+			
+			let rndVari;
+	  		const roll = Math.random() * 100;
+			if (roll <= 30) {
+				rndVari = 1; // 30% SILVER
+			} else {
+				rndVari = 0; // 70% GOLD
+			}
+
+			self.createobj = new Doubloon(self.world, rndVari, true);
 		  	self.createobj.x = self.x + (self.width - self.createobj.width) * 0.5; self.createobj.y = self.y - self.height;
-		  	self.createobj.changeAnimation(self.createobj.IMAGES_SPIN);
+		  	const animations = [
+				self.createobj.IMAGES_SPINA, self.createobj.IMAGES_IMAGES_SPINB
+			];
+			const anim = animations[self.createobj.variant];
 		  	self.world.level.items.push(self.createobj);
 		  	self.world.audio.playSound('doubloon_findA', 1.0);
 		 }, 1000);
 	}
 
 	createCatnip(){
-		let self = this; setTimeout(function(){
+		if(!this.world){ return; }
+		let self = this; this.world.setTimer(function(){
 			if(self.createobj){ return; }
-			self.createobj = new Catnip();
-		  	self.createobj.world = self.world;
-		  	self.createobj.init();
+			self.createobj = new Catnip(self.world, true);
 		  	self.createobj.x = self.x + (self.width - self.createobj.width) * 0.5; self.createobj.y = self.y - (self.height * 2);
 		  	self.createobj.changeAnimation(self.createobj.IMAGES_SPARKLE);
 		  	self.world.level.items.push(self.createobj);
@@ -82,20 +90,14 @@ class ShovelHole extends Enemy{
 	}
 
 	createCrab() {
-		setTimeout(() => {
+		if(!this.world){ return; }
+		this.world.setTimer(() => {
 			if (this.createobj) return;
-			this.createobj = new Crab([0, 2]);
-			this.createobj.world = this.world;
-			this.createobj.init();
+			this.createobj = new Crab(this.world, [0, 2]);
 			this.createobj.x = this.x + (this.width - this.createobj.width) * 0.5;
 			this.createobj.y = this.y;
-			const animations = [
-				this.createobj.IMAGES_APPEARA1, this.createobj.IMAGES_APPEARA2, this.createobj.IMAGES_APPEARA3
-			];
-			const anim = animations[this.createobj.variant];
-			if (anim) this.createobj.changeAnimation(anim);
-			this.createobj.appearing = true;
-			this.createobj.static = true;
+			this.createobj.init();
+			this.createobj.appear();
 			this.world.level.enemies.push(this.createobj);
 		}, 1500);
 	}
@@ -106,11 +108,9 @@ class ShovelHole extends Enemy{
 
 	playAnimation(anim) {
 		if (!this.world || !anim) return;
-
 		const i = this.currImage % anim.files.length;
 		const path = anim.files[i];
-		if (!this.imageCache[path]) return;
-		this.img.src = this.imageCache[path];
+		this.img = this.getCachedImage(path);
 		if (i === 0) {
 			const actions = {
 				1: this.createCrab, 2: this.createDoubloon, 3: this.createCatnip

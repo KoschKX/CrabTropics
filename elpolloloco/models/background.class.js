@@ -4,6 +4,7 @@ class Background extends MovableObject{
 	category = 'background';
 
 	imagePath; imagesLib = [];
+	IMAGES_BG = new Anim('./img/blank.png'); imagesLib = [this.IMAGES_BG]; imageCache = []; 
 
 	useGround = false; 
 
@@ -11,18 +12,23 @@ class Background extends MovableObject{
 
 	layer = 0;
 	
-	constructor(imagePath,layer,x,y,width,height){
-		super().loadImage(imagePath);
+	constructor(world,imagePath,layer,x,y,width,height){
+		super(world);
+		this.loadImage(imagePath);
 		this.imagePath=imagePath;
-		this.imagesLib.push(imagePath);
+		this.imagesLib[0].files[0]=imagePath;
 		this.x = x; this.y = y; this.layer = layer;
 		if(width){ this.width = width; }
 		if(height){ this.height = height; }
-
 		this.generateStamp(this.name);
+		this.init();
 	}
 
-	handleAnimation(){}
+	init(){
+		this.initialized = true;
+		this.loadImage(this.IMAGES_BG.files[0]);
+		this.changeAnimation(this.IMAGES_BG);
+	}
 
 	fit(){
 		this.width = this.cvs.width; this.height = this.cvs.height;

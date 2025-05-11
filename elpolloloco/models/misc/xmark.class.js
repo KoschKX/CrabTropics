@@ -6,7 +6,7 @@ class XMark extends Enemy{
 
 	width = 64; height = 24;
 
-	IMAGES_MARK = new Anim('./img/misc/XMARK_DISTORTED_001.png',1 , '');
+	IMAGES_MARK = new Anim('./img/misc/XMARK_DISTORTED_001.png');
 	imagesLib = [
 		this.IMAGES_MARK,
 	]
@@ -15,12 +15,10 @@ class XMark extends Enemy{
 
 	buried = true;
 	
-	constructor(immediate = false){
-		super();
-		if(immediate){
-			this.init();
-		}
-		this.generateStamp(this.name);
+	constructor(world, immediate = false){
+		super(world); this.generateStamp(this.name);
+
+		if(immediate){ this.init(); }
 	}
 	
 	destroy(){

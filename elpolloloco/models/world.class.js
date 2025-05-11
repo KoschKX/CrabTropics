@@ -3,13 +3,14 @@ class World{
 	cvs; ctx; cam; hud;
 	keyboard; screen; audio; loadicon;
 	gameover = false; paused = false;
-	cache = true; debug = false; bosstest = false;
+	cache = true; debug = false; bosstest = false; bossDripLoading = false;
 
 	level; levelmap; boss;
 
 	clsnInterval; drawFramesId;
 
 	frameRate = 120; elapsedTime = 0; lastTime; timestamp; lastUpdateTime; 
+	scheduledTimers = []; scheduledRepeaters = [];
 
 	constructor(cvs,scr,kbd,aud){
 		this.cvs = cvs;  this.ctx = cvs.getContext('2d');
@@ -18,8 +19,6 @@ class World{
     	this.loadbar = new ProgressBar(canvas);
     	this.cam = new Camera(this);
     	this.hud = new HUD(this);
-
-
 	}
 
 	destroy(){
@@ -27,7 +26,6 @@ class World{
 	}
 
 	init(){
-
     	this.frameDuration = 1000 / this.frameRate;
 		this.timestamp = 0; this.lastUpdateTime = 0; 
 
@@ -40,10 +38,14 @@ class World{
 	    };
 	    this.audio.playSound(this.level.ambient[0], 1.0, false, true);
 		this.audio.playMusic(this.level.music[0], 0.4, true);
+
+		this.dripLoadBoss();
 	}
 
 	restart(){
 		this.unpause();
+		this.clearAllTimers();
+		this.clearAllRepeats();
 		this.elapsedTime = 0;
 		this.gameover = false; 
 		this.debug = false; 
@@ -57,12 +59,11 @@ class World{
 	}
 
 	load(levelmap){
-		let newlevel = new Level(levelmap);
+		let newlevel = new Level(this,levelmap);
 		this.level = newlevel;
 		this.levelmap = levelmap;
 		this.player = this.level.player;
 	    this.ground = this.level.ground;
-		this.level.setWorld(this); 
 		this.level.preload(function(){
 			this.world.init();
 			this.world.screen.showControls();
@@ -72,10 +73,6 @@ class World{
 /* DRAW */
 
 	draw(timestamp) {
-
-		// if(this.paused){ 
-			//requestAnimationFrame((timestamp) => this.draw(timestamp)); return; 
-		// }
 
 		this.timestamp = timestamp; this.frameDuration = 1000 / this.frameRate;
 
@@ -106,7 +103,11 @@ class World{
 		this.addObjectsToMap(this.level.items.filter(item => item.name === 'Catnip'));
 
 		this.addObjectsToMap(this.level.enemies.filter(enemy => enemy.dead && enemy.name === 'Crab'));
+
+		this.addObjectsToMap(this.level.effects.filter(effect => effect.name === 'Sparkle'));
+
 		this.addToMap(this.player);
+		
 		this.addObjectsToMap(this.level.enemies.filter(enemy => !enemy.dead && enemy.name === 'Crab'));
 
 		this.addObjectsToMap(this.level.effects.filter(effect => effect.name === 'Stomp'));
@@ -158,6 +159,17 @@ class World{
 
 		if (!this.paused && (delta >= this.frameDuration)) {
 
+			// EXECUTER TIMERS
+			this.scheduledTimers = this.scheduledTimers.filter(timer => {
+		        if (this.elapsedTime >= timer.execTime) { timer.callback(); return false; }
+		        return true;
+		    });
+
+		    // EXECUTE REPEATERS
+		    for (const repeater of this.scheduledRepeaters) {
+		        if (this.elapsedTime >= repeater.execTime) { repeater.callback(); repeater.execTime = this.elapsedTime + repeater.delay; }
+		    }
+
 			this.elapsedTime += delta;
 
 			this.checkCollisions();
@@ -176,13 +188,43 @@ class World{
 
 	pause(){
 		this.paused = true;
+        document.querySelector('#menu #pause_on').classList.remove('active');
+        document.querySelector('#menu #pause_off').classList.add('active');
 		return this.paused; 
 	}
 
 	unpause(){
 		this.paused = false;
+        document.querySelector('#menu #pause_off').classList.remove('active');
+        document.querySelector('#menu #pause_on').classList.add('active');
 		return this.paused; 
 	}
+
+	setTimer(callback, delay){
+		const execTime = this.elapsedTime + delay;
+		const id = Math.random().toString(36).substr(2, 9); 
+    	this.scheduledTimers.push({ id, callback, execTime });
+    	return id;
+	}
+
+	clearTimer(id) {
+	    this.scheduledTimers = this.scheduledTimers.filter(timeout => timeout.id !== id);
+	}
+
+	setRepeater(callback, delay) {
+	    const id = Math.random().toString(36).substr(2, 9);
+	    const execTime= performance.now() + delay;
+	    this.scheduledRepeaters.push({ id, callback, delay, execTime });
+	    return id;
+	}
+
+	clearRepeater(id) {
+	    this.scheduledRepeaters = this.scheduledRepeaters.filter(i => i.id !== id);
+	}
+
+	clearAllTimers() { this.scheduledTimer = []; }
+
+	clearAllRepeats() { this.scheduledRepeats = []; }
 
 /* COLLISION DETECTION */
 
@@ -248,6 +290,17 @@ class World{
 				}
 			}
 		});
+		let antiEnemies = this.level.enemies.filter(antiEnemy => antiEnemy.attacksEnemies === true);
+		antiEnemies.forEach((antiEnemy) => {
+			if( !antiEnemy.boxes || !antiEnemy.boxes.length ){ return; }
+			this.level.enemies.forEach((enemy) => {
+				if(enemy==antiEnemy){ return; }
+				let colA = antiEnemy.isColliding(enemy,0,0);
+				if(colA){
+					enemy.isHit();
+				}
+			});
+		});
 	}
 
 /* DEBUG */
@@ -258,23 +311,31 @@ class World{
 		}
 	}
 
+	dripLoadBoss(){
+		if(this.bossDripLoading){ return; } 
+		this.bossDripLoading = true;
+		let tmpBoss = new SeaTurtle(this, false);
+		let self = this; this.level.dripImageLib(tmpBoss, tmpBoss.imagesLib, 100 ,function(){
+			console.log('Boss Loaded');
+			self.bossDripLoading = false;
+			tmpBoss.destroy();
+		});
+	}
+
 	callBoss(){
 		if(this.bosstest){ return; } 
-
-		this.audio.playSound('seaturtle_hornA', 0.5, true);
-
-		let self = this; this.level.preloadBoss(function(){
-			console.log('Boss Loaded');
-			self.boss = new SeaTurtle(1);
-		  	self.boss.world = self;
+		let tmpBoss = new SeaTurtle(this, false);
+		let self = this; this.level.preloadObjectLibs(tmpBoss, function(){
+			console.log('Boss Called');
+			self.boss = new SeaTurtle(self, false);
 		  	self.boss.init();
-
 		  	self.boss.callBoss();
-
 		  	self.boss.appearing = false; self.boss.static = true;
 		  	self.level.enemies.push(self.boss);
+		  	tmpBoss.destroy();
 		});
 		this.bosstest = true;
+		this.audio.playSound('seaturtle_hornA', 0.5, true);
 	}
 
 	toggleDebug(onoff){

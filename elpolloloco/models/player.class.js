@@ -6,10 +6,9 @@ class Player extends Character{
 
 	box = [ this.width, this.height, this.width, this.height ];
 
-	init() {
-		super.init();
-	}
-	main() { super.main(); this.handleControls(); }
+	constructor(world) { super(world); }
+	init() { super.init(); }
+	main(world) { super.main(); this.handleControls(); }
 
 	destroy(){
 		super.destroy();
@@ -18,7 +17,7 @@ class Player extends Character{
 	reset(){}
 
 	handleControls(){
-		if(!this.world || ! this.world.keyboard){ return; }
+		if(!this.world || !this.world.keyboard){ return; }
 		if(this.dead){ this.deactivateColliders(); return; } else { this.activateColliders(); }
 		if(this.world.keyboard.LEFT){
 			this.facingRight=false; this.moveLeft();
@@ -46,12 +45,16 @@ class Player extends Character{
 
 	getItem(item){
 		if(item.name=="Doubloon"){
-			this.doubloons+=1;
+			this.doubloons+=item.value;
 			this.world.audio.playSound('doubloon_getA');
+			let sparkle = new Sparkle(this.world, 1, true); sparkle.setTarget(this, [0, -this.height * 0.66 ] );
+			this.world.level.effects.push(sparkle);
 		}else if(item.name=="Catnip"){
 			this.health+=1;
 			if( this.health > this.maxHealth){ this.health = this.maxHealth; }
 			this.world.audio.playSound('catnip_getA');
+			let sparkle = new Sparkle(this.world, 0, true); sparkle.setTarget(this,[0, -this.height * 0.5 ] );
+			this.world.level.effects.push(sparkle);
 		}
 		item.destroy();
 	}

@@ -9,7 +9,9 @@ class Cloud extends MovableObject{
 
 	randx = 720; randy = 200;
 	
-	constructor(variant, randx, randy) {
+	constructor(world, variant, randx, randy) {
+		super(world); this.generateStamp(this.name);
+		
 		const variants = [
 			{ img: './img/beach/cloudA.png', width: 150, height: 60 },
 			{ img: './img/beach/cloudB.png', width: 200, height: 75 },
@@ -17,7 +19,7 @@ class Cloud extends MovableObject{
 		];
 		if (variants[variant]) {
 			const { img, width, height } = variants[variant];
-			super().loadImage(img);
+			this.loadImage(img);
 			this.width = width * this.scale; this.height = height * this.scale;
 		}
 		this.variant = variant;

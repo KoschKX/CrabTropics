@@ -32,6 +32,7 @@ const level01 = {
 	effects: [
 		'Explosion()',
 		'Stomp()',
+		'Sparkle()',
 	],
 	ambient: [
 		'ocean',

@@ -11,12 +11,10 @@ class Explosion extends MovableObject{
 		this.IMAGES_EXPLODE,
 	]
 	
-	constructor(immediate = false){
-		super();
-		if(immediate){
-			this.init();
-		}
-		this.generateStamp(this.name);
+	constructor(world, immediate = false){
+		super(world); this.generateStamp(this.name);
+
+		if(immediate){ this.init();}
 	}
 	
 	destroy(){
@@ -39,8 +37,7 @@ class Explosion extends MovableObject{
 		if( !this.world || !anim ){ return; }
 		let i = this.currImage % anim.files.length;
         let path = anim.files[i];
-        if(!this.imageCache[path]){ return; }
-        this.img.src = this.imageCache[path];
+        this.img = this.getCachedImage(path);
     	if(i < anim.files.length-1){
     		this.currImage++;
 		}else{

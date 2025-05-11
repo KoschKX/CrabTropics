@@ -19,7 +19,7 @@ class Titlescreen{
 	constructor(cvs,scr,kbd,aud){
 		this.cvs = cvs;  this.ctx = cvs.getContext('2d');
     	this.screen = scr; this.keyboard = kbd; this.audio = aud;
-    	this.background = new Background('./img/ui/background2.jpg', 0 , 0);
+    	this.background = new Background(null,'./img/ui/background2.jpg', 0 , 0);
 		this.init();
 	}
 
@@ -38,7 +38,7 @@ class Titlescreen{
 
 		const vid = document.createElement('video');
 		vid.id = 'title_video'; vid.classList.add('bg_video');
-		vid.src = './mov/beachC_looped.mp4';
+		vid.src = './mov/beachC_looped.webm';
 		vid.preload = 'auto'; vid.autoplay = true; vid.muted = true; vid.loop = true; vid.playsInline = true;
 
 		document.querySelector('body').appendChild(vid);

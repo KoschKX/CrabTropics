@@ -30,11 +30,11 @@ class Pirate extends Player{
 
 	lastMark = 0; maxMarks = 3; spotting = true;
 
-	constructor(){ super(); this.generateStamp(this.name); }
+	constructor(world){ super(world); this.generateStamp(this.name); }
 	destroy(){ super.destroy(); }
 
 	init() {
-		super.init();
+		super.init(); 
 		this.loadImage(this.IMAGES_IDLE.files[0]);
 		this.changeAnimation(this.IMAGES_IDLE);
 	}
@@ -89,9 +89,8 @@ class Pirate extends Player{
 		this.digging=true; this.static=true; this.invincible = true;
 		this.currXmark=xmark;
 		
-		let hole = new ShovelHole(true);
+		let hole = new ShovelHole(this.world, true);
 	  	hole.x = xmark.x; hole.y = xmark.y - 6;
-	  	hole.world = this.world;
 	  	this.world.level.projectiles.push(hole);
 	  	this.world.audio.playSound('shovel_digA', 0.5);
 	}
@@ -100,7 +99,7 @@ class Pirate extends Player{
 		if(!this.world){ return; }
 		let crabsB = this.world.level.enemies.filter(enemy => enemy.name === 'Crab' && enemy.variant === 3);
 		if(!crabsB.length){
-			let crabB = new Crab(3); crabB.world = this.world; 
+			let crabB = new Crab(this.world, 3);
 			this.world.level.enemies.push(crabB);
 			let rndDir = randomInt(0,1);
 			if(rndDir==1){
@@ -108,7 +107,7 @@ class Pirate extends Player{
 			}else{
 				crabB.x = this.world.level.bounds[2]+crabB.width; crabB.currDirection = 0;
 			}
-			let self = this; setTimeout( function(){
+			let self = this; this.world.setTimer( function(){
 				crabB.init();
 			}, randomInt(1,10)*1000 );
 		}
@@ -136,7 +135,7 @@ class Pirate extends Player{
   			return;
   		}
 
-		  	let mark = new XMark(true);
+		  	let mark = new XMark(this.world, true);
 
 	  		let markCenterX = randomInt(0, this.world.level.bounds[2]) - (mark.width*0.5);
 	  		let markCenterY = this.world.ground + (mark.height*0.5) + 36;

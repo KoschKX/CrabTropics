@@ -24,7 +24,8 @@ class Level{
 
 	cacheDiv;
 
-	constructor(levelmap){
+	constructor(world,levelmap){
+		this.world = world;
 		this.cacheDiv = document.querySelector('#cache');
 		this.buildMap(levelmap);
 	}
@@ -58,7 +59,8 @@ class Level{
 			for(let o = 0; o<obj.length; o++){
 				let cobj=obj[o];
 				if (typeof cobj === 'string' && cobj.includes('(') && cobj.includes(')')) {
-					out.push( eval('new '+cobj));
+					const nobj = cobj.replace(/\((.*)\)/, '(this.world, $1)');
+					out.push( eval('new '+nobj));
 				}else if(!Number.isNaN(cobj)){
 					out.push(cobj);
 				}
@@ -69,16 +71,6 @@ class Level{
 		return out;
 	}
 
-	setWorld(world){
-		if(!world){ return; }
-		this.world = world;
-		this.player.world = this.world;
-		this.backgrounds.forEach((background) => { background.world = this.world; });
-		this.enemies.forEach((enemy) => { enemy.world = this.world; });
-		this.items.forEach((item) => { item.world = this.world; });
-		this.effects.forEach((effect) => { effect.world = this.world; });
-		this.projectiles.forEach((projectile) => { projectile.world = this.world; });
-	}
 
 	preload(callback){
 
@@ -126,17 +118,13 @@ class Level{
 		this.init(true);
 	}
 
-	preloadBoss(callback){
-		if(!this.tmp.length){ return; }
-		console.log('Preloading boss');
+	preloadObjectLibs(obj, callback){
 		this.onDemandCallback = callback;
-		this.tmp.forEach((boss) => { this.cacheImageLib( boss, boss.imagesLib, true); });
-		//this.tmp = [];
+		this.cacheImageLib( obj,obj.imagesLib, true);
 	}
 
 	init(force = false){
 		if(!this.loaded && !force){ return; }
-		this.setWorld(this.world);
 		this.enemies.forEach((enemy) => { enemy.init(); });
 		this.backgrounds.forEach((background) => { background.init(); });
 		this.items.forEach((item) => { item.init(); });
@@ -144,26 +132,32 @@ class Level{
 		this.effects.forEach((effect) => { effect.init(); });
 		this.player.init();
 		if(this.loadedCallback && typeof this.loadedCallback === 'function') {
-			let self = this; setTimeout(function(){
-				self.loadedCallback();
-			}, 1000);
+			let self = this; setTimeout(function(){ self.loadedCallback(); }, 1000);
 		}
+	}
+
+	dripImageLib(obj, imagesLib, delay, callback) {
+		let libs = concat(imagesLib);
+		let images = [];
+		libs.forEach(lib => { 
+			if(!lib.files || !lib.files.length){ return; }
+			lib.files.forEach(img => {  images.push([obj, img]); });
+		});
+		if(images){ this.dripAssets(images, delay, callback); }
 	}
 
 	cacheImageLib(obj, imagesLib, onDemand=false) {
 		let libs = concat(imagesLib);
 		let images = [];
-
 		libs.forEach(lib => { 
 			if(!lib.files || !lib.files.length){ return; }
-			lib.files.forEach(img => { 
-				images.push([obj, img]);
-			});
+			lib.files.forEach(img => {  images.push([obj, img]); });
 		});
 		if(images){ this.cacheAssets(images, onDemand); }
 	}
 
 	createVideo(obj, path, addToDOM = false, autoplay = true, loop = true){
+		if( this.checkCache(path) ){ return obj; }
 		let vid = document.createElement("video");
 		vid.setAttribute('object-id', obj.stamp);
 		vid.classList.add('bg_video');
@@ -176,11 +170,25 @@ class Level{
 	}
 
 	createImage(obj, path, addToDOM = false){
+		if( this.checkCache(path) ){ return; }
 		let img = new Image();
 		img.setAttribute('object_id', obj.stamp);
 		img.src = path;
 		if(addToDOM){ this.cacheDiv.appendChild(img); }
 		return img;
+	}
+
+	createAsset(obj, path, addToDOM = false){
+		let asset; let type = '';
+		const ext = path.split('.').pop().toLowerCase();
+		if (ext === 'mp4' || ext === 'webm') {
+			asset = this.createVideo(obj, path, addToDOM);
+			type = 'video';
+		} else if (['png', 'jpg', 'jpeg', 'gif', 'webp'].includes(ext)) {
+			asset = this.createImage(obj, path, addToDOM);
+			type = 'image';
+		}
+		return [asset,type];
 	}
 
 	sanitizeTaskName(task){
@@ -204,29 +212,22 @@ class Level{
 		}else{
 			check = document.querySelector('#cache img[src="' + path + '"]');
 		}
-
 		return check;
 	}
 
 	processAsset(image, onDemand){
 		if(!image || !this.cacheDiv){ return; }
 		let self = this;
-		let checkCache; let cachedImage; let cachedVideo; 
-		let obj  = image[0]; let path = image[1];
-		let ext  = path.split('.').pop(); 
+		const obj  = image[0]; let path = image[1];
 		const check= this.checkCache(path);
 		if (!check) {
-			if(ext == 'mp4' || ext == 'webm'){
-				cachedVideo = self.createVideo(obj, path, true);
-				self.loadedAssets += 1;
-			}else{
-				cachedImage = self.createImage(obj, path, true);
-			}
-			if(!cachedImage){ return; }
-			cachedImage.onload = () => {
+			let [asset, type] = self.createAsset(obj, path, true);
+			if (type === 'video'){ self.loadedAssets += 1; }
+			if (type !== 'image'){ return; }
+			asset.onload = () => {
 				self.loadedAssets++;
 				let progress = (self.loadedAssets / self.totalAssets).toFixed(2);
-					self.updateAttributes(progress, cachedImage.src);
+					self.updateAttributes(progress, asset.src);
 				if (self.loadedAssets >= self.totalAssets) {
 					if(onDemand){
 						if(this.onDemandCallback) {
@@ -238,7 +239,7 @@ class Level{
 						self.init();
 					}
 				}
-				cachedImage.onload = null; 
+				asset.onload = null; 
 			};
 			self.totalAssets += 1;
 		}else if(onDemand){
@@ -259,6 +260,27 @@ class Level{
 		images.forEach(function(image) {
 			self.processAsset(image, onDemand);
 		});
+	}
+
+	async dripAssets(images, delay, callback) {
+		if (!images || !images.length || !this.cacheDiv) return;
+		const self = this;
+		const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
+		let loadPromises = [];
+		for (let i = 0; i < images.length; i++) {
+			const [obj, path] = images[i];
+			const startDelay = i * delay;
+			const promise = (async () => {
+				await wait(startDelay);
+				let [asset, type] = self.createAsset(obj, path, true);
+				if (type === 'video') { self.loadedAssets += 1; return; }
+				if (type !== 'image' || !asset) return;
+				return new Promise(resolve => { asset.onload = resolve; asset.onerror = resolve; });
+			})();
+			loadPromises.push(promise);
+		}
+		await Promise.all(loadPromises); 
+		if (typeof callback === 'function') callback();
 	}
 
 }

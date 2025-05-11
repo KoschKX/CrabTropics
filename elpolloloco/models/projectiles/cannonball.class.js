@@ -14,7 +14,7 @@ class Cannonball extends Enemy{
 
 	IMAGES_ROLL = new Anim('./img/cannonballA/ROLL_001.png'	,1 , '' );
 	imagesLib = [
-		this.IMAGES_ROLL.files,
+		this.IMAGES_ROLL,
 	]
 	
 	boxes = [[0, 0, this.width, this.height, 'red', true]];
@@ -22,11 +22,10 @@ class Cannonball extends Enemy{
 	hostile = true;
 	madeGroundContact = false;
 
-	constructor(immediate = false){
-		super();
-		if(immediate){
-			this.init();
-		}
+	constructor(world, immediate = false){
+		super(world); this.generateStamp(this.name);
+
+		if(immediate){ this.init(); }
 	}
 
 	destroy(){
@@ -40,7 +39,7 @@ class Cannonball extends Enemy{
 		this.loadImage(this.IMAGES_ROLL.files[0]);
 		this.changeAnimation(this.IMAGES_ROLL);
 
-		this.jump();
+		this.bounce(20);
 
 		this.hostile = false;
 	}
@@ -56,8 +55,7 @@ class Cannonball extends Enemy{
 	}
 
 	checkGroundHit(){
-		if(!this.world || !this.world.level) { return; }
-
+		
     	if(this.falling){
     		this.hostile = true;
 
@@ -84,6 +82,7 @@ class Cannonball extends Enemy{
 
 	    	this.speedY-=0.1;
 	    	this.y-=this.speedY;
+
 	    }
 	    if(this.y>=this.world.cvs.height+this.height){
 	    	this.destroy();

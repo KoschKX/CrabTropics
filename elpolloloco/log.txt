@@ -295,3 +295,20 @@
 
 	21:00
 		Added Boss Sounds.
+
+11, May, 2025
+
+	9:00	
+		Added world to constructors. Custom clearInteral and setTimeout functions that work with elapsed time.
+
+	13:00
+		Added ability to prevent duplicate cached images.
+
+	14:00
+		Added Sparkle Effects.
+
+	17:30
+		Fixed a bug with the crabs appearing. Animation started on the wrong frame.
+
+	23:00
+		Added incremental loading for the boss.

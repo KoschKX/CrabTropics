@@ -14,10 +14,8 @@ class Movie extends Background{
 	
 	isPlaying = false; strict = false;
 
-	animInterval;
-
-	constructor(imagePath,layer,frames,x,y,width,height,frameRate=30,strict=false){
-		super(imagePath,layer, x, y, width, height);
+	constructor(world,imagePath,layer,frames,x,y,width,height,frameRate=30,strict=false){
+		super(world, imagePath,layer, x, y, width, height);
 		this.frames = frames;
 		this.imagePath = imagePath;
 		this.frameRate = frameRate;
@@ -30,6 +28,7 @@ class Movie extends Background{
 
 	destroy(){ 
 		super.destroy(); this.pause(); 
+		//this.world.clearRepeater(this.animInterval);
 		clearInterval(this.animInterval);
 		this.world.level.backgrounds = destroy(this, this.world.level.backgrounds, this.world);
 	}
@@ -47,7 +46,8 @@ class Movie extends Background{
 		if(this.vid && !this.isVideoPlaying() && force){
 			this.vid.play().catch(error => {} );
 		} 
-		clearInterval(this.animInterval); this.animInterval = setInterval(() => { this.handleAnimation(); }, 1000 / this.frameRate ); 
+		//this.clearRepeater(this.animInterval); this.animInterval = this.world.setRepeater(() => { this.handleAnimation(); }, 1000 / this.frameRate );
+		clearInterval(this.animInterval); this.animInterval = setInterval(() => { this.animate(); }, 1000 / this.frameRate );  
 	}
 	
 	pause(force){
@@ -55,11 +55,12 @@ class Movie extends Background{
 		if(this.vid && force){ 
 			this.vid.pause();
 		}
+		//this.world.clearRepeater(this.animInterval);
 		clearInterval(this.animInterval);
 	}
 
 	handleAnimation(){
-		if(this.world && this.world.paused){ return; }
+		if(this.world.paused){ return; }
 		if(this.isPlaying){ this.playAnimation(this.currImageSet); }
 	};
 

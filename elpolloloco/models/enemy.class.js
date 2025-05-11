@@ -1,21 +1,20 @@
 class Enemy extends Character{
 
-	name = 'Enemy'; isBoss = false;
+	name = 'Enemy'; isBoss = false; attacksEnemies = false;
 	dead = false; dying = false; 
 	variant = 0;
 
-	init() {
-		super.init();
-	}
+	constructor(world) { super(world); }
+	init() { super.init(); }
 	
-	destroy(){ super.destroy(); clearInterval(this.mvmtInterval); }
+	destroy(){ super.destroy(); }
 
 	main(delta){ super.main(delta); this.handleMovement(); }
 
 	handleAnimation(){ super.handleAnimation();}
 
 	handleMovement(){
-		if(!this.world || this.dead){ return; }
+		if(!this.initialized || this.dead){ return; }
 		this.currDirection === 0 && this.moveLeft();
 	    this.currDirection === 1 && this.moveRight();
 	    this.currDirection === 0 && this.x < this.world.level.bounds[0] && (this.currDirection = 1);

@@ -60,7 +60,7 @@ class AudioManager {
     main(){}
 
     debug(){
-       // this.printCurrSounds('jump');
+        // this.printCurrSounds('crab_walkA');
     }
 
     async init(callback) {
@@ -93,8 +93,6 @@ class AudioManager {
 	playSound(name, vol = 1.0, overlap = true, loop = false) {
 	    if (!this.isReady || !this.context || this.context.state === 'closed') { return null; }
 
-       // if(name=='jump'){ console.trace();}
-
 	    let label = Array.isArray(name) ? name[Math.floor(Math.random() * name.length)] : name;
 	    const soundBuffer = this.sounds[label];
 	    if (!soundBuffer) return null;
@@ -118,7 +116,6 @@ class AudioManager {
 
 	    const instance = { id, source };
 	    this.currSounds[label].push(instance);
-
 
         source.onended = () => {
             if (this.currSounds[label]) {
@@ -234,16 +231,16 @@ class AudioManager {
 
 /* EVENTS */
 
-    mute(ui=true) {
-        if(!ui){ this.wasMuted = this.muted; }
+    mute(fromButton=true) {
+        if(!fromButton){ this.wasMuted = this.muted; }
     	this.muted = true;
         this.setMasterVolume(0);
         document.querySelector('#menu #sound_on').classList.remove('active');
         document.querySelector('#menu #sound_off').classList.add('active');
     }
     
-    unmute(ui=true) {
-        if(!ui){ this.wasMuted = this.muted; }
+    unmute(fromButton=true) {
+        if(!fromButton){ this.wasMuted = this.muted; }
     	this.muted = this.false;
       	this.setMasterVolume(1);
         document.querySelector('#menu #sound_on').classList.add('active');

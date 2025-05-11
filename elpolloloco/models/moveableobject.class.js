@@ -1,6 +1,6 @@
 class MovableObject{
 
-	name = ''; stamp = 0; world;
+	name = ''; stamp = 0; world; initialized = false;
 
 	x = 120; y = 350; width = 128; height = 128;
 	speed = 1;  acceleration = 1; speedY = 0;
@@ -19,11 +19,17 @@ class MovableObject{
 	facingRight = true; useGravity = false; 
 	falling = false; bouncing = false; static = false; appearing = false; useGround = true;  
 
-	constructor(name,world){ this.world = world; this.generateStamp('Object'); }
+	constructor(world, name){ 
+		this.world = world; 
+		if( this.name ){ this.name = name; this.generateStamp(name); }
+	}
 	destroy(){ clearInterval(this.animInterval); }
 
 	init(){
 		this.delta = 0;
+		this.initialized = true;
+		this.loadImage(this.IMAGES_BLANK.files[0]);
+		this.currImageSet = this.IMAGES_BLANK;
 		clearInterval(this.animInterval); this.animInterval = setInterval(() => { this.animate(); }, 1000 / this.frameRate );
 	}
 
@@ -54,19 +60,27 @@ class MovableObject{
 		const ext = path.split('.').pop(); 
 		if(ext != 'png' && ext != 'jpg') { return; }
 		if(!path || path.startsWith('*')){ return; }
-		this.img = new Image(); this.img.src = path;
+		let check = document.querySelector('#cache img[src="' + path + '"]');
+		if(check){ this.img = check;  }
 	}
 
 	loadImages(arr){
 		if(!arr){ return; }
-		arr.forEach((path) => {
-			const ext = path.split('.').pop(); 
-			if(ext != 'png' && ext != 'jpg') { return; }
-			if(!path || path=='' || this.imageCache?.[path]){ return; };
-			if(!path.startsWith('*')){ const img = new Image();  img.src = path; }
+		arr.forEach((path) => { 
+			if(!path || path=='' || path.startsWith('*') || this.imageCache?.[path]){ return; };
+			let check = document.querySelector('#cache img[src="' + path + '"]');
+			if(!check&&this.world&&this.world.level){ 
+				this.world.level.createImage(this, path, true);
+			}
 			this.imageCache[path] = path;
 		});
 		return arr;
+	}
+
+	getCachedImage(path){
+		let check = document.querySelector('#cache img[src="' + path + '"]');
+        if(check){ return check; }
+        return this.IMAGES_BLANK.files[0];
 	}
 
 	draw(ctx){
@@ -101,9 +115,8 @@ class MovableObject{
     	let i = this.currImage % anim.files.length; 
         let path = anim.files[i];
         this.currImage++;
-        this.anim.offsets.length && this.applyAnimationOffsets(anim);
-        if(!(path in this.imageCache) || path=="*norepeat") return;
-        this.img.src = this.imageCache[path];
+        if(this.anim.offsets && this.anim.offsets.length){ this.applyAnimationOffsets(anim); }
+		this.img = this.getCachedImage(path);
 	}
 
 	applyAnimationOffsets(anim){

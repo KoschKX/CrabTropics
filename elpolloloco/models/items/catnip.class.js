@@ -15,10 +15,10 @@ class Catnip extends Enemy{
 
 	buried = true; hostile = true;
 	
-	constructor(immediate = false){
-		super();
+	constructor(world, immediate = false){
+		super(world); this.generateStamp(this.name);
+		
 		if(immediate){ this.init(); }
-		this.generateStamp(this.name);
 	}
 	
 	destroy(){

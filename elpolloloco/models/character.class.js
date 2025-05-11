@@ -14,10 +14,10 @@ class Character extends MovableObject{
 	boxes = [];  aboxes = []; aboxesLib = []; 
 	boxcolors = ['red','yellow','lime'];
 
-	constructor() { super(); }
+	constructor(world) { super(world); }
 		   init() { super.init(); this.starthealth = this.health; this.initCollisionBoxes(); }
 	  main(delta) { super.main(delta); }
-		destroy() { super.destroy(); clearTimeout(this.reviveTimout); clearTimeout(this.dieTimout); }
+		destroy() { super.destroy(); this.world.clearTimer(this.reviveTimout); this.world.clearTimer(this.dieTimout); }
 
 /* COLLISIONS */
 
@@ -117,11 +117,13 @@ class Character extends MovableObject{
 		this.aboxes = this.alib.boxes;
 		for(let ab = 0; ab<this.aboxes.length; ab++){
 			let abox = this.aboxes[ab][parseInt(this.currImage)];
-				abox = this.scaleBox(abox, abox[6], abox[7], this.width, this.height);
-				abox[5]=true;
+			if(!abox){ return; }
+			abox = this.scaleBox(abox, abox[6], abox[7], this.width, this.height);
+			abox[5]=true;
 			this.boxes.push(abox);
 		}
 	}
+
 	scaleBox(sbox, fw, fh, tw, th) {
 		if (fw === 0 || fh === 0) return sbox.slice();
 		const scaleX = tw / fw;
@@ -158,9 +160,8 @@ class Character extends MovableObject{
         	this.currImage++;
         }
 
-        if(!(path in this.imageCache) || (!anim.repeat && i == anim.files.length -1) ) { this.currImage=i; return; } ;
-
-        this.img.src = this.imageCache[path];
+        if((!anim.repeat && i == anim.files.length -1) ) { this.currImage=i; return; } ;
+        this.img = this.getCachedImage(path);
 	}
 	
 /* MOVEMENT */
@@ -201,9 +202,9 @@ class Character extends MovableObject{
 
 	setInvincible(delay, onOff){
 		if(this.invincible){ return; }
-		setTimeout(() => {
+		this.world.setTimer(() => {
 			this.invincible=false; this.flickering=false; this.toggleCollider(1,true);
-		},delay);
+		}, delay);
 		this.invincible=true; this.toggleCollider(0,false);
 		this.flickering=true;
 	}
@@ -216,13 +217,13 @@ class Character extends MovableObject{
 
 	revive(delay=0, callback){
 		if(this.reviving){ return; }
-		clearTimeout(this.reviveTimout);
-		this.reviveTimout = setTimeout(() => {
+		this.world.clearTimer(this.reviveTimout);
+		this.reviveTimout = this.world.setTimer(() => {
 			this.dead = false; this.hurt = false; this.reviving=false;
 			if(this instanceof Player){
 				this.health = this.starthealth;
 			}
-			clearTimeout(this.reviveTimout);
+			this.world.clearTimer(this.reviveTimout);
 			if(callback){ callback();}
 		},delay);
 		this.reviving=true;
