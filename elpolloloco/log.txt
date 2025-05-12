@@ -312,3 +312,10 @@
 
 	23:00
 		Added incremental loading for the boss.
+
+12, May, 2025
+	9:00
+		Improved responsive controls.
+
+	12:30
+		Commenting all the code.

@@ -1,126 +1,187 @@
-class Cannonball extends Enemy{
+/**
+ * A Cannonball.
+ * @extends {Enemy}
+ */
+class Cannonball extends Enemy {
 
-	name = 'Cannonball';
+    /** @type {string} */
+    name = 'Cannonball';
 
-	x = 120; y = 0; groundOffset = 36;
+    /** @type {number} */
+    x = 120;
 
-	health = 10; starthealth = 10; 
-	frameRate = 24; useGravity = true; 
-	speed = 0.25; frameRate = 24;
+    /** @type {number} */
+    y = 0;
 
-	scale = 1;
-	width = 5; height = 5;
-	maxSize = 33; maxZoomSize = 66; 
+    /** @type {number} */
+    groundOffset = 36;
 
-	IMAGES_ROLL = new Anim('./img/cannonballA/ROLL_001.png'	,1 , '' );
-	imagesLib = [
-		this.IMAGES_ROLL,
-	]
-	
-	boxes = [[0, 0, this.width, this.height, 'red', true]];
+    /** @type {number} */
+    health = 10;
 
-	hostile = true;
-	madeGroundContact = false;
+    /** @type {number} */
+    starthealth = 10;
 
-	constructor(world, immediate = false){
-		super(world); this.generateStamp(this.name);
+    /** @type {number} */
+    frameRate = 24;
 
-		if(immediate){ this.init(); }
-	}
+    /** @type {boolean} */
+    useGravity = true;
 
-	destroy(){
-		this.world.level.projectiles = destroy(this,this.world.level.projectiles, this.world);
-	    super.destroy();
-	}
-	
-	init() {
-		super.init();
+    /** @type {number} */
+    speed = 0.25;
 
-		this.loadImage(this.IMAGES_ROLL.files[0]);
-		this.changeAnimation(this.IMAGES_ROLL);
+    /** @type {number} */
+    frameRate = 24;
 
-		this.bounce(20);
+    /** @type {number} */
+    scale = 1;
 
-		this.hostile = false;
-	}
+    /** @type {number} */
+    width = 5;
 
-	main(delta){
-		super.main(delta);
+    /** @type {number} */
+    height = 5;
 
-		this.handleScaling(delta); 
+    /** @type {number} */
+    maxSize = 33;
 
-		this.updateCollisionBoxes();
+    /** @type {number} */
+    maxZoomSize = 66;
 
-		this.checkGroundHit();
-	}
+    /** @type {Anim} */
+    IMAGES_ROLL = new Anim('./img/cannonballA/ROLL_001.png', 1, '');
 
-	checkGroundHit(){
-		
-    	if(this.falling){
-    		this.hostile = true;
+    /** @type {Anim[]} */
+    imagesLib = [
+        this.IMAGES_ROLL,
+    ];
 
-    		this.world.audio.playSound(['cannon_whizzA','cannon_whizzB','cannon_whizzC'], 0.33, false);
+    /** @type {[number, number, number, number, string, boolean][]} */
+    boxes = [[0, 0, this.width, this.height, 'red', true]];
 
-    	}else{
-    		this.hostile = false;
-    	}
+    /** @type {boolean} */
+    hostile = true;
 
-		if(!this.madeGroundContact&&this.isOnGround()){
+    /** @type {boolean} */
+    madeGroundContact = false;
 
-	    	this.bounce(5);
+    /**
+     * Creates a Cannonball instance.
+     * @param {World} The World.
+     * @param {boolean} [immediate=false] - Whether to initialize the cannonball immediately.
+     */
+    constructor(world, immediate = false) {
+        super(world);
+        this.generateStamp(this.name);
 
-	    	this.useGround = false;
-	    	this.madeGroundContact=true;
+        if (immediate) { 
+            this.init(); 
+        }
+    }
 
-	    	this.world.audio.playSound(['cannon_thudA','cannon_thudB','cannon_thudC'], 0.66, false);
+    /**
+     * Destroys the cannonball and cleans up.
+     */
+    destroy() {
+        this.world.level.projectiles = destroy(this, this.world.level.projectiles, this.world);
+        super.destroy();
+    }
 
-	    }else if(this.madeGroundContact){
+    /**
+     * Initializes the cannonball object, loading images and setting up animation.
+     */
+    init() {
+        super.init();
 
-	    	this.toggleCollider(0,false);
+        this.loadImage(this.IMAGES_ROLL.files[0]);
+        this.changeAnimation(this.IMAGES_ROLL);
 
-	    	this.hostile = false;
+        this.bounce(20);
 
-	    	this.speedY-=0.1;
-	    	this.y-=this.speedY;
+        this.hostile = false;
+    }
 
-	    }
-	    if(this.y>=this.world.cvs.height+this.height){
-	    	this.destroy();
-	    }
-	}
+    /**
+     * Main logic of the cannonball, executed every frame.
+     * @param {number} delta - The time elapsed since the last frame in milliseconds.
+     */
+    main(delta) {
+        super.main(delta);
 
-	handleScaling(delta) {
-		let mxw, mxh;
-		let scaleRate;
+        this.handleScaling(delta);
+        this.updateCollisionBoxes();
+        this.checkGroundHit();
+    }
 
-		if (this.madeGroundContact) {
-			mxw = this.maxZoomSize; mxh = this.maxZoomSize;
-			scaleRate = 0.25;
-		} else {
-			mxw = this.maxSize; mxh = this.maxSize;
-			scaleRate = 0.1;
-		}
+    /**
+     * Checks for collision with the ground and adjusts behavior accordingly.
+     */
+    checkGroundHit() {
+        if (this.falling) {
+            this.hostile = true;
+            this.world.audio.playSound(['cannon_whizzA', 'cannon_whizzB', 'cannon_whizzC'], 0.33, false);
+        } else {
+            this.hostile = false;
+        }
 
-		const scaleIncrement = scaleRate * (delta / 1000);
-		this.scale += scaleIncrement;
+        if (!this.madeGroundContact && this.isOnGround()) {
+            this.bounce(5);
+            this.useGround = false;
+            this.madeGroundContact = true;
+            this.world.audio.playSound(['cannon_thudA', 'cannon_thudB', 'cannon_thudC'], 0.66, false);
+        } else if (this.madeGroundContact) {
+            this.toggleCollider(0, false);
+            this.hostile = false;
+            this.speedY -= 0.1;
+            this.y -= this.speedY;
+        }
 
-		const centerX = this.x + this.width / 2;
-		const centerY = this.y + this.height / 2;
+        if (this.y >= this.world.cvs.height + this.height) {
+            this.destroy();
+        }
+    }
 
-		if (this.width * this.scale < mxw) {
-			this.width *= this.scale;
-		}
-		if (this.height * this.scale < mxh) {
-			this.height *= this.scale;
-		}
+    /**
+     * Handles scaling of the cannonball during its flight or after hitting the ground.
+     * @param {number} delta - The time elapsed since the last frame in milliseconds.
+     */
+    handleScaling(delta) {
+        let mxw, mxh;
+        let scaleRate;
 
-		this.x = centerX - this.width / 2;
-		this.y = centerY - this.height / 2;
-	}
+        if (this.madeGroundContact) {
+            mxw = this.maxZoomSize; 
+            mxh = this.maxZoomSize;
+            scaleRate = 0.25;
+        } else {
+            mxw = this.maxSize; 
+            mxh = this.maxSize;
+            scaleRate = 0.1;
+        }
 
-	updateCollisionBoxes(){
-		this.boxes[0][2] = this.width;
-		this.boxes[0][3] = this.height;
-	}
+        const scaleIncrement = scaleRate * (delta / 1000);
+        this.scale += scaleIncrement;
 
+        const centerX = this.x + this.width / 2;
+        const centerY = this.y + this.height / 2;
+
+        if (this.width * this.scale < mxw) {
+            this.width *= this.scale;
+        }
+        if (this.height * this.scale < mxh) {
+            this.height *= this.scale;
+        }
+
+        this.x = centerX - this.width / 2;
+        this.y = centerY - this.height / 2;
+    }
+
+    /**
+     * Updates the collision boxes to match the current size of the cannonball.
+     */
+    updateCollisionBoxes() {
+        this.boxes[0][2] = this.width;
+        this.boxes[0][3] = this.height;
+    }
 }

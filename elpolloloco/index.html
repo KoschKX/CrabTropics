@@ -9,26 +9,27 @@
 
     <script src="js/utils.js"></script>
 
-    <script src="models/animation.class.js"></script>
-    <script src="models/animatedhitbox.class.js"></script>
+    <script src="models/baseobjects/moveableobject.class.js"></script>
+    <script src="models/baseobjects/animation.class.js"></script>
+    <script src="models/baseobjects/animatedhitbox.class.js"></script>
+    <script src="models/baseobjects/character.class.js"></script>
+    <script src="models/baseobjects/enemy.class.js"></script>
+    <script src="models/baseobjects/player.class.js"></script>
+    <script src="models/baseobjects/background.class.js"></script>
+    
+    <script src="models/baseobjects/movie.class.js"></script>
+    <script src="models/baseobjects/icon.class.js"></script>
 
-    <script src="models/moveableobject.class.js"></script>
-    <script src="models/character.class.js"></script>
+    <script src="models/icons/loadicon.class.js"></script>
+   
+    <script src="models/backgrounds/cloud.class.js"></script>
 
-    <script src="models/player.class.js"></script>
     <script src="models/players/pirate.class.js"></script>
-
-    <script src="models/enemy.class.js"></script>
     <script src="models/enemies/crab.class.js"></script>
     <script src="models/enemies/ship.class.js"></script>
     <script src="models/enemies/seaturtle.class.js"></script>
     
     <script src="models/projectiles/cannonball.class.js"></script>
-
-    <script src="models/background.class.js"></script>
-    <script src="models/backgrounds/cloud.class.js"></script>
-
-    <script src="models/movie.class.js"></script>
 
     <script src="models/effects/explosion.class.js"></script>
     <script src="models/effects/stomp.class.js"></script>
@@ -43,45 +44,47 @@
     <script src="models/world.class.js"></script>
     <script src="models/level.class.js"></script>
     <script src="models/levels/level01.class.js"></script>
-
-    <script src="models/icon.class.js"></script>
-    <script src="models/icons/loadicon.class.js"></script>
-    <script src="models/progressbar.class.js"></script>
-
-    <script src="models/camera.class.js"></script>
-    <script src="models/hud.class.js"></script>
-        
-    <script src="models/screen.class.js"></script>
-    <script src="models/keyboard.class.js"></script>
-    <script src="models/audiomanager.class.js"></script>
+    
+    <script src="models/system/progressbar.class.js"></script>
+    <script src="models/system/camera.class.js"></script>
+    <script src="models/system/hud.class.js"></script>
+    <script src="models/system/screen.class.js"></script>
+    <script src="models/system/keyboard.class.js"></script>
+    <script src="models/system/audiomanager.class.js"></script>
 
     <script src="models/titlescreen.class.js"></script>
 
     <script src="js/game.js"></script>
 </head>
-<body>
-    <div id="game">
-        <canvas id="canvas" width="720" height="480"></canvas>
-        <div id="ui">
-            <div id="menu">
-                <div id="restart" class="button"><span class="icon active" id="restart"></span></div>
-                <div id="debug" class="button"><span class="icon active" id="debug_on"></span><span class="icon" id="debug_off"></span></div>
-                <div id="boss" class="button"><span class="icon active"></span></div>
-                <div id="pause" class="button"><span class="icon active" id="pause_on"></span><span class="icon" id="pause_off"></span></div>
-                <div id="sound" class="button"><span class="icon active" id="sound_on"></span><span  class="icon" id="sound_off"></span></div>
-                <div id="screen" class="button"><span class="icon active" id="maximize"></span><span class="icon" id="minimize"></span></div>
-            </div>
-            <div id="controls" class="opacityB">
-                <div class="left">
-                    <div id="left_btn" class="button">◄</div>
-                    <div id="right_btn" class="button">►</div>
+<body id="home">
+    <div id="holder">
+        <div id="game">
+            <canvas id="canvas" width="720" height="480"></canvas>
+            <div id="ui">
+                <div id="menu">
+                    <div id="restart" class="button"><span class="icon active" id="restart_go"></span></div>
+                    <div id="info" class="button"><span class="icon active" id="info_go"></span></div>
+                    <div id="debug" class="button"><span class="icon active" id="debug_on"></span><span class="icon" id="debug_off"></span></div>
+                    <div id="boss" class="button"><span class="icon active"></span></div>
+                    <div id="pause" class="button"><span class="icon active" id="pause_on"></span><span class="icon" id="pause_off"></span></div>
+                    <div id="sound" class="button"><span class="icon active" id="sound_on"></span><span  class="icon" id="sound_off"></span></div>
+                    <div id="screen" class="button"><span class="icon active" id="maximize"></span><span class="icon" id="minimize"></span></div>
                 </div>
-                <div class="right">
-                    <div id="crouch_btn" class="button">▼</div>
-                    <div id="jump_btn" class="button">▲</div>
+                <div id="controls" class="opacityB">
+                    <div class="left">
+                        <div id="left_btn" class="button">◄</div>
+                        <div id="right_btn" class="button">►</div>
+                    </div>
+                    <div class="right">
+                        <div id="crouch_btn" class="button">▼</div>
+                        <div id="jump_btn" class="button">▲</div>
+                    </div>
                 </div>
+                <div id="help"><iframe src="./info.html" style="background: transparent;" frameborder="0" style="overflow: hidden;" scrolling="no"></iframe></div>
             </div>
         </div>
+        <div id="mcontrols"><div id="standby"><span id="hourglass"></span></div></div>
+        <div id="footer"><a href="./impressum.html">IMPRESSUM</a></div>
     </div>
     <div id="instructions">
         <div id="keys">
