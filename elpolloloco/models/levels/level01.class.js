@@ -1,3 +1,6 @@
+/**
+ * LEVEL 01
+ */
 const level01 = {
 	name: 'level 01',
 	players: [

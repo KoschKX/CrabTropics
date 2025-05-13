@@ -1,113 +1,34 @@
 /**
  * A Pirate Ship.
- * @extends Enemy
  */
 class Ship extends Enemy {
-    /**
-     * @type {string} The name of the Ship.
-     */
+    /** START VALUES */
     name = 'Ship';
-
-    /**
-     * @type {number} The height of the Ship.
-     */
-    height = 200;
-
-    /**
-     * @type {number} The width of the Ship.
-     */
     width = 200;
-
-    /**
-     * @type {number} The health of the Ship.
-     */
+    height = 200;
     health = 10;
-
-    /**
-     * @type {number} The starting health of the Ship.
-     */
     starthealth = 10;
-
-    /**
-     * @type {number} The frame rate for animations.
-     */
     frameRate = 24;
-
-    /**
-     * @type {boolean} Whether gravity is applied to the Ship.
-     */
     useGravity = false;
-
-    /**
-     * @type {number} The speed of the Ship's movement.
-     */
     speed = 0.25;
-
-    /**
-     * @type {number} The frame rate for animation.
-     */
     frameRate = 10;
-
-    /**
-     * @type {number} The scale of the Ship's appearance.
-     */
     scale = 1;
 
-    /**
-     * @type {Anim} The floating animation for the Ship.
-     */
+    /** ANIMATIONS */
     IMAGES_FLOAT = new Anim('./img/ship/FLOAT_001.png', [1, 2, 3, 4, 5, 6, 7, 6, 5, 4, 3, 2], '');
-
-    /**
-     * @type {Anim[]} A library of animations for the Ship.
-     */
     imagesLib = [
         this.IMAGES_FLOAT,
     ];
 
-    /**
-     * @type {Explosion[]} The list of explosions associated with the Ship.
-     */
+    /** UNIQUE **/
     explosions = [];
-
-    /**
-     * @type {Cannonball[]} The list of cannonballs fired by the Ship.
-     */
     cballs = [];
-
-    /**
-     * @type {number[][]} Locations of the Ship's cannons.
-     */
     cannonLocs = [[33, -165], [-33, -165]];
-
-    /**
-     * @type {number} Maximum number of shots the Ship can fire.
-     */
     maxShots = 2;
-
-    /**
-     * @type {number} Minimum frequency of shots.
-     */
     minShotFreq = 500;
-
-    /**
-     * @type {number} Maximum frequency of shots.
-     */
     maxShotFreq = 100000;
-
-    /**
-     * @type {number} The timestamp of the last shot fired.
-     */
     lastShot = this.now();
-
-    /**
-     * @type {boolean} Whether the Ship is firing.
-     */
     firing = true;
-
-    /**
-     * @type {boolean} Whether the Ship is hostile.
-     */
     hostile = false;
 
     /**

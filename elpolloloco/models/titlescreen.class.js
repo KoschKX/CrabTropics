@@ -3,55 +3,33 @@
  */
 class Titlescreen {
 
-    /** @type {HTMLCanvasElement} */
+    /** IMAGE */
+    width = 720;
+    height = 480;
     cvs;
-
-    /** @type {CanvasRenderingContext2D} */
     ctx;
-
-    /** @type {Object} */
-    keyboard;
-
-    /** @type {Screen} */
-    screen;
-
-    /** @type {Background} */
+    bounds = [0, 0, 0, 0];
     background;
 
-    /** @type {World} */
-    world;
-
-    /** @type {number} */
+    /** INTERVALS */
     drawInterval;
-
-    /** @type {number} */
     tlInterval;
 
-    /** @type {Array<string>} */
-    //menuItems = ['Start', '//Settings'];
-    menuItems = ['Start'];
-
-    /** @type {Array<string>} */
-    //menuFuncs = ['start', 'settings'];
-    menuFuncs = ['start'];
-
-    /** @type {Array<string>} */
+    /* MENU ITEMS */
+    menuItems = ['start']; 
+    menuFuncs = ['start']; 
+        //menuItems = ['Start', '//Settings'];
+        //menuFuncs = ['start', 'settings'];
     menuItemsDisabled = [];
 
-    /** @type {number} */
+    /** STATUS */
     selected = 0;
-
-    /** @type {boolean} */
     menuChanged = false;
 
-    /** @type {Array<number>} */
-    bounds = [0, 0, 0, 0];
-
-    /** @type {number} */
-    width = 720;
-
-    /** @type {number} */
-    height = 480;
+    /** WORLD REFERENCE */
+    world;
+    keyboard;
+    screen;
 
     /**
      * Creates an instance of the Titlescreen class.
@@ -218,7 +196,7 @@ class Titlescreen {
             text, 'red',
             font, 'center', 'middle',
             'orange',
-            1
+            5
         );
     }
 

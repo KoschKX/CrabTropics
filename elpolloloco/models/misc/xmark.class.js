@@ -1,39 +1,26 @@
 /**
  * An X means buried Treasures.
- * @extends {Enemy}
  */
 class XMark extends Enemy {
 
-    /** @type {string} */
+    /** START VALUES*/
     name = 'XMark';
-
-    /** @type {number} */
+    width = 64;
+    height = 24;
+    speed = 0;
     frameRate = 24;
-
-    /** @type {boolean} */
     useGravity = false;
 
-    /** @type {number} */
-    speed = 0;
-
-    /** @type {number} */
-    width = 64;
-
-    /** @type {number} */
-    height = 24;
-
-    /** @type {Anim} */
+    /** ANIMATIONS */
     IMAGES_MARK = new Anim('./img/misc/XMARK_DISTORTED_001.png');
-
-    /** @type {Anim[]} */
     imagesLib = [
         this.IMAGES_MARK,
     ];
 
-    /** @type {Array<[number, number, number, number, string, boolean]>} */
+    /** HITBOXES */
     boxes = [[0, 0, this.width, this.height, 'lime', true]];
 
-    /** @type {boolean} */
+    /** UNIQUE **/
     buried = true;
 
     /**

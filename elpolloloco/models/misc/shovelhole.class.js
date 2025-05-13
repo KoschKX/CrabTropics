@@ -1,43 +1,26 @@
 /**
  * A Hole that spawns items like crabs, doubloons, and catnip.
- * @extends {Enemy}
  */
 class ShovelHole extends Enemy {
 
-    /** @type {string} */
+    /** STARTVALUES */
     name = 'XMark';
-
-    /** @type {number} */
+    width = 64;
+    height = 24;
     frameRate = 24;
-
-    /** @type {boolean} */
+    speed = 0;
     useGravity = false;
 
-    /** @type {number} */
-    speed = 0;
-
-    /** @type {number} */
-    width = 64;
-
-    /** @type {number} */
-    height = 24;
-
-    /** @type {Anim} */
+    /** ANIMATIONS */
     IMAGES_OPEN = new Anim('./img/misc/SHOVELHOLE_OPEN_001.png', 0, '');
-
-    /** @type {Anim} */
     IMAGES_CLOSE = new Anim('./img/misc/SHOVELHOLE_CLOSE_001.png', 4, '');
-
-    /** @type {Anim[]} */
     imagesLib = [
         this.IMAGES_OPEN, this.IMAGES_CLOSE,
     ];
 
-    /** @type {boolean | null} */
-    createobj = null;
-
-    /** @type {number} */
+    /** UNIQUE */
     objtype;
+    createobj = null;
 
     /**
      * Creates an instance of the ShovelHole class.

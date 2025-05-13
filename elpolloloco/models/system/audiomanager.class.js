@@ -1,9 +1,14 @@
 /**
  * Audio System for sounds and music.
  */
+
+/** NOTES
+ * Because the original audio system was incompatible with safari. It was syncronous and caused lagging and delays.
+*/
+
 class AudioManager {
 
-    /** @type {string[]} Sounds Library. */
+    /** LIBRARIES */
     SOUND_BANK = [
         './audio/jump.mp3',
         './audio/pirate_hitA.mp3',
@@ -37,84 +42,55 @@ class AudioManager {
         './audio/seaturtle_collapseA.mp3',
         './audio/seaturtle_growlA.mp3',
     ];
-
-    /** @type {string[]} Music Library. */
     MUSIC_BANK = [
         './audio/ocean.mp3',
         './audio/island_lover.mp3',
         './audio/sueno_tropical.mp3'
     ];
 
-    /** @type {AudioContext} The Web Audio API context. */
+    /** AUDIO CONTEXT */
     context = null;
-
-    /** @type {GainNode} Master gain node for volume control. */
     gainNode = null;
-
-    /** @type {Object<string, AudioBuffer>} Loaded audio buffers. */
-    sounds = {};
-
-    /** @type {Object<string, Array<{id: string, source: AudioBufferSourceNode}>>} Active sound instances. */
-    currSounds = {};
-
-    /** @type {AudioBufferSourceNode[]} Active background music sources. */
-    activeMusicSources = [];
-
-    /** @type {AudioBufferSourceNode|null} Main music source. */
-    musicSource = null;
-
-    /** @type {GainNode|null} Gain node for current music. */
     musicGain = null;
 
-    /** @type {boolean} True once all sounds are loaded and ready. */
+    /** STATE */
     isReady = false;
-
-    /** @type {boolean} Audio muted state. */
     muted = false;
-
-    /** @type {boolean} Tracks previous mute state. */
     wasMuted = false;
 
-    /** @type {number} Main update interval. */
-    mainInterval;
+    /** CURRENT INSTANCES */
+    sounds = {};
+    currSounds = {};
+    currMusics = [];
 
-    /** @type {number} Debug interval. */
-    debugInterval;
+    /** INTERVALS */
+    mainInterval = null;
+    debugInterval = null;
 
-    /**
-     * @param {Function} callback - Function to call once initialization completes.
-     */
     constructor(callback) {
         this.init(callback);
     }
 
-    /** Called at 60FPS interval. Override with app-specific logic. */
-    main() {}
-
-    /** Called at 30FPS interval for debug info. */
-    debug() {}
-
-    /**
-     * Initializes the AudioManager and loads audio files.
-     * @param {Function} callback - Function to call when ready.
-     */
     async init(callback) {
         clearInterval(this.mainInterval);
-        this.mainInterval = setInterval(() => this.main(), 1000 / 60);
         clearInterval(this.debugInterval);
+
+        this.mainInterval = setInterval(() => this.main(), 1000 / 60);
         this.debugInterval = setInterval(() => this.debug(), 1000 / 30);
-        if (!this.context) {
-            this.context = new (window.AudioContext || window.webkitAudioContext)();
-            this.gainNode = this.context.createGain();
-            this.gainNode.connect(this.context.destination);
-            await this.loadSounds();
-            this.isReady = true;
-            if (typeof callback === 'function') callback();
-        }
+
+        this.context = new (window.AudioContext || window.webkitAudioContext)();
+        this.gainNode = this.context.createGain();
+        this.gainNode.connect(this.context.destination);
+
+        await this.loadSounds();
+        this.isReady = true;
+
+        if (typeof callback === 'function') callback();
     }
 
     /**
-     * Loads all sound and music files into memory.
+     * Loads all sound and music files.
+     * @returns {Promise<void>}
      */
     async loadSounds() {
         const allFiles = [...this.SOUND_BANK, ...this.MUSIC_BANK];
@@ -128,13 +104,16 @@ class AudioManager {
         await Promise.all(promises);
     }
 
+    main() {}
+    debug() {}
+
     /**
-     * Plays a sound.
-     * @param {string|string[]} name - Name of sound or array of options.
-     * @param {number} [vol=1.0] - Volume of the sound.
-     * @param {boolean} [overlap=true] - Whether to allow overlapping sounds.
-     * @param {boolean} [loop=false] - Whether to loop the sound.
-     * @returns {string|null} Unique sound instance ID, or null on failure.
+     * Plays a sound effect.
+     * @param {string|string[]} name - Sound label or list of labels.
+     * @param {number} [vol=1.0] - Volume.
+     * @param {boolean} [overlap=true] - Allow overlapping?
+     * @param {boolean} [loop=false] - Should the sound loop?
+     * @returns {string|null} ID of the sound instance.
      */
     playSound(name, vol = 1.0, overlap = true, loop = false) {
         if (!this.isReady || !this.context || this.context.state === 'closed') return null;
@@ -147,10 +126,10 @@ class AudioManager {
         if (!overlap && this.currSounds[label].length > 0) return null;
 
         const source = this.context.createBufferSource();
+        const gain = this.context.createGain();
+
         source.buffer = soundBuffer;
         source.loop = loop;
-
-        const gain = this.context.createGain();
         gain.gain.value = vol;
 
         source.connect(gain);
@@ -162,10 +141,8 @@ class AudioManager {
         this.currSounds[label].push(instance);
 
         source.onended = () => {
-            if (this.currSounds[label]) {
-                this.currSounds[label] = this.currSounds[label].filter(s => s.id !== id);
-                if (this.currSounds[label].length === 0) delete this.currSounds[label];
-            }
+            this.currSounds[label] = this.currSounds[label].filter(s => s.id !== id);
+            if (this.currSounds[label].length === 0) delete this.currSounds[label];
         };
 
         return id;
@@ -173,23 +150,23 @@ class AudioManager {
 
     /**
      * Stops all instances of a sound.
-     * @param {string} name - Name of the sound.
+     * @param {string} name - Sound label.
      */
     stopSound(name) {
         const sources = this.currSounds[name];
         if (Array.isArray(sources)) {
-            sources.forEach(source => {
-                source.source.stop();
-                source.source.disconnect();
+            sources.forEach(({ source }) => {
+                source.stop();
+                source.disconnect();
             });
             delete this.currSounds[name];
         }
     }
 
     /**
-     * Checks if any instance of a sound is playing.
+     * Checks if a sound is currently playing.
      * @param {string} name - Sound label.
-     * @returns {boolean} True if playing.
+     * @returns {boolean}
      */
     isSoundPlaying(name) {
         return Array.isArray(this.currSounds[name]) && this.currSounds[name].length > 0;
@@ -198,20 +175,18 @@ class AudioManager {
     /**
      * Checks if a specific sound instance is playing.
      * @param {string} label - Sound label.
-     * @param {string} id - Instance ID.
-     * @returns {boolean} True if playing.
+     * @param {string} id - Sound instance ID.
+     * @returns {boolean}
      */
     isSpecificSoundPlaying(label, id) {
-        const sounds = this.currSounds[label];
-        if (!sounds) return false;
-        return sounds.some(sound => sound.id === id);
+        return (this.currSounds[label] || []).some(sound => sound.id === id);
     }
 
     /**
-     * Plays background music.
-     * @param {string} name - Music track label.
-     * @param {number} [vol=1.0] - Volume level.
-     * @param {boolean} [loop=true] - Whether to loop the track.
+     * Plays a music track.
+     * @param {string} name - Track label.
+     * @param {number} [vol=1.0] - Volume.
+     * @param {boolean} [loop=true] - Should it loop?
      */
     playMusic(name, vol = 1.0, loop = true) {
         if (!this.isReady) return;
@@ -222,63 +197,62 @@ class AudioManager {
         this.stopAllMusic();
 
         const source = this.context.createBufferSource();
+        const gain = this.context.createGain();
+
         source.buffer = musicBuffer;
         source.loop = loop;
-
-        const gain = this.context.createGain();
         gain.gain.value = vol;
 
         source.connect(gain);
         gain.connect(this.gainNode);
         source.start();
 
-        this.activeMusicSources.push(source);
+        this.currMusics.push({ name, source });
         this.musicGain = gain;
     }
 
     /**
-     * Stops the current music track.
+     * Stops music by name.
+     * @param {string} name - Music label.
      */
-    stopMusic() {
-        if (this.musicSource) {
-            this.musicSource.stop();
-            this.musicSource.disconnect();
-            this.musicSource = null;
-        }
+    stopMusic(name) {
+        this.currMusics = this.currMusics.filter(entry => {
+            if (entry.name === name) {
+                entry.source.stop();
+                entry.source.disconnect();
+                return false;
+            }
+            return true;
+        });
     }
 
     /**
      * Stops all currently playing sounds.
      */
     stopAllSounds() {
-        for (const label in this.currSounds) {
-            const sources = this.currSounds[label];
-            if (Array.isArray(sources)) {
-                sources.forEach(sound => {
-                    sound.source.stop();
-                    sound.source.disconnect();
-                });
-            }
-        }
-    }
-
-    /**
-     * Stops all currently playing music tracks.
-     */
-    stopAllMusic() {
-        this.activeMusicSources.forEach(source => {
+        Object.values(this.currSounds).flat().forEach(({ source }) => {
             source.stop();
             source.disconnect();
         });
-        this.activeMusicSources = [];
+        this.currSounds = {};
     }
 
     /**
-     * Resets the audio system and reloads all sounds.
+     * Stops all currently playing music.
+     */
+    stopAllMusic() {
+        this.currMusics.forEach(({ source }) => {
+            source.stop();
+            source.disconnect();
+        });
+        this.currMusics = [];
+    }
+
+    /**
+     * Resets audio system and reloads sounds.
      */
     reset() {
         this.destroy();
-        if (this.context) this.context.close();
         this.context = new (window.AudioContext || window.webkitAudioContext)();
         this.gainNode = this.context.createGain();
         this.gainNode.connect(this.context.destination);
@@ -287,28 +261,26 @@ class AudioManager {
     }
 
     /**
-     * Destroys the audio system and cleans up memory.
+     * Destroys and cleans up the audio context.
      */
     destroy() {
         this.stopAllSounds();
-        if (this.musicSource) {
-            this.musicSource.stop();
-            this.musicSource.disconnect();
-            this.musicSource = null;
-        }
+        this.stopAllMusic();
         this.currSounds = {};
         this.muted = false;
         this.setMasterVolume(1);
+
         if (this.context) {
             this.context.close();
             this.context = null;
         }
+
         this.sounds = {};
     }
 
     /**
-     * Sets master volume.
-     * @param {number} vol - Value between 0 and 1.
+     * Sets the global audio volume.
+     * @param {number} vol - Volume [0, 1].
      */
     setMasterVolume(vol) {
         if (this.gainNode) {
@@ -316,34 +288,40 @@ class AudioManager {
         }
     }
 
-    /** Mutes all audio and updates UI. */
+    /**
+     * Mutes all audio and updates UI.
+     * @param {boolean} [fromButton=true] - Was this triggered from a button?
+     */
     mute(fromButton = true) {
         if (!fromButton) this.wasMuted = this.muted;
         this.muted = true;
         this.setMasterVolume(0);
-        document.querySelector('#menu #sound_on').classList.remove('active');
-        document.querySelector('#menu #sound_off').classList.add('active');
+        document.querySelector('#menu #sound_on')?.classList.remove('active');
+        document.querySelector('#menu #sound_off')?.classList.add('active');
     }
 
-    /** Unmutes all audio and updates UI. */
+    /**
+     * Unmutes all audio and updates UI.
+     * @param {boolean} [fromButton=true] - Was this triggered from a button?
+     */
     unmute(fromButton = true) {
         if (!fromButton) this.wasMuted = this.muted;
         this.muted = false;
         this.setMasterVolume(1);
-        document.querySelector('#menu #sound_on').classList.add('active');
-        document.querySelector('#menu #sound_off').classList.remove('active');
+        document.querySelector('#menu #sound_on')?.classList.add('active');
+        document.querySelector('#menu #sound_off')?.classList.remove('active');
     }
 
     /**
-     * Prints currently playing sound  to console.
-     * @param {string=} name - Filter by name.
+     * Logs currently playing sound instances.
+     * @param {string=} name - Optional filter by label.
      */
     printCurrSounds(name) {
-        const allLabels = Object.keys(this.sounds);
-        for (const label of allLabels) {
-            if (name && label !== name) continue;
-            const sources = this.currSounds[label] || [];
-            console.log(`${label}: ${sources.length || 0} instance(s)`);
-        }
+        Object.keys(this.sounds).forEach(label => {
+            if (!name || label === name) {
+                const count = (this.currSounds[label] || []).length;
+                log(`${label}: ${count} instance(s)`);
+            }
+        });
     }
 }

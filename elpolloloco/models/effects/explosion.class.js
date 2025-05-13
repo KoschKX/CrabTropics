@@ -4,39 +4,15 @@
  */
 class Explosion extends MovableObject {
 
-    /**
-     * @type {string} The name of the Explosion object.
-     */
+    /** START VALUES */
     name = 'Explosion';
-
-    /**
-     * @type {number} The frame rate of the Explosion animation.
-     */
-    frameRate = 24;
-
-    /**
-     * @type {boolean} Whether gravity should be applied to the Explosion (not used).
-     */
-    useGravity = false;
-
-    /**
-     * @type {number} The speed of the Explosion object.
-     */
-    speed = 0.25;
-
-    /**
-     * @type {number} The scale of the Explosion object's size.
-     */
     scale = 1;
-
-    /**
-     * @type {Anim} The animation for the Explosion object.
-     */
+    frameRate = 24;
+    useGravity = false;
+    speed = 0.25;
+    
+    /** ANIMATIONS */
     IMAGES_EXPLODE = new Anim('./img/explosionA/EXPLODE_001.png', 9, '');
-
-    /**
-     * @type {Anim[]} The list of animations associated with the Explosion object.
-     */
     imagesLib = [
         this.IMAGES_EXPLODE,
     ];

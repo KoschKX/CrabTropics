@@ -1,66 +1,48 @@
 /**
  * A Level.
  */
+
+/** NOTES
+ * Because the original loading method was not present in the DOM, the images would end up in garbage collection. 
+ * That caused flickering on some devices.
+*/
+
 class Level {
 
-    /** @type {World} The world to which this level belongs. */
-    world;
-
-    /** @type {string} The name of the level. */
+    /* NAME */
     name = '';
 
-    /** @type {Player} The player associated with this level. */
-    player;
-
-    /** @type {Enemy[]} List of enemies in the level. */
-    enemies = [];
-
-    /** @type {Cloud[]} List of clouds in the level. */
-    clouds = [];
-
-    /** @type {Item[]} List of items in the level. */
-    items = [];
-
-    /** @type {Projectile[]} List of projectiles in the level. */
-    projectiles = [];
-
-    /** @type {Effect[]} List of effects in the level. */
-    effects = [];
-
-    /** @type {Ambient[]} List of ambient objects in the level. */
-    ambient = [];
-
-    /** @type {string[]} List of music tracks associated with the level. */
-    music = [];
-
-    /** @type {any[]} Temporary list of objects for various purposes. */
-    tmp = [];
-
-    /** @type {number[]} The bounding coordinates of the level. */
-    bounds = [0, 0, 0, 0];
-
-    /** @type {Ground} The ground object for this level. */
-    ground;
-
-    /** @type {function} Callback to be executed once the level is fully loaded. */
-    loadedCallback;
-
-    /** @type {function} Callback to be executed for on-demand asset loading. */
-    onDemandCallback;
-
-    /** @type {number} Total number of assets to load. */
-    totalAssets = 0;
-
-    /** @type {number} Number of assets already loaded. */
-    loadedAssets = 0;
-
-    /** @type {boolean} Flag indicating whether the level has been loaded. */
-    loaded = false;
-
-    /** @type {Object} The map object containing the level data. */
+    /* INPUT */
     levelmap;
 
-    /** @type {HTMLDivElement} The div element used for caching assets. */
+    /* BANKS */
+    player;
+    enemies = [];
+    clouds = [];
+    items = [];
+    projectiles = [];
+    effects = [];
+    ambient = [];
+    music = [];
+    tmp = [];
+
+    /* DIMENSIONS */
+    bounds = [0, 0, 0, 0];
+    ground;
+
+    /* LOADER */
+    totalAssets = 0;
+    loadedAssets = 0;
+    loaded = false;
+    
+    /** WORLD REFERENCE */
+    world;
+
+    /** CALLBACKS */
+    loadedCallback;
+    onDemandCallback;
+
+    /** DOM REFERENCE */
     cacheDiv;
 
     /**

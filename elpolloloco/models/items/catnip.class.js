@@ -1,43 +1,28 @@
 /**
  * Catnip item for replenishing health.
- * @extends {Enemy}
  */
 class Catnip extends Enemy {
 
-    /** @type {string} */
+    /** START VALUES */
     name = 'Catnip';
-
-    /** @type {number} */
-    frameRate = 24;
-
-    /** @type {boolean} */
-    useGravity = false;
-
-    /** @type {number} */
-    speed = 0;
-
-    /** @type {number} */
     width = 64;
-
-    /** @type {number} */
     height = 64;
+    speed = 0;
+    frameRate = 24;
+    useGravity = false;
+    hostile = true;
 
-    /** @type {Anim} */
+    /** ANIMATIONS */
     IMAGES_SPARKLE = new Anim('./img/catnip/SPARKLE_001.png', 1, '');
-
-    /** @type {Anim[]} */
     imagesLib = [
         this.IMAGES_SPARKLE,
     ];
 
-    /** @type {Array<[number, number, number, number, string, boolean]>} */
+    /** HITBOXES */
     boxes = [[this.width * 0.25, 0, this.width * 0.5, this.height, 'lime', true]];
 
-    /** @type {boolean} */
+    /** UNIQUE */
     buried = true;
-
-    /** @type {boolean} */
-    hostile = true;
 
     /**
      * Creates an instance of the Catnip class.

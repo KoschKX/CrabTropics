@@ -73,16 +73,19 @@
                 </div>
                 <div id="controls" class="opacityB">
                     <div class="left">
-                        <div id="left_btn" class="button">◄</div>
-                        <div id="right_btn" class="button">►</div>
+                        <div id="left_btn" class="button"><span class="icon">◄</span></div>
+                        <div id="right_btn" class="button"><span class="icon">►</span></div>
                     </div>
                     <div class="right">
-                        <div id="crouch_btn" class="button">▼</div>
-                        <div id="jump_btn" class="button">▲</div>
+                        <div id="crouch_btn" class="button"><span class="icon">▼</span></div>
+                        <div id="jump_btn" class="button"><span class="icon">▲</span></div>
                     </div>
                 </div>
-                <div id="help"><iframe src="./info.html" style="background: transparent;" frameborder="0" style="overflow: hidden;" scrolling="no"></iframe></div>
-                <div id="debug_box"></div>
+                <div id="help">
+                    <iframe src="./info.html" style="background: transparent;" frameborder="0" style="overflow: hidden;" scrolling="no" tabindex="-1"></iframe>
+                    <div id="help_controls"><div id="close_help" class="button"><span class="icon"></span></div></div>
+                </div>
+                <div id="debug_box"><div id="console"></div><div id="platform"></div></div>
             </div>
         </div>
         <div id="mcontrols"><div id="standby"><span id="hourglass"></span></div></div>

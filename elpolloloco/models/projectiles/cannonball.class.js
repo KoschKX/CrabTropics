@@ -1,70 +1,36 @@
 /**
  * A Cannonball.
- * @extends {Enemy}
  */
 class Cannonball extends Enemy {
 
-    /** @type {string} */
+    /** STARTING VALUES */
     name = 'Cannonball';
-
-    /** @type {number} */
-    x = 120;
-
-    /** @type {number} */
-    y = 0;
-
-    /** @type {number} */
-    groundOffset = 36;
-
-    /** @type {number} */
-    health = 10;
-
-    /** @type {number} */
-    starthealth = 10;
-
-    /** @type {number} */
-    frameRate = 24;
-
-    /** @type {boolean} */
-    useGravity = true;
-
-    /** @type {number} */
-    speed = 0.25;
-
-    /** @type {number} */
-    frameRate = 24;
-
-    /** @type {number} */
-    scale = 1;
-
-    /** @type {number} */
     width = 5;
-
-    /** @type {number} */
     height = 5;
+    scale = 1;
+    x = 120;
+    y = 0;
+    groundOffset = 36;
+    speed = 0.25;
+    frameRate = 24;
+    health = 10;
+    starthealth = 10;
+    useGravity = true;
+    hostile = true;
 
-    /** @type {number} */
-    maxSize = 33;
-
-    /** @type {number} */
-    maxZoomSize = 66;
-
-    /** @type {Anim} */
+    /** ANIMATION */
     IMAGES_ROLL = new Anim('./img/cannonballA/ROLL_001.png', 1, '');
-
-    /** @type {Anim[]} */
     imagesLib = [
         this.IMAGES_ROLL,
     ];
 
-    /** @type {[number, number, number, number, string, boolean][]} */
+    /** HITBOXES */
     boxes = [[0, 0, this.width, this.height, 'red', true]];
 
-    /** @type {boolean} */
-    hostile = true;
-
-    /** @type {boolean} */
+    maxSize = 33;
+    maxZoomSize = 66;
     madeGroundContact = false;
+
 
     /**
      * Creates a Cannonball instance.

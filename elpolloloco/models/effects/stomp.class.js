@@ -4,54 +4,17 @@
  */
 class Stomp extends MovableObject {
 
-    /**
-     * @type {string} The name of the Stomp object.
-     */
+    /** START VALUES */
     name = 'Stomp';
-
-    /**
-     * @type {number} The width of the Stomp object.
-     */
     width = 400;
-
-    /**
-     * @type {number} The height of the Stomp object.
-     */
     height = 300;
-
-    /**
-     * @type {number} The frame rate of the Stomp animation.
-     */
-    frameRate = 24;
-
-    /**
-     * @type {boolean} Whether gravity should be applied to the Stomp object (not used).
-     */
-    useGravity = false;
-
-    /**
-     * @type {number} The speed of the Stomp object.
-     */
+    scale = 1;
     speed = 0.25;
-
-    /**
-     * @type {number} The frame rate used for the Stomp animation.
-     */
+    useGravity = false;
     frameRate = 30;
 
-    /**
-     * @type {number} The scale of the Stomp object.
-     */
-    scale = 1;
-
-    /**
-     * @type {Anim} The animation for the Stomp effect.
-     */
+    /** ANIMATIONS */
     IMAGES_STOMP = new Anim('./img/stompA/STOMP_001.png', 28, '');
-
-    /**
-     * @type {Anim[]} The list of animations associated with the Stomp object.
-     */
     imagesLib = [
         this.IMAGES_STOMP
     ];

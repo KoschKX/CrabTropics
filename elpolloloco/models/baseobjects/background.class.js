@@ -1,46 +1,24 @@
 /**
  * Background element.
- * Inherits from MovableObject but is really for static backgrounds.
+ * Inherits from MovableObject (n case I want them to move later). For now, it's is really for static backgrounds.
  */
 class Background extends MovableObject {
 
-    /** @type {string} */
+    /** START VALUES */
     name = 'Background';
-
-    /** @type {string} */
-    category = 'background';
-
-    /** @type {string} Path to the main background image */
-    imagePath;
-
-    /** @type {Anim[]} Array of animation objects for background */
-    imagesLib = [];
-
-    /** @type {Anim} Default background animation instance */
-    IMAGES_BG = new Anim('./img/blank.png');
-
-    /** @type {Anim[]} Image library reference for animation control */
-    imagesLib = [this.IMAGES_BG];
-
-    /** @type {HTMLImageElement[]} Optional image cache (currently unused) */
-    imageCache = [];
-
-    /** @type {boolean} Unused flag for ground interaction */
-    useGround = false;
-
-    /** @type {number} Horizontal position */
+    width = 740;
+    height = 480;
     x = 0;
-
-    /** @type {number} Vertical position */
     y = 0;
 
-    /** @type {number} Width of the background */
-    width = 740;
+    /** IMAGES */
+    IMAGES_BG = new Anim('./img/blank.png');
+    imagesLib = [this.IMAGES_BG];
+    imagePath;
+    imageCache = [];
 
-    /** @type {number} Height of the background */
-    height = 480;
-
-    /** @type {number} Rendering layer (Z-index) */
+    /** UNIQUE */
+    useGround = false;
     layer = 0;
 
     /**

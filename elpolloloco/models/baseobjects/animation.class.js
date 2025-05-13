@@ -3,21 +3,17 @@
  */
 class Anim {
 
-    /** @type {number} Number of times the animation should repeat. */
-    repeat = 1;
-
-    /** @type {Array} Frame data. */
-    frames = [];
-
-    /** @type {string[]} List of file paths representing animation frames. */
-    files = [];
-
-    /** @type {Array} Optional offsets per frame. */
-    offsets = [];
-
-    /** @type {string} Name of the animation (base file name without frame numbers). */
+    /** NAME */
     name = '';
 
+    /** BANKS */
+    frames = [];
+    files = [];
+    offsets = [];
+    
+    /** REPEAT */
+    repeat = 1;
+    
     /**
      * Constructs an Animation instance.
      * @param {string|string[]} startfile - Initial file or array of file paths.

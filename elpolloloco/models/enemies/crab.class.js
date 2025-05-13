@@ -1,104 +1,53 @@
 /**
  * A crab enemy. He is definitely crabby.
- * @extends {Enemy}
  */
 class Crab extends Enemy {
 
-    /** @type {string} The name of the enemy. */
+    /** START VALUES */
     name = 'Crab';
-
-    /** @type {number} The current health of the crab. */
-    health = 3;
-
-    /** @type {number} The maximum health of the crab. */
-    maxHealth = 3;
-
-    /** @type {number} The height of the crab. */
     height = 64;
-
-    /** @type {number} The width of the crab. */
     width = 192;
-
-    /** @type {number} The ground offset of the crab. */
     groundOffset = 0;
-
-    /** @type {number} The frame rate for animations. */
     frameRate = 24;
-
-    /** @type {boolean} Whether the crab uses gravity. */
-    useGravity = true;
-
-    /** @type {number} The speed at which the crab moves. */
+    health = 3;
+    maxHealth = 3;
     speed = 3;
-
-    /** @type {Array<Array<number>>} The fine collision boxes for the crab. */
-    boxes_fine = [
-        [this.width * 0.25, this.height * 0.35, this.width * 0.50, this.height * 0.60, 'red', true],
-        [this.width * 0.15, this.height * 0.10, this.width * 0.7, this.height * 0.25, 'yellow', true]
-    ];
-
-    /** @type {Array<Array<number>>} The collision boxes when the crab is hurt. */
-    boxes_hurt = [
-        [this.width * 0.25, this.height * 0.46, this.width * 0.50, this.height * 0.48, 'red', true],
-        [this.width * 0.37, this.height * 0.45, this.width * 0.25, this.height * 0.20, 'yellow', true]
-    ];
-
-    /** @type {Array<Array<number>>} The current collision boxes of the crab. */
-    boxes = [];
-
-    /** @type {boolean} Whether the crab is hostile or not. */
+    useGravity = true;
     hostile = false;
-
-    /** @type {boolean} Whether the crab should bounce when injured. */
     bounceoninjured = true;
-
-    /** @type {Anim} Animation for yellow crab movement. */
+    
+    /** ANIMATIONS */
     IMAGES_MOVEA1 = new Anim('./img/crabA/YELLOW_MOVE_001.png', 12, '');
-
-    /** @type {Anim} Animation for blue crab movement. */
     IMAGES_MOVEA2 = new Anim('./img/crabA/BLUE_MOVE_001.png', 12, '');
-
-    /** @type {Anim} Animation for red crab movement. */
     IMAGES_MOVEA3 = new Anim('./img/crabA/RED_MOVE_001.png', 12, '');
-
-    /** @type {Anim} Animation for red crab movement (alternative). */
     IMAGES_MOVEB = new Anim('./img/crabB/RED_MOVE_001.png', 12, '');
-
-    /** @type {Anim} Animation for yellow crab death. */
     IMAGES_DIEA1 = new Anim('./img/crabA/YELLOW_DIE_004.png', [4, 5, 6, 7, 8, 9, 10, 11, 12], 'repeat=0');
-
-    /** @type {Anim} Animation for blue crab death. */
     IMAGES_DIEA2 = new Anim('./img/crabA/BLUE_DIE_004.png', [4, 5, 6, 7, 8, 9, 10, 11, 12], 'repeat=0');
-
-    /** @type {Anim} Animation for red crab death. */
     IMAGES_DIEA3 = new Anim('./img/crabA/RED_DIE_004.png', [4, 5, 6, 7, 8, 9, 10, 11, 12], 'repeat=0');
-
-    /** @type {Anim} Animation for red crab death (alternative). */
     IMAGES_DIEB = new Anim('./img/crabB/RED_DIE_004.png', [4, 5, 6, 7, 8, 9, 10, 11, 12], 'repeat=0');
-
-    /** @type {Anim} Animation for yellow crab appearance. */
     IMAGES_APPEARA1 = new Anim('./img/crabA/YELLOW_APPEAR_001.png', [4, 5, 6, 7, 8, 9, 10, 11, 12], 'repeat=0');
-
-    /** @type {Anim} Animation for blue crab appearance. */
     IMAGES_APPEARA2 = new Anim('./img/crabA/BLUE_APPEAR_001.png', [4, 5, 6, 7, 8, 9, 10, 11, 12], 'repeat=0');
-
-    /** @type {Anim} Animation for red crab appearance. */
     IMAGES_APPEARA3 = new Anim('./img/crabA/RED_APPEAR_001.png', [4, 5, 6, 7, 8, 9, 10, 11, 12], 'repeat=0');
-
-    /** @type {Array<Anim>} Array containing all crab animations. */
     imagesLib = [
         this.IMAGES_MOVEA1, this.IMAGES_MOVEA2, this.IMAGES_MOVEA3, this.IMAGES_MOVEB,
         this.IMAGES_DIEA1, this.IMAGES_DIEA2, this.IMAGES_DIEA3, this.IMAGES_DIEB,
         this.IMAGES_APPEARA1, this.IMAGES_APPEARA2, this.IMAGES_APPEARA3,
     ];
 
-    /** @type {boolean} Flag indicating whether the crab is appearing. */
+    /** HITBOXES */
+    boxes = [];
+    boxes_fine = [
+        [this.width * 0.25, this.height * 0.35, this.width * 0.50, this.height * 0.60, 'red', true],
+        [this.width * 0.15, this.height * 0.10, this.width * 0.7, this.height * 0.25, 'yellow', true]
+    ];
+    boxes_hurt = [
+        [this.width * 0.25, this.height * 0.46, this.width * 0.50, this.height * 0.48, 'red', true],
+        [this.width * 0.37, this.height * 0.45, this.width * 0.25, this.height * 0.20, 'yellow', true]
+    ];
+
+    /** UNIQUE */
     appearing = false;
-
-    /** @type {Stomp} A stomp effect triggered upon death. */
     stomp;
-
-    /** @type {string} A sound effect played when the crab is walking. */
     walksound;
 
     /**

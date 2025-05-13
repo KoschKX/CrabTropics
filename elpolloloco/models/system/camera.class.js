@@ -3,23 +3,15 @@
  */
 class Camera {
 
-    /** @type {HTMLCanvasElement} */
+    /** IMAGE */
     cvs;
-
-    /** @type {CanvasRenderingContext2D} */
     ctx;
-
-    /** @type {number[]} The target position of the camera. [x, y] */
-    target = [0, 0];
-
-    /** @type {number[]} The bounding box of the world. [left, top, right, bottom] */
     bounds = [0, 0, 0, 0];
-
-    /** @type {number[]} The camera's offset position. [x, y] */
+    position = [0, 0];
     offset = [0, 0];
 
-    /** @type {number[]} The camera's current position. [x, y] */
-    position = [0, 0];
+    /** TARGET */
+    target = [0, 0];
 
     /**
      * Creates a camera object.

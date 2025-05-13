@@ -1,128 +1,57 @@
 /**
  * A SeaTurtle. Not a Teenage Mutant.
- * Extends the Enemy class.
  */
 class SeaTurtle extends Enemy {
 
-	/** @type {string} The name of the boss. */
+	/** START VALUES */
 	name = 'SeaTurtle';
-
-	/** @type {boolean} Whether the SeaTurtle is a boss. */
+	width = 1000;
+	height = 1000;	
+	x = 0;
+	y = 0;
+	groundOffset = 0;
+	frameRate = 24;
+	health = 9;
+	maxHealth = 9;
+	useGravity = false;
+	hostile = false;
+	bounceoninjured = true;
+	attacksEnemies = true;
+	static = true;
 	isBoss = true;
 
-	/** @type {number} The current health of the SeaTurtle. */
-	health = 9;
-
-	/** @type {number} The maximum health of the SeaTurtle. */
-	maxHealth = 9;
-
-	/** @type {number} The x-coordinate of the SeaTurtle. */
-	x = 0;
-
-	/** @type {number} The y-coordinate of the SeaTurtle. */
-	y = 0;
-
-	/** @type {number} The width of the SeaTurtle. */
-	width = 1000;
-
-	/** @type {number} The height of the SeaTurtle. */
-	height = 1000;
-
-	/** @type {number} The ground offset of the SeaTurtle. */
-	groundOffset = 0;
-
-	/** @type {number} The frame rate for animations. */
-	frameRate = 24;
-
-	/** @type {boolean} Whether the SeaTurtle is affected by gravity. */
-	useGravity = false;
-
-	/** @type {boolean} Whether the SeaTurtle is static. */
-	static = true;
-
-	/** @type {Array} The list of collision boxes for the SeaTurtle. */
-	boxes = [];
-
-	/** @type {Array} The list of animated collision boxes for the SeaTurtle. */
-	aboxes = [];
-
-	/** @type {boolean} Whether the SeaTurtle is hostile. */
-	hostile = false;
-
-	/** @type {boolean} Whether the SeaTurtle can bounce on injured enemies. */
-	bounceoninjured = true;
-
-	/** @type {boolean} Whether the SeaTurtle attacks enemies. */
-	attacksEnemies = true;
-
-	/** @type {number} The current state of the SeaTurtle. */
-	state = -1;
-
-	/** @type {number} The interval for the SeaTurtle's behavior. */
-	sttInterval;
-
-	/** @type {number} The retreat timer for the SeaTurtle. */
-	retreatTimer;
-
-	/** @type {Anim} The animation for the SeaTurtle's shell. */
+	/** ANIMATIONS */
 	IMAGES_SHELL = new Anim('./img/seaturtle/SHELL_001.png', 1, '');
-
-	/** @type {Anim} The animation for the SeaTurtle's idle state. */
 	IMAGES_IDLE = new Anim('./img/seaturtle/IDLE_001.png', 20, '');
-
-	/** @type {Anim} The animation for the SeaTurtle's fling attack. */
 	IMAGES_FLING = new Anim('./img/seaturtle/FLING_001.png', 25, '');
-
-	/** @type {Anim} The animation for the SeaTurtle's eat attack. */
 	IMAGES_EAT = new Anim('./img/seaturtle/EAT_001.png', 35, 'repeat=0');
-
-	/** @type {Anim} The animation for the SeaTurtle's slap attack. */
 	IMAGES_SLAP = new Anim('./img/seaturtle/SLAP_001.png', 35, 'repeat=0');
-
-	/** @type {Anim} The animation for the SeaTurtle's collapse state. */
 	IMAGES_COLLAPSE = new Anim('./img/seaturtle/COLLAPSE_001.png', 20, 'repeat=0');
-
-	/** @type {Anim} The animation for the SeaTurtle's retreat. */
 	IMAGES_RETREAT = new Anim('./img/seaturtle/RETREAT_001.png', 16, 'repeat=0');
-
-	/** @type {Anim} The animation for the SeaTurtle's death. */
 	IMAGES_DIE = new Anim('./img/seaturtle/DIE_001.png', 45, 'repeat=0');
-
-	/** @type {Array<Anim>} The library of animations for the SeaTurtle. */
 	imagesLib = [
 		this.IMAGES_SHELL, this.IMAGES_IDLE, this.IMAGES_FLING, this.IMAGES_EAT, this.IMAGES_COLLAPSE, this.IMAGES_RETREAT, this.IMAGES_SLAP, this.IMAGES_DIE,
 	];
-
-	/** @type {Array<Anim>} The library of animated collision boxes for specific animations. */
 	aboxesLib = [ 
 		this.IMAGES_EAT, this.IMAGES_FLING, this.IMAGES_COLLAPSE, this.IMAGES_DIE 
 	];
 
-	/** @type {boolean} Whether the intro animation is currently playing. */
+	/** HITBOXES **/
+	boxes = [];
+	aboxes = [];
+
+	/** UNIQUE. */
+	state = -1;
+	sttInterval;
+	retreatTimer;
 	introPlaying = false;
-
-	/** @type {number} The counter for the intro animation. */
 	introTick = 0;
-
-	/** @type {number} The scale factor for the SeaTurtle. */
 	scale = 1;
-
-	/** @type {number} The starting width of the SeaTurtle. */
 	startwidth = this.width;
-
-	/** @type {number} The starting height of the SeaTurtle. */
 	startheight = this.height;
-
-	/** @type {Movie} The splash animation for the SeaTurtle. */
 	splashes;
-
-	/** @type {number} The type of splash animation (0 or 1). */
 	splashType = 1;
-
-	/** @type {number} The frame to stop the splash animation. */
 	splashStopFrame = 30;
-
-	/** @type {Background} The crater animation when the SeaTurtle activates. */
 	crater;
 
 	/**

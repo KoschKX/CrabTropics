@@ -4,23 +4,21 @@
  */
 class Enemy extends Character {
 
-    /** @type {string} */
+    /** START VALUES */
     name = 'Enemy';
 
-    /** @type {boolean} */
-    isBoss = false;
-
-    /** @type {boolean} */
-    attacksEnemies = false;
-
-    /** @type {boolean} */
+    /** HEALTH */
     dead = false;
-
-    /** @type {boolean} */
     dying = false;
 
-    /** @type {number} */
+    /** VARIATION */
     variant = 0;
+
+    /** BEHAVIOR */
+    attacksEnemies = false;
+
+    /** STATUS */
+    isBoss = false;
 
     /**
      * Creates a new enemy object.

@@ -1,15 +1,14 @@
 /**
  * The Really Real World.
  */
-class World {
 
-    /**
-     * Creates an instance of the World class.
-     * @param {HTMLCanvasElement} cvs - The canvas element used for rendering.
-     * @param {Screen} scr - The screen object used for displaying game content.
-     * @param {Keyboard} kbd - The keyboard object for detecting player inputs.
-     * @param {AudioManager} aud - The audio manager for playing sounds and music.
-     */
+/** NOTES
+ * Using intervals on multiple objects was prone to bugs. In /js/utils.js (global utilities), I've written 
+ * custom setTimeout and setInterval functions so they can sync up with the game's elapsed time. 
+ */
+
+class World {
+    
     constructor(cvs, scr, kbd, aud) {
         this.cvs = cvs;
         this.ctx = cvs.getContext('2d');
@@ -42,7 +41,6 @@ class World {
         this.scheduledRepeaters = [];
         this.bossTime = null;
         this.bossEventTime = 60;
-
         this.debug = false;
     }
 
@@ -57,7 +55,6 @@ class World {
      * Initializes the world, playing ambient sounds and music and setting up initial game state.
      */
 	init() {
-
 	    this.audio.playSound(this.level.ambient[0], 1.0, false, true);
 		this.audio.playMusic(this.level.music[0], 0.4, true);
 		
@@ -77,7 +74,6 @@ class World {
 		this.dripLoadBoss();
 
 		this.initialized = true;
-		
 	}
 
     /**
@@ -458,10 +454,10 @@ class World {
      * Calls and spawns the boss character when the boss fight begins.
      */
 	callBoss(){
-		if(this.bosstest){ return; } 
+		if(this.bosstest || this.gameover){ return; } 
 		let tmpBoss = new SeaTurtle(this, false);
 		let self = this; this.level.preloadObjectLibs(tmpBoss, function(){
-			console.log('Boss Called');
+			log('Boss Called');
 			self.bossTime = (self.elapsedClockTime / 1000);
 			self.boss = new SeaTurtle(self, false);
 		  	self.boss.init();
@@ -482,7 +478,7 @@ class World {
 		this.bossDripLoading = true;
 		let tmpBoss = new SeaTurtle(this, false);
 		let self = this; this.level.dripImageLib(tmpBoss, tmpBoss.imagesLib, 100 ,function(){
-			console.log('Boss Loaded');
+			log('Boss Loaded');
 			self.bossDripLoading = false;
 			tmpBoss.destroy();
 		});
@@ -503,7 +499,9 @@ class World {
      */
     checkDebugKey(){
         if(!this.keyboard.KEYDOWN){ return; }
-        document.querySelector('body').setAttribute('advanced-menu', true);
+        if(this.keyboard.CAPSLOCK){
+            document.querySelector('body').setAttribute('advanced-menu', this.keyboard.CAPSLOCK);
+        }
         this.toggleDebug(this.keyboard.CAPSLOCK);
     }
 

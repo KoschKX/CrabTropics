@@ -1,48 +1,29 @@
 /**
  * A class representing the Doubloon item in the game.
- * @extends {Enemy}
  */
 class Doubloon extends Enemy {
 
-    /** @type {string} */
+    /** START VALUES */
     name = 'Doubloon';
-
-    /** @type {number} */
-    frameRate = 24;
-
-    /** @type {boolean} */
-    useGravity = false;
-
-    /** @type {number} */
-    speed = 0;
-
-    /** @type {number} */
     width = 32;
-
-    /** @type {number} */
     height = 32;
+    speed = 0;
+    frameRate = 24;
+    useGravity = false;
+    hostile = true;
 
-    /** @type {Anim} */
+    /** ANIMATIONS */
     IMAGES_SPINA = new Anim('./img/doubloon/SMALL_GOLD_SPIN_001.png', 29, '');
-
-    /** @type {Anim} */
     IMAGES_SPINB = new Anim('./img/doubloon/SMALL_SILVER_SPIN_001.png', 29, '');
-
-    /** @type {Anim[]} */
     imagesLib = [
         this.IMAGES_SPINA, this.IMAGES_SPINB
     ];
 
-    /** @type {Array<[number, number, number, number, string, boolean]>} */
+    /** HITBOXES */
     boxes = [[0, 0, this.width, this.height, 'lime', true]];
 
-    /** @type {boolean} */
+    /** UNIQUE */
     buried = true;
-
-    /** @type {boolean} */
-    hostile = true;
-
-    /** @type {number} */
     value = 0;
 
     /**

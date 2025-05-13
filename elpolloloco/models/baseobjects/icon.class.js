@@ -4,30 +4,18 @@
  */
 class Icon {
 
-    /** @type {string} The name of the icon. */
+    /** START VALUES */
     name = 'Icon';
-    /** @type {string} The category of the icon. */
-    category = 'icon';
-
-    /** @type {number} The x position of the icon on the canvas. */
     x = 0;
-    /** @type {number} The y position of the icon on the canvas. */
     y = 0;
-    /** @type {number} The width of the icon. */
     width = 64;
-    /** @type {number} The height of the icon. */
     height = 64;
 
-    /** @type {HTMLCanvasElement} The canvas element on which to draw the icon. */
+    /** IMAGE */
     cvs;
-    /** @type {CanvasRenderingContext2D} The 2D drawing context of the canvas. */
     ctx;
-    /** @type {HTMLImageElement} The image element that represents the icon. */
     img;
-    /** @type {string} The file path to the image to be loaded. */
     imgpath;
-
-    /** @type {number} The interval used for drawing the icon at a constant rate. */
     drawInterval;
 
     /**

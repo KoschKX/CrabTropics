@@ -6,40 +6,11 @@
  */
 class Cloud extends MovableObject {
 
-  /**
-   * The name of the cloud object.
-   * @type {string}
-   */
+  /** START VALUES */
   name = 'Cloud';
-
-  /**
-   * The scale factor of the cloud.
-   * @type {number}
-   */
-  scale = 1.5;
-
-  /**
-   * The vertical position of the cloud.
-   * @type {number}
-   */
   y = 50;
-
-  /**
-   * The speed at which the cloud moves.
-   * @type {number}
-   */
   speed = 1;
-
-  /**
-   * The range of X position for cloud's random spawn location.
-   * @type {[number, number]}
-   */
   randx = 720;
-
-  /**
-   * The range of Y position for cloud's random spawn location.
-   * @type {[number, number]}
-   */
   randy = 200;
 
   /**

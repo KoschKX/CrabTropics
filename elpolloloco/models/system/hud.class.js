@@ -3,13 +3,13 @@
  * Handles the display of player stats, game over screens, wealth, health, and time remaining.
  */
 class HUD {
-    /** @type {HTMLCanvasElement} */
+
+    /** IMAGE */
     cvs;
-    /** @type {CanvasRenderingContext2D} */
     ctx;
-    /** @type {World} */
+
+    /** WORLD REFERENCE */
     world;
-    /** @type {Character} */
     player;
 
     /**

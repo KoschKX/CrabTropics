@@ -1,13 +1,12 @@
 /**
  * A loading icon (a boat wheel) that rotates in the canvas.
- * @extends {Icon}
  */
 class LoadIcon extends Icon {
 
-    /** @type {string} The image path for the loading icon. */
+    /** START VALUES. */
     imgpath = './img/icons/wheel.png';
 
-    /** @type {number} The rotation angle of the icon in radians. */
+    /** UNIQUE */
     angle = 0;
 
     /**

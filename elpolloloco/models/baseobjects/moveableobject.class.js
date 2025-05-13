@@ -2,98 +2,50 @@
  * Represents an animated, movable object in a game world.
  */
 class MovableObject {
-    /** @type {string} Unique object name */
-    name = '';
 
-    /** @type {string} Unique object stamp generated at creation */
+    /** ID */
+    name = '';
     stamp = '';
 
-    /** @type {any} Reference to the game world */
-    world;
-
-    /** @type {boolean} Whether the object has been initialized */
-    initialized = false;
-
-    /** @type {number} X coordinate */
+    /** IMAGE */
     x = 120;
-
-    /** @type {number} Y coordinate */
     y = 350;
-
-    /** @type {number} Object width in pixels */
     width = 128;
-
-    /** @type {number} Object height in pixels */
     height = 128;
 
-    /** @type {number} Horizontal movement speed */
-    speed = 1;
-
-    /** @type {number} Gravity acceleration */
-    acceleration = 1;
-
-    /** @type {number} Vertical speed */
-    speedY = 0;
-
-    /** @type {number} Current facing direction (0 = left, 1 = right) */
-    currDirection = 1;
-
-    /** @type {number} Current frame index for animation */
+    /** ANIMATION */
+    IMAGES_BLANK = new Anim('./img/blank.png');
+    imagesLib = [this.IMAGES_BLANK];
+    imageCache = [];
+    currImageSet = [''];
+    noRepeat = [];
+    img;
+    cache;
+    flipOffset = [0, 0];
+    frameRate = 60;
+    animInterval;
+    groundOffset = 0;
     currImage = 0;
 
-    /** @type {Anim} Default blank animation object */
-    IMAGES_BLANK = new Anim('./img/blank.png');
-
-    /** @type {Anim[]} Animation library */
-    imagesLib = [this.IMAGES_BLANK];
-
-    /** @type {Object} Cache of loaded images by path */
-    imageCache = [];
-
-    /** @type {string[]} Current image set used for animation */
-    currImageSet = [''];
-
-    /** @type {string[]} Images that should not repeat */
-    noRepeat = [];
-
-    /** @type {HTMLImageElement} Currently displayed image */
-    img;
-
-    /** @type {HTMLElement} Cache container element */
-    cache;
-
-    /** @type {number[]} Horizontal and vertical flip offsets */
-    flipOffset = [0, 0];
-
-    /** @type {number} Animation frame rate in frames per second */
-    frameRate = 60;
-
-    /** @type {number} Interval ID for animation timer */
-    animInterval;
-
-    /** @type {number} Offset added to world ground level */
-    groundOffset = 0;
-
-    /** @type {boolean} If true, object is facing right */
+    /** STATUS */
     facingRight = true;
-
-    /** @type {boolean} If true, object uses gravity */
-    useGravity = false;
-
-    /** @type {boolean} If true, object is currently falling */
     falling = false;
-
-    /** @type {boolean} If true, object is bouncing */
     bouncing = false;
-
-    /** @type {boolean} If true, object is static and cannot move */
     static = false;
-
-    /** @type {boolean} If true, object is in appearing state */
     appearing = false;
 
-    /** @type {boolean} If true, object uses ground collision */
+    /** PHYSICAL */
+    speed = 1;
+    acceleration = 1;
+    speedY = 0;
+    useGravity = false;
     useGround = true;
+    currDirection = 1;
+
+    initialized = false;
+
+    /* WORLD REFERENCE */
+    world;
 
     /**
      * Creates a movable object.

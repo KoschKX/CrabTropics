@@ -46,7 +46,7 @@ function init() {
     if (platform && platform.toLowerCase() === 'ipad') { vidFormat = 'mp4'; }
 
     document.querySelector('body').setAttribute('video-format', vidFormat);
-    document.querySelector('#debug_box').innerHTML = platform;
+    document.querySelector('#debug_box #platform').innerHTML = platform;
 
     /** Setup canvas and context */
     canvas = document.getElementById('canvas');
@@ -98,6 +98,11 @@ function init() {
                 screen.showHelp();
                 screen.pause();
             }
+        }, { passive: false });
+        document.querySelector('#help #close_help').addEventListener(eventType, (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            screen.hideHelp(); screen.unpause();
         }, { passive: false });
     });
 
@@ -263,11 +268,26 @@ function init() {
     /**
      * Auto mute/pause on window blur.
      */
-    window.addEventListener('blur', () => {
+    document.addEventListener('visibilitychange', () => {
+        // Ignore unwanted pauses
+            const isTabVisible = document.visibilityState === 'visible';
+            if (isTabVisible) return;
+
         screen.hasFocus = false;
         audio.mute(false);
         screen.pause(false);
     });
+
+    window.addEventListener('blur', () => {
+        // Ignore unwanted pauses
+            const isIframeFocused = document.activeElement && document.activeElement.tagName === 'IFRAME';
+            const isTabVisible = document.visibilityState === 'visible';  
+            if (isIframeFocused || isTabVisible) return;
+
+        screen.hasFocus = false;
+        audio.mute(false);
+        screen.pause(false);
+     });
 
     /**
      * Restore state on window focus.

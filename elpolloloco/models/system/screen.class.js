@@ -2,22 +2,17 @@
  * Screen for handling UI interactions.
  */
 class Screen {
-    /** @type {HTMLCanvasElement} */
+
+    /** IMAGE */
     cvs;
-
-    /** @type {World} */
-    world;
-
-    /** @type {CanvasRenderingContext2D} */
     ctx;
-
-    /** @type {Array<number>} */
     bounds;
 
-    /** @type {boolean} */
-    paused;
+    /** WORLD */
+    world;
 
-    /** @type {boolean} */
+    /** STATUS */
+    paused;
     wasPaused;
 
     /**

@@ -4,57 +4,23 @@
  */
 class Sparkle extends MovableObject {
 
-    /**
-     * @type {string} The name of the Sparkle object.
-     */
+    /** START VALUES */
     name = 'Sparkle';
-
-    /**
-     * @type {number} The frame rate of the Sparkle animation.
-     */
+    scale = 1;
     frameRate = 24;
-
-    /**
-     * @type {boolean} Whether gravity should be applied to the Sparkle (not used).
-     */
+    speed = 0.25;
     useGravity = false;
 
-    /**
-     * @type {number} The speed of the Sparkle object.
-     */
-    speed = 0.25;
-
-    /**
-     * @type {number} The scale of the Sparkle object.
-     */
-    scale = 1;
-
-    /**
-     * @type {Anim} The animation for the green sparkle effect.
-     */
+    /** ANIMATIONS */
     IMAGES_SPARKLEA = new Anim('./img/sparkle/SPARKLE_GREEN_001.png', 25, '');
-
-    /**
-     * @type {Anim} The animation for the gold sparkle effect.
-     */
     IMAGES_SPARKLEB = new Anim('./img/sparkle/GOLD_001.png', 25, '');
-
-    /**
-     * @type {Anim[]} The list of animations associated with the Sparkle object.
-     */
     imagesLib = [
         this.IMAGES_SPARKLEA,
         this.IMAGES_SPARKLEB,
     ];
 
-    /**
-     * @type {MovableObject|null} The target object the sparkle follows.
-     */
+    /** UNIQUE */
     target = null;
-
-    /**
-     * @type {number[]} The offset to adjust the sparkle's position relative to the target.
-     */
     offset = [0, 0];
 
     /**

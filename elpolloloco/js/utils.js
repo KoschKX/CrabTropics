@@ -1,5 +1,14 @@
 /* ------------------ GLOBAL UTILITIES ------------------ */
 
+/** 
+ * Log here instead.
+ */
+function log(msg){
+    let consolebox = document.querySelector('#console');
+    if(consolebox){
+        consolebox.innerHTML+='<span class="log_line">'+msg+'</span>'+'<br/>';
+    }
+}
 
 /** 
  * Detects browser and plaformn and adds the appropriate attributes to the body.
@@ -71,7 +80,7 @@ function destroy(object, arr = [], world) {
     let removals = arr.find(obj => obj.stamp === object.stamp);
     arr = arr.filter(obj => obj !== removals);
     if (removals && world?.debug) {
-        console.log('Destroyed ' + object.name);
+        log('Destroyed ' + object.name);
     }
     return arr;
 }
@@ -110,7 +119,7 @@ function createNamedClass(className) {
     return {
         [className]: class {
             constructor() {
-                console.log(`Instance of ${className}`);
+                log(`Instance of ${className}`);
             }
         }
     }[className];
@@ -195,12 +204,18 @@ function drawText(ctx, x, y, w, h, text, color, font, align, baseline, ocolor, o
     ctx.font = font;
     ctx.textAlign = align;
     ctx.textBaseline = baseline;
-    ctx.fillText(text, x, y);
+    ctx.lineJoin = 'round';  // Smooth corners
+    ctx.lineCap = 'round';  // Smooth ends of the stroke
     if (ocolor) {
-        ctx.fillStyle = 'transparent';
+        ctx.lineWidth = othick+3;
+        ctx.fillStyle = ocolor;
         ctx.strokeStyle = ocolor;
         ctx.strokeText(text, x, y);
-    }
+    } 
+    ctx.lineWidth = 1;
+    ctx.fillStyle = color;
+    ctx.fillText(text, x, y);
+
 }
 
 /**

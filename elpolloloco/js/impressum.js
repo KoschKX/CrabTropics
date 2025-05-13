@@ -1,18 +1,13 @@
-
 document.addEventListener('DOMContentLoaded', function() {
     init();
+    fade_in();
 });
-
 
 function init() {
 
-    window.addEventListener('blur', () => {
+    window.addEventListener('blur', () => {});
 
-    });
-
-    window.addEventListener('focus', () => {
-
-    });
+    window.addEventListener('focus', () => {});
 
     window.addEventListener('resize', function() {
         setAppWidth();
@@ -20,6 +15,13 @@ function init() {
 
     setAppWidth();
 
+}
+
+function fade_in(){
+    let elm = document.querySelectorAll('body#impressum .fade_in');
+    elm.forEach(function(felm){
+        felm.classList.add('show');
+    });
 }
 
 function setAppWidth(){

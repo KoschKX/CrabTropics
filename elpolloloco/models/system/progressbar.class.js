@@ -3,41 +3,26 @@
  * Displays loading progress and a description of the current task.
  */
 class ProgressBar {
-    /** @type {string} */
+
+    /** NAME */
     name = 'ProgressBar';
 
-    /** @type {number} */
+    /** IMAGE */
     x = 50;
-
-    /** @type {number} */
     y = 50;
-
-    /** @type {number} */
     width = 66;
-
-    /** @type {number} */
     height = 20;
-
-    /** @type {HTMLCanvasElement} */
+    centered = true;
     cvs;
-
-    /** @type {CanvasRenderingContext2D} */
     ctx;
 
-    /** @type {number | null} */
-    drawFramesId;
-
-    /** @type {boolean} */
-    centered = true;
-
-    /** @type {boolean} */
+    /** STATUS */
     active = false;
-
-    /** @type {number} */
     progress = 0.0;
-
-    /** @type {string} */
     task = '';
+
+    /** INTERVAL */
+    drawFramesId;
 
     /**
      * Creates a new ProgressBar.

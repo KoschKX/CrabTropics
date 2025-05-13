@@ -4,16 +4,12 @@
  */
 class Player extends Character {
 
-    /** @type {string} */
+    /** START VALUES */
     name = 'Character';
-
-    /** @type {number} */
     health = 3;
-
-    /** @type {number} */
     starthealth = 3;
 
-    /** @type {number[]} */
+    /** HITBOXES */
     box = [this.width, this.height, this.width, this.height];
 
     /**

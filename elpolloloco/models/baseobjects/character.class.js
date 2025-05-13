@@ -7,71 +7,35 @@ class Character extends MovableObject {
     /** @type {string} */
     name = 'Character';
 
-    /** @type {boolean} */
-    dead = false;
-
-    /** @type {boolean} */
-    hurt = false;
-
-    /** @type {boolean} */
-    invincible = false;
-
-    /** @type {boolean} */
-    willInvincible = false;
-
-    /** @type {boolean} */
-    hostile = false;
-
-    /** @type {boolean} */
-    reviving = false;
-
-    /** @type {boolean} */
-    flickering = false;
-
-    /** @type {number} */
+    /** HEALTH */
     health = 1;
-
-    /** @type {number} */
     maxHealth = 3;
-
-    /** @type {number} */
     starthealth;
-
-    /** @type {number} */
+    dead = false;
+    hurt = false;
+    invincible = false;
+    willInvincible = false;  
+    reviving = false;    
     reviveTimout;
-
-    /** @type {number} */
     dieTimout;
 
-    /** @type {number} */
+    /** WEALTH */
     doubloons = 0;
-
-    /** @type {number} */
     lastHit = 0;
-
-    /** @type {number} */
     lastFlicker = 0;
-
-    /** @type {boolean} */
     useGravity = true;
-
-    /** @type {boolean} */
     falling = false;
-
-    /** @type {boolean} */
     bounding = false;
 
-    /** @type {Array} */
+    /** HITBOXES */
     boxes = [];
-
-    /** @type {Array} */
     aboxes = [];
-
-    /** @type {Array} */
     aboxesLib = [];
-
-    /** @type {string[]} */
     boxcolors = ['red', 'yellow', 'lime'];
+
+    /** BEHAVIOR */
+    hostile = false;
+    flickering = false;
 
     /**
      * Creates a new character object.

@@ -3,32 +3,23 @@
  */
 class AnimatedHitbox {
 
-    /** @type {string} */
+    /** NAME */
     name = 'AnimatedHitbox';
 
-    /** @type {HTMLImageElement[]} */
+    /** BANKS */
     cachedImages = [];
-
-    /** @type {number} */
     loadedImages = 0;
-
-    /** @type {number} */
     totalImages = 0;
 
-    /** @type {boolean} */
-    loaded = false;
-
-    /** @type {Object} */
+    /** ANIMATION */
     anim;
 
-    /** @type {Array} */
+    /** HITBOXES */
     boxes = [];
-
-    /** @type {string[]} */
     boxcolors = [];
 
-    /** @type {boolean} */
-    buried = true;
+    /** STATUS */
+    loaded = false;
 
     /**
      * Constructs the AnimatedHitbox instance.

@@ -4,56 +4,27 @@
  */
 class Movie extends Background {
 
-    /** @type {string} */
+    /** START VALUES */
     name = 'Movie';
-    
-    /** @type {string} */
-    category = 'background';
-
-    /** @type {Anim} */
-    IMAGES_ANIM = new Anim('./img/blank.png', 0, '');
-
-    /** @type {string} */
-    imagePath;
-
-    /** @type {Object<string, string>} */
-    imageCache = [];
-
-    /** @type {Anim[]} */
-    imagesLib = [];
-
-    /** @type {number} */
-    currImage = 0;
-
-    /** @type {string[]} */
-    anim = [];
-
-    /** @type {HTMLVideoElement|null} */
-    vid;
-
-    /** @type {number} */
-    frames = 1;
-
-    /** @type {number} */
-    frameRate = 30;
-
-    /** @type {number} */
     x = 0;
-
-    /** @type {number} */
     y = 0;
-
-    /** @type {number} */
     width = 740;
-
-    /** @type {number} */
     height = 480;
-
-    /** @type {boolean} */
-    isPlaying = false;
-
-    /** @type {boolean} */
+    frameRate = 30;
+    
+    /** ANIMATION */
+    IMAGES_ANIM = new Anim('./img/blank.png', 0, '');
+    imagePath;
+    imageCache = [];
+    imagesLib = [];
+    currImage = 0;
+    
+    /** UNIQUE */
     strict = false;
+    anim = [];
+    isPlaying = false;
+    frames = 1;
+    vid;
 
     /**
      * Constructs a new Movie background.

@@ -1,80 +1,43 @@
 /**
  * A Pirate named Kit.
- * @extends {Player}
  */
 class Pirate extends Player {
 
-    /** @type {string} */
+    /** START VALUES */
     name = 'Pirate';
-
-    /** @type {number} */
-    health = 3;
-
-    /** @type {number} */
-    maxHealth = 6;
-
-    /** @type {number} */
-    starthealth = 3;
-
-    /** @type {number} */
+    groundOffset = -64;
+    speed = 4;
     frameRate = 24;
-
-    /** @type {boolean} */
+    health = 3;
+    maxHealth = 6;
+    starthealth = 3;
     useGravity = true;
 
-    /** @type {number} */
-    speed = 4;
 
-    /** @type {number} */
-    frameRate = 24;
-
-    /** @type {number} */
-    groundOffset = -64;
-
-    /** @type {boolean} */
-    digging = false;
-
-    /** @type {XMark|boolean} */
-    currXmark;
-
-    /** @type {[number, number, number, number, string, boolean][]} */
-    boxes = [
-        [this.width * 0.33, this.height * 0.20, this.width * 0.36, this.height * 0.65, 'red', true],
-        [this.width * 0.33, this.height * 0.85, this.width * 0.36, this.height * 0.15, 'yellow', true]
-    ];
-
-    /** @type {Anim} */
+    /** ANIMATIONS */
     IMAGES_IDLE = new Anim('./img/kit/IDLE_001.png', [1, 2, 3, 4, 5, 6, 7, 6, 5, 4, 3, 2], '');
-
-    /** @type {Anim} */
     IMAGES_WALK = new Anim('./img/kit/RUN_001.png', 14, '');
-
-    /** @type {Anim} */
     IMAGES_JUMP = new Anim('./img/kit/JUMP_001.png', 7, 'repeat=0');
-
-    /** @type {Anim} */
     IMAGES_HURT = new Anim('./img/kit/JUMP_001.png', [1, 1, 2, 3, 4], '');
-
-    /** @type {Anim} */
     IMAGES_DIE = new Anim('./img/kit/DIE_001.png', 16, 'repeat=0');
-
-    /** @type {Anim} */
     IMAGES_DIG = new Anim('./img/kit/DIG_001.png', 14, '');
-
-    /** @type {Anim[]} */
     imagesLib = [
         this.IMAGES_IDLE, this.IMAGES_WALK, this.IMAGES_JUMP,
         this.IMAGES_HURT, this.IMAGES_DIE, this.IMAGES_DIG,
     ];
 
-    /** @type {number} */
+    /** HITBOXES */
+    boxes = [
+        [this.width * 0.33, this.height * 0.20, this.width * 0.36, this.height * 0.65, 'red', true],
+        [this.width * 0.33, this.height * 0.85, this.width * 0.36, this.height * 0.15, 'yellow', true]
+    ];
+
+    /** UNIQUE */
     lastMark = 0;
-
-    /** @type {number} */
     maxMarks = 3;
-
-    /** @type {boolean} */
     spotting = true;
+    digging = false;
+    currXmark;
 
     /**
      * Creates a Pirate instance.

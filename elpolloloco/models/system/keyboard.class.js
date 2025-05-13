@@ -2,26 +2,19 @@
  * Keyboard System.
  */
 class Keyboard {
-    /** @type {boolean} State of the LEFT arrow key (pressed or not). */
+
+    /** KEY STATES */
     LEFT;
-    /** @type {boolean} State of the RIGHT arrow key (pressed or not). */
     RIGHT;
-    /** @type {boolean} State of the DOWN arrow key (pressed or not). */
     DOWN;
-    /** @type {boolean} State of the UP arrow key (pressed or not). */
     UP;
-    /** @type {boolean} State of the SPACE key (pressed or not). */
     SPACE;
-    /** @type {boolean} State of the ENTER key (pressed or not). */
     ENTER;
-    /** @type {boolean} State of the TAB key (pressed or not). */
     TAB;
-    /** @type {boolean} State of the CAPSLOCK key (pressed or not). */
     CAPSLOCK;
 
-    /** @type {boolean} If the keyboard is currently blocked from input. */
+    /** STATUS. */
     BLOCKED = false;
-    /** @type {boolean} If any key is pressed. */
     KEYDOWN = false;
 
     /**
