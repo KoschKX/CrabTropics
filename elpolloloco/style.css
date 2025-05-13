@@ -295,7 +295,6 @@
     }
     #controls.show {
         opacity: 1;
-        pointer-events: auto;
     }
     #controls.show.opacityB .button{
         background: #ffffff33;
@@ -308,6 +307,9 @@
     #controls.show.opacityD .button{
         background: #ffffff00;
         border-color: #ffffff11;
+    }
+    #controls.show .button{
+        pointer-events: auto;
     }
 
     /* FIX BUTTON STUTTERING */
@@ -583,12 +585,68 @@
         max-width: calc(100% - 1em);
         text-align: right;
         padding: 0.5em;
-        color: salmon;
         pointer-events: all;
     }
-
-    #debug_box #console{
+    #debug_box #platform{
+        opacity: 0;
+        color: salmon;
+        padding: 0.25em;
+    }
+    [advanced-menu="true"] #debug_box #platform{
+        opacity: 1;
+    }
+    #debug_box #console {
         display: none;
+        flex-direction: column;
+        justify-content: flex-end;
+        height: 5em;
+        padding: 0.25em;
+        overflow: hidden;
+        word-wrap: break-word;
+        white-space: pre-wrap;
+        box-sizing: border-box;
+        /* border: 1px solid moccasin; */
+    }
+    [data-debug="true"] #debug_box #console{
+        display: flex;
+    }
+    [data-debug="true"] #debug_box #console:hover{
+        display: flex ;
+        flex-direction: column-reverse;
+        justify-content: flex-start;
+
+        background: #00000080;
+        overflow-y: auto;
+    }
+
+    #debug_box #console .log_entry{
+        display: block;
+        opacity: 0;
+        transition: opacity 1s;
+        color: moccasin;
+    }
+    #debug_box #console .log_stamp{
+        color: salmon;
+    }
+    #debug_box #console .log_stamp::before{
+        content: "[";
+        color: teal;
+        margin-left: 0.5em;
+    }
+    #debug_box #console .log_stamp::after{
+        content: "]";
+        color: teal;
+    }
+    #debug_box #console .log_entry.show{
+        opacity: 1;
+    }
+    #debug_box #console .log_entry.hide{
+        display: none;
+    }
+    #debug_box #console:hover .log_entry{
+        display: block;
+        padding-RIGHT: 0em;
+        opacity: 1;
     }
 
 /* RESPONSIVE */

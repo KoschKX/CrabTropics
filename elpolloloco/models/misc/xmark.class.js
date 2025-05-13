@@ -22,6 +22,7 @@ class XMark extends Enemy {
 
     /** UNIQUE **/
     buried = true;
+    xarrow;
 
     /**
      * Creates an instance of the XMark class.
@@ -31,7 +32,6 @@ class XMark extends Enemy {
     constructor(world, immediate = false) {
         super(world);
         this.generateStamp(this.name);
-
         if (immediate) {
             this.init();
         }
@@ -41,6 +41,7 @@ class XMark extends Enemy {
      * Destroys the XMark object.
      */
     destroy() {
+        if(this.xarrow){ this.xarrow.destroy(); }
         this.world.level.projectiles = destroy(this, this.world.level.projectiles, this.world);
         super.destroy();
     }
@@ -52,6 +53,16 @@ class XMark extends Enemy {
         super.init();
         this.loadImage(this.IMAGES_MARK.files[0]);
         this.changeAnimation(this.IMAGES_MARK);
+    }
+
+    /**
+     * Create accompanying XArrow object.
+     */
+    createXArrow(){
+        this.xarrow = new XArrow(this.world, true);
+        this.xarrow.x = this.x;
+        this.xarrow.y = this.y - this.height * 2.5;
+        this.world.level.projectiles.push(this.xarrow);
     }
 
     /**

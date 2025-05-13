@@ -163,6 +163,7 @@ function init() {
         document.querySelector('#debug').addEventListener(eventType, (e) => {
             e.stopPropagation();
             e.preventDefault();
+            if(!titlescreen|| !titlescreen.world){ return; }
             titlescreen.world.debug
                 ? titlescreen.world.toggleDebug(false)
                 : titlescreen.world.toggleDebug(true);

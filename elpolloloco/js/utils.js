@@ -3,10 +3,32 @@
 /** 
  * Log here instead.
  */
-function log(msg){
+function log(msg, delay=3000, hide=true){
     let consolebox = document.querySelector('#console');
     if(consolebox){
-        consolebox.innerHTML+='<span class="log_line">'+msg+'</span>'+'<br/>';
+        let hover = document.querySelector('#console:hover');
+        let now      = new Date();
+        let hours    = now.getHours().toString().padStart(2, '0');
+        let minutes  = now.getMinutes().toString().padStart(2, '0');
+        let seconds  = now.getSeconds().toString().padStart(2, '0'); 
+        let stamp    = hours+':'+minutes+':'+seconds;
+        let logentry = document.createElement('div');
+            logentry.classList.add('log_entry');
+            logentry.setAttribute('stamp',stamp);
+            logentry.innerHTML=msg+'<span class="log_stamp">'+stamp+'</span>';
+        consolebox.appendChild(logentry);
+        if(!hover){ consolebox.scrollTop = consolebox.scrollHeight; }
+        setTimeout(() => {
+            logentry.classList.add('show');
+            logentry.classList.remove('hide');
+            setTimeout(() => {
+                logentry.classList.remove('show');
+                setTimeout(() => {
+                    logentry.classList.remove('hide');
+                }, 1000);
+            }, delay);
+        }, 0);
+        consolebox.addEventListener('mouseleave', (e) => { consolebox.scrollTop = consolebox.scrollHeight; });
     }
 }
 

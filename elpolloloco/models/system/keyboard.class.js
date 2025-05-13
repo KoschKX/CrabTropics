@@ -4,14 +4,14 @@
 class Keyboard {
 
     /** KEY STATES */
-    LEFT;
-    RIGHT;
-    DOWN;
-    UP;
-    SPACE;
-    ENTER;
-    TAB;
-    CAPSLOCK;
+    LEFT = false;
+    RIGHT = false;
+    DOWN = false;
+    UP = false;
+    SPACE = false;
+    ENTER = false;
+    TAB = false;
+    CAPSLOCK = false;
 
     /** STATUS. */
     BLOCKED = false;
@@ -84,7 +84,7 @@ class Keyboard {
                 this.CAPSLOCK = !this.CAPSLOCK;
                 break;
         }
-        this.KEYDOWN = true;
+        if(key != 'CapsLock'){ this.KEYDOWN = true; }
     }
 
     /**
@@ -136,6 +136,6 @@ class Keyboard {
                 if (this.TAB) { this.TAB = false; }
                 break;
         }
-        this.KEYDOWN = false;
+        if(key != 'CapsLock'){ this.KEYDOWN = false; }
     }
 }

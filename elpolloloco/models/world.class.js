@@ -143,6 +143,7 @@ class World {
 		this.addObjectsToMap(this.level.backgrounds.filter(background => background.layer === 2));
 
 		this.addObjectsToMap(this.level.projectiles.filter(projectile => projectile.name === 'XMark'));
+        
 
 		this.addObjectsToMap(this.level.enemies.filter(enemy => enemy.name === 'SeaTurtle'));
 
@@ -162,6 +163,10 @@ class World {
 		this.addObjectsToMap(this.level.projectiles.filter(projectile => projectile.falling && projectile.name === 'Cannonball'));
 
 		this.addObjectsToMap(this.level.backgrounds.filter(background => background.layer === 3));
+
+        this.addObjectsToMap(this.level.projectiles.filter(projectile => projectile.name === 'XArrow'));
+
+        this.addObjectsToMap(this.level.backgrounds.filter(background => background.layer === 4));
 
 		this.ctx.restore();
 
@@ -217,6 +222,7 @@ class World {
 
 			// EXECUTER TIMERS
 			this.scheduledTimers = this.scheduledTimers.filter(timer => {
+
 		        if (this.elapsedTime >= timer.execTime) { timer.callback(); return false; }
 		        return true;
 		    });
@@ -229,10 +235,8 @@ class World {
 		    this.elapsedTime += delta; 
 		    if( this.clockStarted ){ this.elapsedClockTime += delta; }
 			this.checkBossTime();
-
 			this.checkCollisions();
-			this.checkDebugKey();
-			this.checkBossTestKey();
+            this.checkAdvMenuKey();
 			this.lastUpdateTime = this.timestamp;
 			this.level.backgrounds.forEach(obj => obj.main?.(delta));
 			this.level.clouds.forEach(obj => obj.main?.(delta));
@@ -495,30 +499,18 @@ class World {
 /* ------------------ DEBUG ------------------ */
 
     /**
-     * Checks if the debug key (CapsLock) has been pressed to toggle debug mode.
+     * Checks if the TAB key is pressed to enable advanced menu.
      */
-    checkDebugKey(){
-        if(!this.keyboard.KEYDOWN){ return; }
-        if(this.keyboard.CAPSLOCK){
-            document.querySelector('body').setAttribute('advanced-menu', this.keyboard.CAPSLOCK);
+    checkAdvMenuKey(){
+        if(this.keyboard.TAB){
+            document.querySelector('body').setAttribute('advanced-menu', true);
         }
-        this.toggleDebug(this.keyboard.CAPSLOCK);
     }
-
-    /**
-     * Checks if the boss test key has been pressed to trigger the boss event.
-     */
-	checkBossTestKey(){
-        if(!this.debug){ return; }
-		if(!this.boss && !this.bosstest && this.keyboard.TAB){
-			this.callBoss();
-		}
-	}
 
     /**
      * Toggle to see Debug information on the screen and in the console.
      */
-    toggleDebug(onoff){
+    toggleDebug(onoff, force = false){
         document.querySelector('body').setAttribute('data-debug', onoff);
         this.debug = onoff;
     }

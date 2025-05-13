@@ -130,6 +130,8 @@ class Pirate extends Player {
         this.invincible = true;
         this.currXmark = xmark;
 
+        if(xmark.xarrow){ xmark.xarrow.destroy(); }
+
         let hole = new ShovelHole(this.world, true);
         hole.x = xmark.x;
         hole.y = xmark.y - 6;
@@ -201,6 +203,8 @@ class Pirate extends Player {
         mark.x = markCenterX;
         mark.y = markCenterY;
         mark.world = this.world;
+
+        // mark.createXArrow();
 
         this.world.level.projectiles.push(mark);
 

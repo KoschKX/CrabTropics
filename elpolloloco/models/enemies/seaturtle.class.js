@@ -21,7 +21,7 @@ class SeaTurtle extends Enemy {
 	isBoss = true;
 
 	/** ANIMATIONS */
-	IMAGES_SHELL = new Anim('./img/seaturtle/SHELL_001.png', 1, '');
+	IMAGES_SHELL = new Anim('./img/seaturtle/SHELL_001.png', 25, '');
 	IMAGES_IDLE = new Anim('./img/seaturtle/IDLE_001.png', 20, '');
 	IMAGES_FLING = new Anim('./img/seaturtle/FLING_001.png', 25, '');
 	IMAGES_EAT = new Anim('./img/seaturtle/EAT_001.png', 35, 'repeat=0');
@@ -206,16 +206,16 @@ class SeaTurtle extends Enemy {
 		this.scale = Math.min(this.scale + 0.0025, 1.0);
 		this.x = (this.world.level.bounds[2] - this.width) * 0.5; 
 		this.y = (this.world.level.bounds[3]  - this.height) * (0.62 + (0.066 * this.scale)); 
-		this.width = 320 * this.scale; 
+		this.width = 640 * this.scale; 
 		this.height = 88 * this.scale; 
 		if(this.scale > 0.75 && !this.splashes){
 			if(this.splashType == 1){
 				let check = document.querySelector('#cache [src="' + this.path + '"]');
-				this.splashes = new Movie(this.world, './img/waves/SPLASH_001.webm', 3, 0, 0, 0, 740, 544, 30, true);
+				this.splashes = new Movie(this.world, './img/waves/SPLASH_001.webm', 4, 0, 0, 0, 740, 544, 30, true);
 				this.world.level.createVideo(this.splashes, './img/waves/SPLASH_001.webm', !check, false, false);
 				this.splashes.pause(true);
 			}else {
-				this.splashes  = new Movie(this.world, './img/waves/SPLASH_001.png', 3, 40, 0, 0, 740, 544);
+				this.splashes  = new Movie(this.world, './img/waves/SPLASH_001.png', 4, 40, 0, 0, 740, 544);
 			}
 			this.splashes.world = this.world;
 			this.splashes.init();

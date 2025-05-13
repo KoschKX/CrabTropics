@@ -31,6 +31,7 @@ const level01 = {
 		'Cannonball()',
 		'ShovelHole()',
 		'XMark()',
+		'XArrow()',
 	],
 	effects: [
 		'Explosion()',
