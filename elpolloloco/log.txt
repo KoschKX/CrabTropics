@@ -296,7 +296,7 @@
 	21:00
 		Added Boss Sounds.
 
-11, May, 2025
+11. May, 2025
 
 	9:00	
 		Added world to constructors. Custom clearInteral and setTimeout functions that work with elapsed time.
@@ -313,7 +313,7 @@
 	23:00
 		Added incremental loading for the boss.
 
-12, May, 2025
+12. May, 2025
 	9:00
 		Improved responsive controls.
 
@@ -322,3 +322,7 @@
 
 	20:00
 		Created the Info page.
+
+13. May, 2025
+	09:00
+		iOS Movie Compatibility.
