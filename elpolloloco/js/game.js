@@ -268,16 +268,6 @@ function init() {
     /**
      * Auto mute/pause on window blur.
      */
-    document.addEventListener('visibilitychange', () => {
-        // Ignore unwanted pauses
-            const isTabVisible = document.visibilityState === 'visible';
-            if (isTabVisible) return;
-
-        screen.hasFocus = false;
-        audio.mute(false);
-        screen.pause(false);
-    });
-
     window.addEventListener('blur', () => {
         // Ignore unwanted pauses
             const isIframeFocused = document.activeElement && document.activeElement.tagName === 'IFRAME';
@@ -288,6 +278,20 @@ function init() {
         audio.mute(false);
         screen.pause(false);
      });
+
+    /**
+     * Auto mute/pause on window visibility change.
+     */
+    document.addEventListener('visibilitychange', () => {
+        // Ignore unwanted pauses
+            const isTabVisible = document.visibilityState === 'visible';
+            if (isTabVisible) return;
+
+        screen.hasFocus = false;
+        audio.mute(false);
+        screen.pause(false);
+    });
+
 
     /**
      * Restore state on window focus.
