@@ -184,7 +184,9 @@
         align-items: center;
 
         pointer-events: none;
-
+    }
+    #game #canvas{
+        pointer-events: all;
     }
 
     #game.fullscreen{
@@ -243,11 +245,16 @@
     }
 
     body[data-loaded="true"] #menu #pause,
-    body[data-loaded="true"] #menu #restart,
-    body[data-loaded="true"] #menu #debug,
-    body[data-loaded="true"] #menu #boss{
+    body[data-loaded="true"] #menu #restart{
         display: inline-block;
     }
+
+   
+    body[data-loaded="true"][advanced-menu="true"] #menu #debug,
+    body[data-loaded="true"][advanced-menu="true"] #menu #boss{
+        display: inline-block;
+    }
+
 
 /* CONTROLS */
     
@@ -554,6 +561,18 @@
         display: block;
     }
 
+/** DEBUG BOX */
+
+    #debug_box{
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        max-width: calc(100% - 1em);
+        text-align: right;
+        padding: 0.5em;
+        color: salmon;
+        pointer-events: all;
+    }
 
 /* RESPONSIVE */
 

@@ -125,6 +125,7 @@ class Character extends MovableObject {
      * @returns {number} - The direction of the collision (1: top, 2: right, 3: bottom, 4: left).
      */
     getCollisionDirection(mo, boxA, boxB) {
+        if(!this.initialized){ return; }
         const [tbx, tby, tbw, tbh] = this.boxes[boxA];
         const [mbx, mby, mbw, mbh] = mo.boxes[boxB];
 
@@ -159,6 +160,7 @@ class Character extends MovableObject {
      * @returns {number} - The direction of the collision or undefined if no collision.
      */
     isColliding(mo,idxA,idxB) {
+        if(!this.initialized){ return; }
         if(!this.boxes || !mo || !mo.boxes){ return; }
         if(!this.boxes[idxA][5] || !this.boxes[idxB][5] || idxA>this.boxes.length-1 || idxB>mo.boxes.length-1 ){ return; }
         if((this.dead || this.invincible || !mo.hostile || mo.dead || mo.hurt) && idxA==0){ return; }
@@ -216,6 +218,7 @@ class Character extends MovableObject {
      * @param {number} idx - The index of the collider to draw.
      */
     drawCollider(ctx, idx) {
+        if(!this.initialized){ return; }
         if (!ctx || !this.boxes || this.boxes.length < idx) { return; }
         ctx.beginPath();
         ctx.lineWidth = "1";
@@ -230,6 +233,7 @@ class Character extends MovableObject {
      * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
      */
     drawColliders(ctx) {
+        if(!this.initialized){ return; }
         if (!this.boxes || !this.boxes.length) { return; }
         this.boxes.forEach((box, idx) => this.drawCollider(ctx, idx, box));
     }

@@ -25,11 +25,15 @@ let bounds;
 /** @type {Titlescreen} The main title screen interface */
 let titlescreen;
 
+/** @type The global Video Format (For Compatibility) */
+var vidFormat = 'webm';
+
 /**
  * Runs once the DOM is fully loaded.
  * Calls the game initializer.
  */
 document.addEventListener('DOMContentLoaded', function() {
+    detect_browser();
     init();
 });
 
@@ -37,6 +41,13 @@ document.addEventListener('DOMContentLoaded', function() {
  * Initializes the canvas, screen, input, audio, UI events, and gameplay systems.
  */
 function init() {
+
+    let platform = document.querySelector('body').getAttribute('data-platform');
+    if (platform && platform.toLowerCase() === 'ipad') { vidFormat = 'mp4'; }
+
+    document.querySelector('body').setAttribute('video-format', vidFormat);
+    document.querySelector('#debug_box').innerHTML = platform;
+
     /** Setup canvas and context */
     canvas = document.getElementById('canvas');
     context = canvas.getContext('2d');
@@ -151,6 +162,9 @@ function init() {
                 ? titlescreen.world.toggleDebug(false)
                 : titlescreen.world.toggleDebug(true);
         }, { passive: false });
+        document.querySelector('#debug_box').addEventListener(eventType, (e) => {
+            document.querySelector('body').setAttribute('advanced-menu',true);
+        });
     });
 
     /**
@@ -266,6 +280,15 @@ function init() {
         if (screen.paused && !screen.wasPaused) {
             screen.unpause(false);
         }
+    });
+
+    /** ALLOW TAP ON SCREEN TO START GAME **/
+    ['touchstart','mousedown'].forEach(eventType => {
+        document.querySelector('#canvas').addEventListener(eventType, (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            if(titlescreen && !titlescreen.world){ titlescreen.start(); }
+         }, { passive: false });
     });
 
     /** Check for hitbox grabber in URL params and initialize if needed */

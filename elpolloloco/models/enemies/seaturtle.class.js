@@ -133,6 +133,10 @@ class SeaTurtle extends Enemy {
 	constructor(world, immediate=false){
 		super(world); 
 		this.generateStamp(this.name);
+
+		// COMPATIBILITY FOR SAFARI ON IOS
+		if(vidFormat=='mp4'){ this.splashType = 0; }
+
 		if(this.splashType == 0){
 			this.IMAGES_SPLASH = new Anim('./img/waves/SPLASH_001.png', 40, 'repeat=0');
 			this.imagesLib.push(this.IMAGES_SPLASH);
@@ -473,4 +477,10 @@ class SeaTurtle extends Enemy {
 	 */
 	moveLeft(){}
 	moveRight(){}
+
+	/**
+	 * No Revive.
+	 */
+	revive(){}
+
 }

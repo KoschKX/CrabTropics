@@ -69,9 +69,19 @@ class Movie extends Background {
      * @param {boolean} [strict=false] - Whether to strictly control frame playback.
      */
     constructor(world, imagePath, layer, frames, x, y, width, height, frameRate = 30, strict = false) {
-        super(world, imagePath, layer, x, y, width, height);
-        this.frames = frames;
+        
+        // CHECK FOR MULTIPLE FORMATS
+        if (Array.isArray(imagePath) && imagePath.length > 1) {
+            super(world, null, layer, x, y, width, height);
+            let checkFmt = checkFormat(imagePath, vidFormat);
+            if(checkFmt){ imagePath = checkFmt; } else { this.imagePath = imagePath[0]; }
+        }else{
+            super(world, imagePath, layer, x, y, width, height);
+            imagePath = imagePath;
+        }
+
         this.imagePath = imagePath;
+        this.frames = frames;
         this.frameRate = frameRate;
         this.strict = strict;
         this.IMAGES_ANIM = new Anim(imagePath, frames, '');
@@ -79,6 +89,7 @@ class Movie extends Background {
         this.cacheAnim(this.IMAGES_ANIM);
         this.x = x;
         this.y = y;
+        this.layer = layer;
         this.width = width;
         this.height = height;
         this.generateStamp(this.name);

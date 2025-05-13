@@ -8,6 +8,7 @@
     <link rel="icon" href="./favicon.ico">
 
     <script src="js/utils.js"></script>
+    <script src="js/game.js"></script>
 
     <script src="models/baseobjects/moveableobject.class.js"></script>
     <script src="models/baseobjects/animation.class.js"></script>
@@ -54,7 +55,7 @@
 
     <script src="models/titlescreen.class.js"></script>
 
-    <script src="js/game.js"></script>
+    
 </head>
 <body id="home">
     <div id="holder">
@@ -62,10 +63,10 @@
             <canvas id="canvas" width="720" height="480"></canvas>
             <div id="ui">
                 <div id="menu">
-                    <div id="restart" class="button"><span class="icon active" id="restart_go"></span></div>
-                    <div id="info" class="button"><span class="icon active" id="info_go"></span></div>
                     <div id="debug" class="button"><span class="icon active" id="debug_on"></span><span class="icon" id="debug_off"></span></div>
                     <div id="boss" class="button"><span class="icon active"></span></div>
+                    <div id="restart" class="button"><span class="icon active" id="restart_go"></span></div>
+                    <div id="info" class="button"><span class="icon active" id="info_go"></span></div>
                     <div id="pause" class="button"><span class="icon active" id="pause_on"></span><span class="icon" id="pause_off"></span></div>
                     <div id="sound" class="button"><span class="icon active" id="sound_on"></span><span  class="icon" id="sound_off"></span></div>
                     <div id="screen" class="button"><span class="icon active" id="maximize"></span><span class="icon" id="minimize"></span></div>
@@ -81,6 +82,7 @@
                     </div>
                 </div>
                 <div id="help"><iframe src="./info.html" style="background: transparent;" frameborder="0" style="overflow: hidden;" scrolling="no"></iframe></div>
+                <div id="debug_box"></div>
             </div>
         </div>
         <div id="mcontrols"><div id="standby"><span id="hourglass"></span></div></div>

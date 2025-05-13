@@ -319,3 +319,6 @@
 
 	12:30
 		Commenting all the code.
+
+	20:00
+		Created the Info page.

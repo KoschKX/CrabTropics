@@ -28,10 +28,12 @@ class Titlescreen {
     tlInterval;
 
     /** @type {Array<string>} */
-    menuItems = ['Start', '//Settings'];
+    //menuItems = ['Start', '//Settings'];
+    menuItems = ['Start'];
 
     /** @type {Array<string>} */
-    menuFuncs = ['start', 'settings'];
+    //menuFuncs = ['start', 'settings'];
+    menuFuncs = ['start'];
 
     /** @type {Array<string>} */
     menuItemsDisabled = [];
@@ -93,7 +95,7 @@ class Titlescreen {
         const vid = document.createElement('video');
         vid.id = 'title_video';
         vid.classList.add('bg_video');
-        vid.src = './mov/beachC_looped.webm';
+        vid.src = './mov/beachC_looped.'+vidFormat;
         vid.preload = 'auto';
         vid.autoplay = true;
         vid.muted = true;
@@ -114,6 +116,8 @@ class Titlescreen {
      * Main logic for updating the title screen menu based on user input.
      */
     main() {
+        if(this.world){ return; }
+
         if (!this.keyboard.LEFT && !this.keyboard.RIGHT && !this.keyboard.DOWN && !this.keyboard.UP) {
             this.menuChanged = false;
         }
@@ -150,6 +154,7 @@ class Titlescreen {
      * Starts the game by loading the world and setting up the game screen.
      */
     start() {
+        if(this.world){ return; }
         this.world = new World(this.cvs, this.screen, this.keyboard, this.audio);
         this.world.load(level01);
         this.screen.setWorld(this.world);
@@ -225,7 +230,7 @@ class Titlescreen {
     drawMenus(x, y) {
         const wpct = this.cvs.width * 0.02;
         const lineh = wpct * 3.5;
-        const pad = [wpct * 0.25, wpct * 0.66];
+        const pad = [wpct * 1, wpct * 1];
         const font = (wpct * 3) + 'px Arial';
         this.ctx.font = font;
 

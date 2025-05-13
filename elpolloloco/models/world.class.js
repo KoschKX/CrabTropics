@@ -24,7 +24,6 @@ class World {
         this.paused = false;
         this.initialized = false;
         this.cache = true;
-        this.debug = false;
         this.bosstest = false;
         this.bossDripLoading = false;
         this.level = null;
@@ -43,6 +42,8 @@ class World {
         this.scheduledRepeaters = [];
         this.bossTime = null;
         this.bossEventTime = 60;
+
+        this.debug = false;
     }
 
     /**
@@ -61,8 +62,6 @@ class World {
 		this.audio.playMusic(this.level.music[0], 0.4, true);
 		
 		if(this.initialized){ return; }
-
-		console.log('init');
 
     	this.frameDuration = 1000 / this.frameRate;
 		this.timestamp = 0; this.lastUpdateTime = 0; 
@@ -489,21 +488,30 @@ class World {
 		});
 	}
 
+    /**
+     * Check for the Video Format.
+     */
+    getVideoFormat(){
+        this.videoFormat = document.querySelector('body').getAttribute('video-format');
+        if(!this.videoFormat){this.videoFormat = 'mp4'; }
+    }
+
 /* ------------------ DEBUG ------------------ */
 
     /**
      * Checks if the debug key (CapsLock) has been pressed to toggle debug mode.
      */
-    checkDebugKey() {
-        if (this.keyboard.CAPSLOCK) {
-            this.debug = !this.debug;
-        }
+    checkDebugKey(){
+        if(!this.keyboard.KEYDOWN){ return; }
+        document.querySelector('body').setAttribute('advanced-menu', true);
+        this.toggleDebug(this.keyboard.CAPSLOCK);
     }
 
     /**
      * Checks if the boss test key has been pressed to trigger the boss event.
      */
 	checkBossTestKey(){
+        if(!this.debug){ return; }
 		if(!this.boss && !this.bosstest && this.keyboard.TAB){
 			this.callBoss();
 		}
@@ -513,6 +521,7 @@ class World {
      * Toggle to see Debug information on the screen and in the console.
      */
     toggleDebug(onoff){
+        document.querySelector('body').setAttribute('data-debug', onoff);
         this.debug = onoff;
     }
 
