@@ -31,6 +31,7 @@ class Cannonball extends Enemy {
     maxZoomSize = 75;
     madeGroundContact = false;
 
+    static = true;
 
     /**
      * Creates a Cannonball instance.
