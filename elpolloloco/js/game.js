@@ -90,19 +90,19 @@ function init() {
             e.stopPropagation();
             e.preventDefault();
             let hlp = document.querySelector('#help');
+
             if(!help){ return; }
             if (hlp.classList.contains('show')) {
                 screen.hideHelp();
                 screen.unpause();
+                document.querySelector('#info #info_go').classList.add('active');
+                document.querySelector('#info #info_close').classList.remove('active');
             } else {
                 screen.showHelp();
                 screen.pause();
+                document.querySelector('#info #info_close').classList.add('active');
+                document.querySelector('#info #info_go').classList.remove('active');
             }
-        }, { passive: false });
-        document.querySelector('#help #close_help').addEventListener(eventType, (e) => {
-            e.stopPropagation();
-            e.preventDefault();
-            screen.hideHelp(); screen.unpause();
         }, { passive: false });
     });
 

@@ -27,7 +27,7 @@ class Cannonball extends Enemy {
     /** HITBOXES */
     boxes = [[0, 0, this.width, this.height, 'red', true]];
 
-    maxSize = 48;
+    maxSize = 46;
     maxZoomSize = 75;
     madeGroundContact = false;
 
@@ -63,7 +63,7 @@ class Cannonball extends Enemy {
         this.loadImage(this.IMAGES_ROLL.files[0]);
         this.changeAnimation(this.IMAGES_ROLL);
 
-        this.bounce(20);
+        this.bounce(25);
 
         this.hostile = false;
     }
@@ -74,7 +74,6 @@ class Cannonball extends Enemy {
      */
     main(delta) {
         super.main(delta);
-
         this.handleScaling(delta);
         this.updateCollisionBoxes();
         this.checkGroundHit();
@@ -103,7 +102,8 @@ class Cannonball extends Enemy {
             this.y -= this.speedY;
         }
 
-        if (this.y >= this.world.cvs.height + this.height) {
+        if (this.y >= this.world.level.bounds[3] + this.height) {
+            console.log('destroyed cannon ball');
             this.destroy();
         }
     }

@@ -140,6 +140,8 @@
     #help_controls #tabs {
         color: black;
         background-color: salmon;
+        border-radius: 5em;
+        font-size: 0.8em;
     }
 
     #bottom {
@@ -453,6 +455,7 @@
         position: relative;
         z-index: 999;
         display: inline-flex;
+        overflow-y: auto;
     }
 
     body#impressum #backplate {
@@ -711,6 +714,10 @@
         {
             max-width: 720px;
             max-height: 480px;
+            width: var(--app-width);
+            height: var(--app-height);
+            aspect-ratio: 3 / 2;
+            object-fit: contain;
         }
         
         body[data-fullscreen="true"] #holder, 
@@ -733,7 +740,9 @@
             display: block;
         }
 
-        #mcontrols #standby{
+        #mcontrols #standby,
+        #mcontrols #standby.show{
+            display: none;
             color: black;
             text-shadow: none;
         }

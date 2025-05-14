@@ -50,7 +50,7 @@ class AudioManager {
 
     /** AUDIO CONTEXT */
     context = null;
-    gainNode = null;
+    soundGain = null;
     musicGain = null;
 
     /** STATE */
@@ -79,8 +79,8 @@ class AudioManager {
         this.debugInterval = setInterval(() => this.debug(), 1000 / 30);
 
         this.context = new (window.AudioContext || window.webkitAudioContext)();
-        this.gainNode = this.context.createGain();
-        this.gainNode.connect(this.context.destination);
+        this.soundGain = this.context.createGain();
+        this.soundGain.connect(this.context.destination);
 
         await this.loadSounds();
         this.isReady = true;
@@ -133,7 +133,7 @@ class AudioManager {
         gain.gain.value = vol;
 
         source.connect(gain);
-        gain.connect(this.gainNode);
+        gain.connect(this.soundGain);
         source.start();
 
         const id = Math.random().toString(36).substr(2, 9);
@@ -204,7 +204,7 @@ class AudioManager {
         gain.gain.value = vol;
 
         source.connect(gain);
-        gain.connect(this.gainNode);
+        gain.connect(this.soundGain);
         source.start();
 
         this.currMusics.push({ name, source });
@@ -254,8 +254,8 @@ class AudioManager {
     reset() {
         this.destroy();
         this.context = new (window.AudioContext || window.webkitAudioContext)();
-        this.gainNode = this.context.createGain();
-        this.gainNode.connect(this.context.destination);
+        this.soundGain = this.context.createGain();
+        this.soundGain.connect(this.context.destination);
         this.sounds = {};
         this.loadSounds();
     }
@@ -283,8 +283,8 @@ class AudioManager {
      * @param {number} vol - Volume [0, 1].
      */
     setMasterVolume(vol) {
-        if (this.gainNode) {
-            this.gainNode.gain.value = vol;
+        if (this.soundGain) {
+            this.soundGain.gain.value = vol;
         }
     }
 
