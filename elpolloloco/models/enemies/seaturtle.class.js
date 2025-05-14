@@ -242,20 +242,15 @@ class SeaTurtle extends Enemy {
 				}
 	        });
 		}
-		/*
-		if(!this.splashes.isPlaying && this.scale >= 1.0 && !this.splashes.isPlaying){ 
-			this.splashes.play(true); 
-		}
-		*/
 		if(!this.splashFadingOut && this.splashes.currImage >= this.splashStopFrame){ 
 			if(this.scale >= 1.0){
 				this.splashFadingOut = true;
 				this.splashes.play(true); 
-				console.log('play');
+				//console.log('play');
 			}else{
 				if(this.splashes.isPlaying){ 
 					this.splashes.pause(true); 
-					console.log('pause');
+					//console.log('pause');
 				} 
 				this.splashes.videoSeek(this.splashStopFrame);
 			}
@@ -265,7 +260,7 @@ class SeaTurtle extends Enemy {
 			this.splashes = null;
 			this.world.player.flickering = false; 
 			this.world.player.invincible = false;
-			console.log('destroyed');
+			//console.log('destroyed');
 		}
 	}
 

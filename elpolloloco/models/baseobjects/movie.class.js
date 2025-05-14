@@ -62,7 +62,7 @@ class Movie extends Background {
             super(world, imagePath, layer, x, y, width, height);
             this.frames = frames;
             this.imagePath = imagePath;
-            imagePath = imagePath;
+            this.IMAGES_ANIM = new Anim(imagePath, frames, '');
             this.populateFrames();
             this.img = new Image();
             this.x = x;
@@ -106,9 +106,10 @@ class Movie extends Background {
             let ipath =img_name+"_"+String(idx+1).padStart(3, '0')+'.'+ext;
             if(this.imageCache?.[ipath]){return; };
             this.anim.push(ipath);
-            this.imagesLib.push(ipath);
+            this.IMAGES_ANIM.files.push(ipath);
             this.imageCache[ipath] = ipath;
         }   
+        this.imagesLib=[this.IMAGES_ANIM];
     }
 
 
