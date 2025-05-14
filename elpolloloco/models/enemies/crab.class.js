@@ -91,7 +91,7 @@ class Crab extends Enemy {
         super.init();
         this.boxes = [this.boxes_fine];
         this.hostile = true;
-        if(respawn){ this.respawn(); }
+        if(respawn){ this.respawn(); this.moving = true; }
     }
 
     respawn(){
@@ -147,7 +147,7 @@ class Crab extends Enemy {
      * Moves the crab to the left.
      */
     moveLeft() {
-        if (!this.world || this.static || this.dead || !this.initialized)  { return; }
+        if (!this.world || this.static || this.dead || !this.moving)  { return; }
         super.moveLeft(this.delta);
         if (!this.walksound || !this.world.audio.isSpecificSoundPlaying('crab_walkA', this.walksound)) {
             this.walksound = this.world.audio.playSound('crab_walkA', 0.25, true);
@@ -158,7 +158,7 @@ class Crab extends Enemy {
      * Moves the crab to the right.
      */
     moveRight() {
-        if (!this.world || this.static || this.dead || !this.initialized) { return; }
+        if (!this.world || this.static || this.dead || !this.moving) { return; }
         super.moveRight(this.delta);
         if (!this.walksound || !this.world.audio.isSpecificSoundPlaying('crab_walkA', this.walksound)) {
             this.walksound = this.world.audio.playSound('crab_walkA', 0.25, true);

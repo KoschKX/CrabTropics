@@ -18,6 +18,9 @@ class Enemy extends Character {
     attacksEnemies = false;
 
     /** STATUS */
+    moving = false;
+
+    /** STATUS */
     isBoss = false;
 
     /**
@@ -56,7 +59,7 @@ class Enemy extends Character {
      * Changes direction when the enemy reaches the boundaries of the level.
      */
     handleMovement() {
-        if (!this.initialized || this.dead) { return; }
+        if (!this.initialized || this.dead || !this.moving) { return; }
 
         // Move left or right based on the current direction
         if (this.currDirection === 0) { this.moveLeft(this.delta); }

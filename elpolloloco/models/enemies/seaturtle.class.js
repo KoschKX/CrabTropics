@@ -135,7 +135,6 @@ class SeaTurtle extends Enemy {
 		if(!this.dead && this.health > 0) { 
 			this.currImage = 0; 
 			this.world.audio.playSound('seaturtle_hitA', 1.0); 
-			console.trace();
 		}
 		if(this.health <= 0) this.world.clearTimer(this.reviveTimer);
 	}
