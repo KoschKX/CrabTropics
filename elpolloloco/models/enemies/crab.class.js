@@ -55,7 +55,7 @@ class Crab extends Enemy {
      * @param {World} The World.
      * @param {number | number[]} [variant=0] - The variant of the crab (color/type).
      */
-    constructor(world, variant = 0) {
+    constructor(world, variant = 0, immediate = false) {
         super(world);
         this.generateStamp(this.name);
 
@@ -64,6 +64,10 @@ class Crab extends Enemy {
             this.variant = randomInt(variant[0], variant[1]);
         } else {
             this.variant = variant;
+        }
+
+        if (immediate) {
+            this.init();
         }
     }
 

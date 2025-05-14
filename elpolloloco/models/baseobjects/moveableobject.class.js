@@ -274,7 +274,7 @@ class MovableObject {
 
     /** Moves the object right. */
     moveRight(delta) {
-        if (!this.world || this.static || this.dead || !this.initialized) return;
+        if (!this.world || this.static || this.dead ) return;
         if (this.x > this.world.level.bounds[2] - (this.width * 0.5)) return;
         this.x += this.speed * delta;
         this.currDirection = 1;

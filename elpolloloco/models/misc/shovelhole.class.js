@@ -136,10 +136,10 @@ class ShovelHole extends Enemy {
         if (!this.world) { return; }
         this.world.setTimer(() => {
             if (this.createobj) return;
-            this.createobj = new Crab(this.world, [0, 2]);
+            this.createobj = new Crab(this.world, [0, 2], true);
             this.createobj.x = this.x + (this.width - this.createobj.width) * 0.5;
             this.createobj.y = this.y;
-            this.createobj.init();
+            //this.createobj.init();
             this.createobj.appear();
             this.world.level.enemies.push(this.createobj);
         }, 1500);
