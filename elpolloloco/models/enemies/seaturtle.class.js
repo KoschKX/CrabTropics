@@ -271,7 +271,6 @@ class SeaTurtle extends Enemy {
 	 * Activates the SeaTurtle, starting its behavior and animations.
 	 */
 	activate(){
-
 		this.boxes = []; 
 		this.width = this.startwidth; 
 		this.height = this.startheight; 
@@ -279,12 +278,7 @@ class SeaTurtle extends Enemy {
 		this.y = (this.world.level.bounds[3] - this.height) * 0.15; 
 		this.introPlaying = false;
 
-		this.crater = new Background(this.world, './img/misc/craterA.png', 2, 0, 0, this.width * 0.512, this.height * 0.192);
-		this.crater.x = this.x + ((this.width - this.crater.width) * 0.5); 
-		this.crater.y = this.y + ((this.height - this.crater.height) * 0.5) + this.crater.height * 0.45;
-		this.world.level.backgrounds.push(this.crater);
-		this.crater.init();
-
+		this.createCrater();
 		this.appear(); 
 		this.behavior();
 
@@ -292,6 +286,14 @@ class SeaTurtle extends Enemy {
 		this.world.audio.playMusic('sueno_tropical');
 
 		this.hostile = true;
+	}
+
+	createCrater(){
+		this.crater = new Background(this.world, './img/misc/craterA.png', 2, 0, 0, this.width * 0.512, this.height * 0.192);
+		this.crater.x = this.x + ((this.width - this.crater.width) * 0.5); 
+		this.crater.y = this.y + ((this.height - this.crater.height) * 0.5) + this.crater.height * 0.45;
+		this.world.level.backgrounds.push(this.crater);
+		this.crater.init();
 	}
 
 	/**
@@ -305,8 +307,7 @@ class SeaTurtle extends Enemy {
 			if(self.state == 0){
 				self.changeState(rstate);
 			}
-		}, 2000 ); 	
-		self.changeState(0);
+		}, 1600 ); 	
 	}
 
 	/**
