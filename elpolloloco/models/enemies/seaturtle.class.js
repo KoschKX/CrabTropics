@@ -250,21 +250,21 @@ class SeaTurtle extends Enemy {
 			if(this.scale >= 1.0){
 				this.splashFadingOut = true;
 				this.splashes.play(true); 
-				//console.log('play');
+				// console.log('play');
 			}else{
 				if(this.splashes.isPlaying){ 
 					this.splashes.pause(true); 
-					//console.log('pause');
+					// console.log('pause');
 				} 
 				this.splashes.videoSeek(this.splashStopFrame);
 			}
 		}
-		if(this.splashes.currImage > 0 && this.splashes.currImage >= this.splashes.frames -1){ 
+		if(this.splashes.currImage > 0 && this.splashes.currImage >= this.splashes.frames -2){ 
 			this.splashes.destroy(); 
 			this.splashes = null;
 			this.world.player.flickering = false; 
 			this.world.player.invincible = false;
-			//console.log('destroyed');
+			// console.log('destroyed');
 		}
 	}
 
