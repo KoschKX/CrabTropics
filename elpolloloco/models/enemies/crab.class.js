@@ -11,7 +11,7 @@ class Crab extends Enemy {
     frameRate = 24;
     health = 3;
     maxHealth = 3;
-    speed = 4;
+    speed = 0.1;
     useGravity = true;
     hostile = false;
     bounceoninjured = true;
@@ -69,7 +69,7 @@ class Crab extends Enemy {
         // Set the initial position and speed
         this.x = 200 + random(0, 500);
         this.y = world.ground;
-        this.speed = random(0.5, 1);
+        this.speed = random(0.05, 0.1);
         this.originalspeed = this.speed;
     }
 
@@ -142,7 +142,7 @@ class Crab extends Enemy {
      */
     moveLeft() {
         if (!this.world || this.static || this.dead) { return; }
-        super.moveLeft();
+        super.moveLeft(this.delta);
         if (!this.walksound || !this.world.audio.isSpecificSoundPlaying('crab_walkA', this.walksound)) {
             this.walksound = this.world.audio.playSound('crab_walkA', 0.25, true);
         }
@@ -153,7 +153,7 @@ class Crab extends Enemy {
      */
     moveRight() {
         if (!this.world || this.static || this.dead) { return; }
-        super.moveRight();
+        super.moveRight(this.delta);
         if (!this.walksound || !this.world.audio.isSpecificSoundPlaying('crab_walkA', this.walksound)) {
             this.walksound = this.world.audio.playSound('crab_walkA', 0.25, true);
         }

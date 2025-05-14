@@ -31,8 +31,8 @@ class Player extends Character {
      * Called every game tick. Handles player logic and controls.
      * @param {World} world - The game world.
      */
-    main(world) {
-        super.main();
+    main(delta) {
+        super.main(delta);
         this.handleControls();
     }
 
@@ -63,12 +63,12 @@ class Player extends Character {
 
         if (this.world.keyboard.LEFT) {
             this.facingRight = false;
-            this.moveLeft();
+            this.moveLeft(this.delta);
         }
 
         if (this.world.keyboard.RIGHT) {
             this.facingRight = true;
-            this.moveRight();
+            this.moveRight(this.delta);
         }
 
         if (this.world.keyboard.SPACE && !this.isAboveGround()) {

@@ -10,7 +10,7 @@ class Ship extends Enemy {
     starthealth = 10;
     frameRate = 24;
     useGravity = false;
-    speed = 0.25;
+    speed = 0.03;
     frameRate = 10;
     scale = 1;
 
@@ -49,7 +49,7 @@ class Ship extends Enemy {
         // Set random position and speed for the Ship.
         this.x = 284 + random(0, 500);
         this.y = 230;
-        this.speed = random(0.25, 0.5);
+        this.speed = random(0.04, 0.06);
         this.originalspeed = this.speed;
 
         // Load the Ship's floating animation.

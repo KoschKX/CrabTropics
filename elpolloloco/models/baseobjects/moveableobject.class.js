@@ -22,7 +22,7 @@ class MovableObject {
     img;
     cache;
     flipOffset = [0, 0];
-    frameRate = 60;
+    frameRate = 30;
     animInterval;
     groundOffset = 0;
     currImage = 0;
@@ -38,6 +38,7 @@ class MovableObject {
     speed = 1;
     acceleration = 1;
     speedY = 0;
+    gravity = 0.066;
     useGravity = false;
     useGround = true;
     currDirection = 1;
@@ -45,7 +46,7 @@ class MovableObject {
     initialized = false;
 
     /* WORLD REFERENCE */
-    world;
+    world; delta = 0;
 
     /**
      * Creates a movable object.
@@ -89,7 +90,8 @@ class MovableObject {
     }
 
     /** Main update function; handles gravity if enabled. */
-    main() {
+    main(delta) {
+        this.delta = delta;
         if (this.useGravity) {
             this.handleGravity();
         }
@@ -232,9 +234,10 @@ class MovableObject {
     /** Handles falling and bouncing using gravity simulation. */
     handleGravity() {
         if (!this.world) return;
+
         if (this.isAboveGround() || this.speedY > 0) {
-            this.y -= this.speedY;
-            this.speedY -= this.acceleration;
+            this.y -= this.speedY *(this.delta * this.gravity); // Adjust gravity with delta
+            this.speedY -= this.acceleration * (this.delta * this.gravity); // Apply gravity with delta
             this.falling = this.speedY > 0 ? false : true;
         } else {
             this.falling = false;
@@ -263,18 +266,18 @@ class MovableObject {
     }
 
     /** Moves the object left. */
-    moveLeft() {
+    moveLeft(delta) {
         if (!this.world || this.static || this.dead) return;
         if (this.x < this.world.level.bounds[0] - (this.width * 0.5)) return;
-        this.x -= this.speed;
+        this.x -= this.speed * delta;
         this.currDirection = 0;
     }
 
     /** Moves the object right. */
-    moveRight() {
+    moveRight(delta) {
         if (!this.world || this.static || this.dead) return;
         if (this.x > this.world.level.bounds[2] - (this.width * 0.5)) return;
-        this.x += this.speed;
+        this.x += this.speed * delta;
         this.currDirection = 1;
     }
 
@@ -287,4 +290,9 @@ class MovableObject {
     isOnGround() {
         return this.world ? this.y === this.world.ground + this.groundOffset : false;
     }
+
+    setSpeed(speed){
+        this.speed = speed;
+    }
+
 }

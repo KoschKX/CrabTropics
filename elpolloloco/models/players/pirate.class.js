@@ -6,7 +6,7 @@ class Pirate extends Player {
     /** START VALUES */
     name = 'Pirate';
     groundOffset = -100;
-    speed = 6;
+    speed = 0.5;
     frameRate = 24;
     health = 3;
     maxHealth = 6;

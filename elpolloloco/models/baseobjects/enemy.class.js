@@ -59,8 +59,8 @@ class Enemy extends Character {
         if (!this.initialized || this.dead) { return; }
 
         // Move left or right based on the current direction
-        if (this.currDirection === 0) { this.moveLeft(); }
-        if (this.currDirection === 1) { this.moveRight(); }
+        if (this.currDirection === 0) { this.moveLeft(this.delta); }
+        if (this.currDirection === 1) { this.moveRight(this.delta); }
 
         // Change direction when the level boundaries are reached.
         if (this.currDirection === 0 && this.x < this.world.level.bounds[0]) {
