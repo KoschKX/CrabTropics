@@ -233,7 +233,6 @@ class World {
 
 			// EXECUTER TIMERS
 			this.scheduledTimers = this.scheduledTimers.filter(timer => {
-
 		        if (this.elapsedTime >= timer.execTime) { timer.callback(); return false; }
 		        return true;
 		    });

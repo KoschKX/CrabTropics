@@ -653,7 +653,7 @@
         color: teal;
     }
 
-    #debug_box #console.show .log_entry {
+    #debug_box #console .log_entry.show {
         opacity: 1;
     }
 
