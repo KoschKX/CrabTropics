@@ -5,8 +5,8 @@ class ShovelHole extends Enemy {
 
     /** STARTVALUES */
     name = 'XMark';
-    width = 64;
-    height = 24;
+    width = 76;
+    height = 30;
     frameRate = 24;
     speed = 0;
     useGravity = false;
@@ -102,7 +102,7 @@ class ShovelHole extends Enemy {
 
             self.createobj = new Doubloon(self.world, rndVari, true);
             self.createobj.x = self.x + (self.width - self.createobj.width) * 0.5;
-            self.createobj.y = self.y - self.height;
+            self.createobj.y = self.y - (self.height * 2.5);
             const animations = [
                 self.createobj.IMAGES_SPINA, self.createobj.IMAGES_IMAGES_SPINB
             ];
@@ -122,7 +122,7 @@ class ShovelHole extends Enemy {
             if (self.createobj) { return; }
             self.createobj = new Catnip(self.world, true);
             self.createobj.x = self.x + (self.width - self.createobj.width) * 0.5;
-            self.createobj.y = self.y - (self.height * 2);
+            self.createobj.y = self.y - (self.height * 3);
             self.createobj.changeAnimation(self.createobj.IMAGES_SPARKLE);
             self.world.level.items.push(self.createobj);
             self.world.audio.playSound('catnip_findA', 1.0);

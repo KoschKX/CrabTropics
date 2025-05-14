@@ -329,3 +329,7 @@
 
 	13:00
 		Updated Impressum and Pause function.
+
+14. May, 2025
+	09:00
+		Scaled game up 2x. Fixed responsive CSS to allow for real full screen.

@@ -389,7 +389,7 @@ class Level {
      * @returns {boolean} True if the asset is cached, false otherwise.
      */
     checkCache(path) {
-        return this.cacheDiv.querySelector(`img[src='${path}']`) || this.cacheDiv.querySelector(`video[src='${path}']`);
+        return this.cacheDiv.querySelector('img[src="'+path+'"]') || this.cacheDiv.querySelector(`video[src='${path}']`);
     }
 
 	/**

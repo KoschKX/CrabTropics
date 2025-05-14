@@ -101,6 +101,6 @@ class ProgressBar {
         drawRect( ctx, bx, by, bw, bh, 'transparent','#fff', 2 ); // BACKGROUND
         drawRect( ctx, bx, by, bw * progress, bh, '#fff');        // BAR
         drawText( ctx, bx + bw / 2, by + 5 + bh / 2, bw, bh, Math.round(progress * 100) + '%', '#000', Math.floor(bh * 0.6)+'px Arial', 'center', 'middle', '#fff'); // TEXT
-        drawText( ctx, bx + bw / 2, by + bh + 20, bw, bh, task || 'Loading...', '#fff', Math.floor(bh * 0.2)+'px Arial', 'center', 'middle' )                    // TASK
+        drawText( ctx, bx + bw / 2, by + bh + 30, bw, bh, task || 'Loading...', '#fff', Math.floor(bh * 0.2)+'px Arial', 'center', 'middle' )                    // TASK
     }
 }

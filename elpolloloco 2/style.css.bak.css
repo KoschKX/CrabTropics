@@ -1,0 +1,670 @@
+/* FONTS */
+
+@font-face {
+    font-family: 'Reggae'; 
+    src: url('fonts/reggae.woff2') format('woff2'),
+         url('fonts/reggae.woff') format('woff'),
+         url('fonts/reggae.ttf') format('truetype'),
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Keyboard'; 
+    src: url('fonts/keyboard.woff2') format('woff2'),
+         url('fonts/keyboard.woff') format('woff'),
+         url('fonts/keyboard.ttf') format('truetype'); 
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+  font-family: 'Symbols';
+  src: url('fonts/symbols.eot?75332767');
+  src: url('fonts/symbols.eot?75332767#iefix') format('embedded-opentype'),
+       url('fonts/symbols.woff2?75332767') format('woff2'),
+       url('fonts/symbols.woff?75332767') format('woff'),
+       url('fonts/symbols.ttf?75332767') format('truetype'),
+       url('fonts/symbols.svg?75332767#symbols') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+/* GENERAL */
+
+    html,body{
+        background: black;
+        height: 100%;
+    }
+
+    html.transparent{
+        background: transparent;
+    }
+
+    body{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+
+        font-family: "Arial";
+
+        background-repeat: no-repeat !important;
+        background-size: cover !important;
+
+        overflow: hidden;
+    }
+
+    body *{
+        user-select: none; -webkit-user-select: none; cursor: default;
+    }
+
+    canvas{
+        background-color: black;
+        width: 100%;
+    }
+
+    h1{
+        margin-bottom: 0.25em;
+    }
+    h1:first-child {
+        margin-top: 0;
+    }
+
+    a{ color: black; cursor: pointer; }
+
+
+    .scroll{
+        scrollbar-width: thin;
+        /* scrollbar-color: moccasin transparent; */
+        scrollbar-color: black transparent;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: transparent;
+
+    }
+    ::-webkit-scrollbar-thumb {
+        /* background-color: moccasin; */
+        background-color: black;
+        border-radius: 20px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+
+    .marked{
+        color: crimson;
+        font-weight: bold;
+    }
+
+    .logo{
+        width: 1em;
+        height: 1em;
+    }
+    .logo img{
+        width: 100%;
+        height: 100%;
+    }
+
+    #footer{
+        color: white;
+        padding: 1em;
+        pointer-events: all;
+        position: relative;
+        z-index: 99;
+
+        position: fixed;
+        z-index: 99;
+        bottom: 0;
+    }
+
+/* HOME */
+
+    body#home{
+        background: url(./img/ui/BG_001.jpg);
+    }
+
+/* LAYOUT */
+
+    #cache{
+        overflow: hidden;
+        width: 0;
+        height: 0;
+    }
+
+    #ui{
+        display: flex;
+        position: absolute;
+        flex-direction: column;
+        justify-content: space-between;
+        width: var(--app-width, 100%);
+        height: var(--app-height, 100%);
+    }
+
+    #holder{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #game{
+        width: var(--app-width, 100%);
+        height: var(--app-height, 100%);
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+
+        pointer-events: none;
+    }
+    #game #canvas{
+        pointer-events: all;
+    }
+
+    #game.fullscreen{
+        justify-content: center;
+    }
+
+/* MENU */
+
+    #menu {
+        /* position: absolute; */
+        /* background: #000000; */
+        color: #fff;
+        top: 0;
+        display: block;
+        font-size: 2em;
+        width: calc(100% - 1em);
+        padding: 0.5em;
+        z-index: 999;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.5s;
+
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.5s;
+
+        max-width: 50%;
+        margin-left: auto;
+
+        text-align: right;
+    }
+    #menu.show {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    #menu .button{
+        display: inline-block;
+    }
+    #menu .button .icon{
+        display:none;
+        font-family: "Symbols";
+        text-align: center;
+        width: 1em;
+    }
+
+    #menu .button .icon.active{
+        display: block;
+    }
+
+    #menu #pause,
+    #menu #restart,
+    #menu #debug,
+    #menu #boss{
+        display: none;
+    }
+
+    body[data-loaded="true"] #menu #pause,
+    body[data-loaded="true"] #menu #restart{
+        display: inline-block;
+    }
+
+   
+    body[data-loaded="true"][advanced-menu="true"] #menu #debug,
+    body[data-loaded="true"][advanced-menu="true"] #menu #boss{
+        display: inline-block;
+    }
+
+
+/* CONTROLS */
+    
+    #controls{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        padding: 1em;
+        width: calc(100% - 2em);
+
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.5s;        
+    }
+    #controls.centered{
+        position: absolute;
+        height: 100%;
+    }
+    #controls .left,
+    #controls .right{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+    }
+    #controls .spacer{
+        width: 5vw;
+        height: 0vw;
+
+        pointer-events: none;
+    }
+    #controls .button{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+        width: 15vw;
+        height: 15vw;
+        background: #ffffff55;
+        border: 2px solid #fff;
+        color: white;
+        border-radius: 100%;
+        margin: 1.25vw;
+        font-size: 5vw;
+
+        font-family: serif;
+
+        background: #ffffff33;
+        border-color: #ffffff55;
+        text-shadow: 0px 0px 5px #888888;
+
+        max-width: 100px;
+        max-height: 100px;
+    }
+    #controls .button .icon{
+    }
+    #controls.show {
+        opacity: 1;
+    }
+    #controls.show.opacityB .button{
+        background: #ffffff33;
+        border-color: #ffffff55;
+    }
+    #controls.show.opacityC .button{
+        background: #ffffff22;
+        border-color: #ffffff33;
+    }
+    #controls.show.opacityD .button{
+        background: #ffffff00;
+        border-color: #ffffff11;
+    }
+    #controls.show .button{
+        pointer-events: auto;
+    }
+
+    /* FIX BUTTON STUTTERING */
+    #controls .button{
+        touch-action: none; touch-action: none; -webkit-touch-callout: none;    
+        user-select: none; -webkit-user-select: none;
+    }
+
+    /* DETACHED CONTROLS */
+    #mcontrols{
+        width: 100%;
+        max-width: var(--app-width);
+    }
+    .fullscreen #mcontrols{
+        z-index: 999;
+        bottom: 100px;
+        position: absolute;
+    }
+
+    /* ATTACGED CONTROLS */
+    .attached #controls{
+        height: 100%;
+        position: absolute;
+    }
+
+    /* STANDBY */
+    #mcontrols #standby{
+        display: none;
+        max-width: var(--app-width);
+        color: #fff;
+        text-shadow: 0px 0px 5px #888888;
+        position: absolute;
+        padding: 1em;
+        font-size: 1.6em;
+        text-align: center;
+        width: 100%;
+        max-width: calc(var(--app-width) - 2em);
+        height: 15vw;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        font-family: "Symbols";
+        text-transform: uppercase;
+    }
+    #mcontrols #standby.show{
+        display: flex;
+    }
+
+    #mcontrols #standby.show #hourglass{
+        -webkit-animation-name: standByAnimation;
+        -webkit-animation-duration: 0.5s;
+        -webkit-animation-iteration-count: infinite;
+        -webkit-animation-timing-function: linear;
+    }
+
+    @-webkit-keyframes standByAnimation {
+        from {
+          -webkit-transform: rotate(0deg);
+        }
+        to {
+          -webkit-transform: rotate(360deg);
+        }
+      }
+
+
+/* INSTRUCTIONS */
+    
+    #instructions{
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 1em;
+        text-align: center;
+    }
+   
+
+    #instructions .spacer{
+        display: inline-block;
+        width: 2em;
+    }
+    #instructions .keylabel{
+        display: inline-block;
+    }
+    #instructions .key{
+        font-family: "Keyboard";
+        font-size: 3em;
+        vertical-align: middle;
+        margin-left: 0.2em;
+    }
+
+/* BG VIDEO */
+
+    .bg_video{
+        position: fixed;
+        z-index: -1;
+        opacity: 0;
+        /* visibility: hidden; */
+    }
+
+/* IMPRESSUM */
+
+    body#impressum #holder,
+    body#impressum #holder a{
+        color: #000000;
+        /* text-shadow: 0px 0px 1px teal; */
+        font-weight: bold;
+    }
+
+    body#impressum #holder{
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    body#impressum{
+        background: url(./img/ui/BG_002.jpg);
+    }
+
+    body#impressum #holder{
+        width: calc(100vw - 20vw);
+        max-height: calc(100vh - 20vw);
+        padding: 5vw;
+        overflow: hidden;
+        max-width: 720px;
+    }
+
+    body#impressum #holder .container{
+        width: 100%;
+        /* height: 100%; */
+        border: solid transparent;
+        position: relative;
+        z-index: 999;
+        overflow: hidden;
+        padding: 0;
+        margin: 0;
+        display: inline-flex;
+    }
+
+    body#impressum #backplate{
+        position: absolute;
+        width: var(--app-width);
+        height: var(--app-height);
+        max-height: calc(100vh - 20vw);
+        background: tomato;
+        mix-blend-mode: exclusion;
+        padding: 5vw;
+        background-image: url(./img/logos/l0br0w.svg);
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        background-blend-mode: overlay;
+    }
+
+    body#impressum.holder_logo #holder,
+    body#impressum.holder_logo #backplate{
+        padding-top: 12.5vw;
+    }
+
+    body#impressum #backplate .border{
+        width: 100%;
+        height: 100%;
+        border: solid 2px;
+    }
+
+    body#impressum #holder section.scroll{
+        width: 100%;
+        position: relative;
+        z-index: 999;
+        overflow-y: auto;
+        padding: 2.5vw;
+    }
+
+    body#impressum.plate_logo #holder section.scroll{
+        margin-top: 15vw;
+    }
+
+
+/* INFO */
+
+    body#info{
+        background: transparent;
+        justify-content: flex-start;
+        overflow-y: auto;
+    }
+    body#info #holder{
+        width: 100%;
+        overflow: hidden;
+    }
+
+    body#info .container{
+        width: calc(100% - 10em);
+        display: block;
+        padding: 5em;
+
+        overflow-y: auto;
+    }
+
+    body#info section{
+        display: none;
+    }
+
+    body#info section.active{
+        display: block;
+    }
+
+    body#info .lang{
+        display: none;
+    }
+
+    body#info[lang="en"] .en{
+        display: block;
+    }
+
+    body#info[lang="de"] .de{
+        display: block;
+    }
+
+    #help{
+        display: none;
+        position: absolute;
+        width: 100%; height: 100%;
+
+        pointer-events: all;
+        background: #ffa07ae6;
+    }
+
+    #help iframe{
+        width: 100%;
+        height: 100%;
+    }
+
+    #help.show{
+        display: block;
+    }
+
+    #help #help_controls{
+        position: absolute;
+        bottom: 0;
+        width: calc(100% - 1em);
+        text-align: center;
+        padding: 0.5em;
+    }
+
+    #help #help_controls .button{
+        font-size: 2em;
+    }
+
+    #help #help_controls .button .icon{
+        font-family: "Symbols";
+        text-align: center;
+        width: 1em;
+    }
+
+
+/* ANIMATION */
+
+    .fade_in{
+        opacity: 0;
+        transition: opacity 2s;
+    }
+
+    .fade_in.show{
+        opacity: 1;
+    }
+
+/** DEBUG BOX */
+
+    #debug_box{
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        max-width: calc(100% - 1em);
+        text-align: right;
+        padding: 0.5em;
+        pointer-events: all;
+    }
+    #debug_box #platform{
+        opacity: 0;
+        color: salmon;
+        padding: 0.25em;
+    }
+    [advanced-menu="true"] #debug_box #platform{
+        opacity: 1;
+    }
+    #debug_box #console {
+        display: none;
+        flex-direction: column;
+        justify-content: flex-end;
+        height: 5em;
+        padding: 0.25em;
+        overflow: hidden;
+        word-wrap: break-word;
+        white-space: pre-wrap;
+        box-sizing: border-box;
+        /* border: 1px solid moccasin; */
+    }
+    [data-debug="true"] #debug_box #console{
+        display: flex;
+    }
+    [data-debug="true"] #debug_box #console:hover{
+        display: flex ;
+        flex-direction: column-reverse;
+        justify-content: flex-start;
+
+        background: #00000080;
+        overflow-y: auto;
+    }
+
+    #debug_box #console .log_entry{
+        display: block;
+        opacity: 0;
+        transition: opacity 1s;
+        color: moccasin;
+    }
+    #debug_box #console .log_stamp{
+        color: salmon;
+    }
+    #debug_box #console .log_stamp::before{
+        content: "[";
+        color: teal;
+        margin-left: 0.5em;
+    }
+    #debug_box #console .log_stamp::after{
+        content: "]";
+        color: teal;
+    }
+    #debug_box #console .log_entry.show{
+        opacity: 1;
+    }
+    #debug_box #console .log_entry.hide{
+        display: none;
+    }
+    #debug_box #console:hover .log_entry{
+        display: block;
+        padding-RIGHT: 0em;
+        opacity: 1;
+    }
+
+/* RESPONSIVE */
+
+    @media screen and (min-width: 1000px){
+        #ui #controls{
+            display: none;
+        }
+        #instructions{
+            display: block;
+        }
+
+        #mcontrols #standby{
+            color: black;
+            text-shadow: none;
+        }
+
+        body#impressum #holder .container{
+            font-size: 1em;
+        }
+    }

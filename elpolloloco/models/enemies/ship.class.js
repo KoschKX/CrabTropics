@@ -4,8 +4,8 @@
 class Ship extends Enemy {
     /** START VALUES */
     name = 'Ship';
-    width = 200;
-    height = 200;
+    width = 284;
+    height = 284;
     health = 10;
     starthealth = 10;
     frameRate = 24;
@@ -23,7 +23,7 @@ class Ship extends Enemy {
     /** UNIQUE **/
     explosions = [];
     cballs = [];
-    cannonLocs = [[33, -165], [-33, -165]];
+    cannonLocs = [[33, -333], [-33, -333]];
     maxShots = 2;
     minShotFreq = 500;
     maxShotFreq = 100000;
@@ -47,8 +47,8 @@ class Ship extends Enemy {
         super.init();
 
         // Set random position and speed for the Ship.
-        this.x = 200 + random(0, 500);
-        this.y = 110;
+        this.x = 284 + random(0, 500);
+        this.y = 230;
         this.speed = random(0.25, 0.5);
         this.originalspeed = this.speed;
 

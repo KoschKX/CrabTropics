@@ -100,29 +100,38 @@ class HUD {
      * Displays the player's current health on the HUD.
      */
     displayHealth() {
-        let text = '♥'.repeat(this.world.player.health);
-        let font = 'bold 30px Arial';
-        drawText(this.ctx, 20, 40, 0, 0, text, 'red', font, 'left', 'middle', 'white', 1);
+        let scale = 3;
+        let fontSize = 40;
+        let font = 'bold ' + fontSize + 'px Arial';
+        let lineHeight = fontSize * 0.33;
+        let text = Array(this.world.player.health).fill('♥').join('\u2009');
+        drawText(this.ctx, scale * 7.25, scale * 11, 0, 0, text, 'red', font, 'left', 'middle', 'white', 1);
     }
 
     /**
      * Displays the player's current wealth (doubloons) on the HUD.
      */
     displayWealth() {
-        let text = '$' + (this.world.player.doubloons);
-        let font = 'bold 30px Arial';
-        drawText(this.ctx, 20, 70, 0, 0, text, 'white', font, 'left', 'middle', '', 1);
+        let scale = 3;
+        let fontSize = 40;
+        let font = 'bold ' + fontSize + 'px Arial';
+        let lineHeight = fontSize * 0.33;
+        let text = '$' + this.world.player.doubloons;
+        drawText(this.ctx, scale * 7.25, scale * 22 + lineHeight, 0, 0, text, 'white', font, 'left', 'middle', '', 1);
     }
 
     /**
      * Displays the remaining time on the clock or "FIGHT!" if time has run out.
      */
     displayClock() {
+        let scale = 3;
+        let fontSize = 60;
+        let font = 'bold ' + fontSize + 'px Arial';
+        let lineHeight = fontSize * 0.33;
         let text = this.world.remainderClock(this.world.bossTime);
         if (text == '0:00' || text == '00:00') { text = "FIGHT!"; }
         if (this.world.boss && this.world.boss.dead) { text = "VICTORY!"; }
-        let font = 'bold 40px Arial';
-        drawText(this.ctx, (this.cvs.width) * 0.5, 80, 0, 0, text, 'red', font, 'center', 'middle', 'white', 1);
+        drawText(this.ctx, (this.cvs.width) * 0.5, scale * 44, 0, 0, text, 'red', font, 'center', 'middle', 'white', 1);
     }
 
     /**

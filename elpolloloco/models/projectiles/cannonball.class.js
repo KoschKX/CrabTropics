@@ -5,12 +5,12 @@ class Cannonball extends Enemy {
 
     /** STARTING VALUES */
     name = 'Cannonball';
-    width = 5;
-    height = 5;
+    width = 6;
+    height = 6;
     scale = 1;
     x = 120;
     y = 0;
-    groundOffset = 36;
+    groundOffset = 48;
     speed = 0.25;
     frameRate = 24;
     health = 10;
@@ -27,8 +27,8 @@ class Cannonball extends Enemy {
     /** HITBOXES */
     boxes = [[0, 0, this.width, this.height, 'red', true]];
 
-    maxSize = 33;
-    maxZoomSize = 66;
+    maxSize = 48;
+    maxZoomSize = 75;
     madeGroundContact = false;
 
 

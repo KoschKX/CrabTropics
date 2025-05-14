@@ -320,7 +320,7 @@ class AudioManager {
         Object.keys(this.sounds).forEach(label => {
             if (!name || label === name) {
                 const count = (this.currSounds[label] || []).length;
-                log(`${label}: ${count} instance(s)`);
+                log(label+': '+count+' '+'instance(s)');
             }
         });
     }

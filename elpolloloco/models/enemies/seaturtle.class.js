@@ -5,8 +5,8 @@ class SeaTurtle extends Enemy {
 
 	/** START VALUES */
 	name = 'SeaTurtle';
-	width = 1000;
-	height = 1000;	
+	width = 1280;
+	height = 1280;	
 	x = 0;
 	y = 0;
 	groundOffset = 0;
@@ -205,17 +205,17 @@ class SeaTurtle extends Enemy {
 		if(!this.introPlaying){ return; }
 		this.scale = Math.min(this.scale + 0.0025, 1.0);
 		this.x = (this.world.level.bounds[2] - this.width) * 0.5; 
-		this.y = (this.world.level.bounds[3]  - this.height) * (0.62 + (0.066 * this.scale)); 
-		this.width = 640 * this.scale; 
-		this.height = 88 * this.scale; 
+		this.y = (this.world.level.bounds[3]  - this.height) * (0.645 + (0.066 * this.scale)); 
+		this.width = 720 * this.scale; 
+		this.height = 100 * this.scale; 
 		if(this.scale > 0.75 && !this.splashes){
 			if(this.splashType == 1){
 				let check = document.querySelector('#cache [src="' + this.path + '"]');
-				this.splashes = new Movie(this.world, './img/waves/SPLASH_001.webm', 4, 0, 0, 0, 740, 544, 30, true);
+				this.splashes = new Movie(this.world, './img/waves/SPLASH_001.webm', 4, 0, this.world.level.bounds[0], this.world.level.bounds[1], this.world.level.bounds[2], this.world.level.bounds[3] * 1.133, 30, true);
 				this.world.level.createVideo(this.splashes, './img/waves/SPLASH_001.webm', !check, false, false);
 				this.splashes.pause(true);
 			}else {
-				this.splashes  = new Movie(this.world, './img/waves/SPLASH_001.png', 4, 40, 0, 0, 740, 544);
+				this.splashes  = new Movie(this.world, './img/waves/SPLASH_001.png', 4, 40, this.world.level.bounds[0], this.world.level.bounds[1], this.world.level.bounds[2], this.world.level.bounds[3] * 1.133);
 			}
 			this.splashes.world = this.world;
 			this.splashes.init();
@@ -266,10 +266,10 @@ class SeaTurtle extends Enemy {
 		this.width = this.startwidth; 
 		this.height = this.startheight; 
 		this.x = (this.world.level.bounds[2] - this.width) * 0.5; 
-		this.y = (this.world.level.bounds[3] - this.height) * 0.33; 
+		this.y = (this.world.level.bounds[3] - this.height) * 0.15; 
 		this.introPlaying = false;
 
-		this.crater = new Background(this.world, './img/misc/craterA.png', 2, 0, 0, 512, 192);
+		this.crater = new Background(this.world, './img/misc/craterA.png', 2, 0, 0, this.width * 0.512, this.height * 0.192);
 		this.crater.x = this.x + ((this.width - this.crater.width) * 0.5); 
 		this.crater.y = this.y + ((this.height - this.crater.height) * 0.5) + this.crater.height * 0.45;
 		this.world.level.backgrounds.push(this.crater);

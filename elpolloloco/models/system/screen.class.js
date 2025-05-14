@@ -40,11 +40,12 @@ class Screen {
         const scrn = document.querySelector('#holder');
         if (scrn.requestFullscreen) {
             scrn.requestFullscreen();
+            document.querySelector('#menu #maximize').classList.remove('active');
+            document.querySelector('#menu #minimize').classList.add('active');
+            document.querySelector('#game').classList.add('fullscreen');
+            document.querySelector('body').setAttribute('data-fullscreen',true);
             this.resizeCanvas();
         }
-        document.querySelector('#menu #maximize').classList.remove('active');
-        document.querySelector('#menu #minimize').classList.add('active');
-        document.querySelector('#game').classList.add('fullscreen');
     }
 
     /**
@@ -53,46 +54,40 @@ class Screen {
     exitFullscreen() {
         if (document.exitFullscreen) {
             document.exitFullscreen();
+            document.querySelector('#menu #maximize').classList.add('active');
+            document.querySelector('#menu #minimize').classList.remove('active');
+            document.querySelector('#game').classList.remove('fullscreen');
+            document.querySelector('body').setAttribute('data-fullscreen',false);
             this.resizeCanvas();
-        }
-        document.querySelector('#menu #maximize').classList.add('active');
-        document.querySelector('#menu #minimize').classList.remove('active');
-        document.querySelector('#game').classList.remove('fullscreen');
+         }
     }
 
     /**
      * Resizes the canvas based on screen dimensions and game/world constraints.
      */
     resizeCanvas() {
-        const gameRect = document.querySelector('#game').getBoundingClientRect();
-        let cvsW = document.documentElement.clientWidth;
-        let cvsH = document.documentElement.clientHeight;
+        const game = document.querySelector('#game');
+        const bottom = document.querySelector('#bottom');
+        const canvas = this.cvs;
 
-        if (!this.bounds) {
-            this.bounds = [0, 0, this.cvs.width, this.cvs.height];
-        }
-
-        if (this.world && this.world.level) {
-            this.bounds = this.world.level.bounds;
-        }
+        let [cvsW, cvsH] = [document.documentElement.clientWidth, document.documentElement.clientHeight];
+        this.bounds ||= [0, 0, canvas.width, canvas.height];
+        if (this.world?.level) this.bounds = this.world.level.bounds;
 
         this.checkOrientation();
+        cvsW = Math.min(cvsW, this.bounds[2]); cvsH = Math.min(cvsH, this.bounds[3]);
+        if (game.classList.contains('detached')) cvsH -= bottom.offsetHeight;
 
-        if (cvsW > this.bounds[2]) cvsW = this.bounds[2];
-        if (cvsH > this.bounds[3]) cvsH = this.bounds[3];
-
-        this.cvs.width = cvsW;
-        this.cvs.height = cvsH;
+        canvas.width = cvsW; canvas.height = cvsH;
+        canvas.style.cssText = 'height:' + cvsH + 'px';
 
         document.documentElement.style.setProperty('--app-width', cvsW + 'px');
         document.documentElement.style.setProperty('--app-height', cvsH + 'px');
 
-        if (typeof titlescreen !== 'undefined') {
-            titlescreen.draw();
-        }
-
-        this.cvs.style.width = cvsW + 'px';
-        this.cvs.style.height = cvsH + 'px';
+        titlescreen?.draw();
+        const ui = document.querySelector('#canvas');
+        document.documentElement.style.setProperty('--ui-width', ui.offsetWidth + 'px');
+        document.documentElement.style.setProperty('--ui-height', ui.offsetHeight + 'px');
     }
 
     /**
@@ -172,6 +167,7 @@ class Screen {
      */
     hideHelp() {
         document.querySelector('#help').classList.remove('show');
+        this.showControls();
     }
 
     /**
@@ -179,6 +175,7 @@ class Screen {
      */
     showHelp() {
         document.querySelector('#help').classList.add('show');
+        this.hideControls();
     }
 
     /**
