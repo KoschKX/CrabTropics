@@ -74,7 +74,7 @@ class SeaTurtle extends Enemy {
 		if(this.splashType == 1){
 			this.splashStopFrame -= 1;
 		}
-		if(immediate){ init(); }
+		//if(immediate){ init(); }
 	}
 
 	/**
@@ -87,6 +87,7 @@ class SeaTurtle extends Enemy {
 		this.world.level.enemies = destroy(this, this.world.level.enemies, this.world);
 		if(this.splashes){ this.splashes.destroy(); this.splashes = null; }
 		if(this.crater){ this.crater.destroy(); this.crater = null; }
+
 	}
 
 	/**
@@ -94,6 +95,8 @@ class SeaTurtle extends Enemy {
 	 */
 	init() {
 		super.init();
+		this.state = -1;
+		this.splashFadingOut = false;
 		this.introPlaying = false; 
 		this.introTick = 0; 
 		this.scale = 1;
@@ -132,6 +135,7 @@ class SeaTurtle extends Enemy {
 		if(!this.dead && this.health > 0) { 
 			this.currImage = 0; 
 			this.world.audio.playSound('seaturtle_hitA', 1.0); 
+			console.trace();
 		}
 		if(this.health <= 0) this.world.clearTimer(this.reviveTimer);
 	}

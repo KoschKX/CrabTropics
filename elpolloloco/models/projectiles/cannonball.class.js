@@ -103,7 +103,6 @@ class Cannonball extends Enemy {
         }
 
         if (this.y >= this.world.level.bounds[3] + this.height) {
-            console.log('destroyed cannon ball');
             this.destroy();
         }
     }

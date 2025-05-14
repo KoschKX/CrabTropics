@@ -65,12 +65,6 @@ class Crab extends Enemy {
         } else {
             this.variant = variant;
         }
-
-        // Set the initial position and speed
-        this.x = 200 + random(0, 500);
-        this.y = world.ground;
-        this.speed = random(0.05, 0.1);
-        this.originalspeed = this.speed;
     }
 
     /**
@@ -90,6 +84,13 @@ class Crab extends Enemy {
         super.init();
         this.boxes = [this.boxes_fine];
         this.hostile = true;
+
+        // Set the initial position and speed
+        if(!this.world){ return; } 
+        this.delta = 0;
+        this.respawn( this.world.level.bounds[2] * 0.5, this.world.level.bounds[2], this.world.ground );
+        this.speed = random(0.05, 0.1);
+        this.originalspeed = this.speed;
     }
 
     /**
@@ -141,7 +142,7 @@ class Crab extends Enemy {
      * Moves the crab to the left.
      */
     moveLeft() {
-        if (!this.world || this.static || this.dead) { return; }
+        if (!this.world || this.static || this.dead || !this.initialized)  { return; }
         super.moveLeft(this.delta);
         if (!this.walksound || !this.world.audio.isSpecificSoundPlaying('crab_walkA', this.walksound)) {
             this.walksound = this.world.audio.playSound('crab_walkA', 0.25, true);
@@ -152,7 +153,7 @@ class Crab extends Enemy {
      * Moves the crab to the right.
      */
     moveRight() {
-        if (!this.world || this.static || this.dead) { return; }
+        if (!this.world || this.static || this.dead || !this.initialized) { return; }
         super.moveRight(this.delta);
         if (!this.walksound || !this.world.audio.isSpecificSoundPlaying('crab_walkA', this.walksound)) {
             this.walksound = this.world.audio.playSound('crab_walkA', 0.25, true);

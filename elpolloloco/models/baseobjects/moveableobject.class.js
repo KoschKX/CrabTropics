@@ -69,13 +69,13 @@ class MovableObject {
     /** Initializes the object, sets default image and starts animation. */
     init() {
         this.delta = 0;
-        this.initialized = true;
         this.loadImage(this.IMAGES_BLANK.files[0]);
         this.currImageSet = this.IMAGES_BLANK;
         clearInterval(this.animInterval);
         this.animInterval = setInterval(() => {
             this.animate();
         }, 1000 / this.frameRate);
+        this.initialized = true;
     }
 
     /**
@@ -266,7 +266,7 @@ class MovableObject {
 
     /** Moves the object left. */
     moveLeft(delta) {
-        if (!this.world || this.static || this.dead) return;
+        if (!this.world || this.static || this.dead || !this.initialized) return;
         if (this.x < this.world.level.bounds[0] - (this.width * 0.5)) return;
         this.x -= this.speed * delta;
         this.currDirection = 0;
@@ -274,7 +274,7 @@ class MovableObject {
 
     /** Moves the object right. */
     moveRight(delta) {
-        if (!this.world || this.static || this.dead) return;
+        if (!this.world || this.static || this.dead || !this.initialized) return;
         if (this.x > this.world.level.bounds[2] - (this.width * 0.5)) return;
         this.x += this.speed * delta;
         this.currDirection = 1;
@@ -290,8 +290,12 @@ class MovableObject {
         return this.world ? this.y === this.world.ground + this.groundOffset : false;
     }
 
-    setSpeed(speed){
-        this.speed = speed;
+    /** Respawns the object within bounds, randomly on the x coordinate */
+    respawn(x1, x2, y){
+        let min = this.world.level.bounds[0] - this.width;
+        let max = this.world.level.bounds[2] + this.width;
+        this.x = clamp(random(x1, x2), min, max);
+        this.y = y;
     }
 
 }

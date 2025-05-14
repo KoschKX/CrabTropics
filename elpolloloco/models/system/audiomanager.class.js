@@ -140,9 +140,10 @@ class AudioManager {
         const instance = { id, source };
         this.currSounds[label].push(instance);
 
-        source.onended = () => {
-            this.currSounds[label] = this.currSounds[label].filter(s => s.id !== id);
-            if (this.currSounds[label].length === 0) delete this.currSounds[label];
+        let self = this; source.onended = () => {
+            if(!self.currSounds || !self.currSounds[label]){ return; }
+            self.currSounds[label] = self.currSounds[label].filter(s => s.id !== id);
+            if (self.currSounds[label].length === 0) delete self.currSounds[label];
         };
 
         return id;

@@ -12,7 +12,7 @@ const level01 = {
 		'Crab([0,2])',
 		'Crab([0,2])',
 		'Crab(3)',
-		//'Ship(0)',
+		'Ship(0)',
 		'SeaTurtle()',
 	],
 	clouds: [],

@@ -73,7 +73,11 @@ class Level {
         this.music = this.parseObj(levelmap.music);
         this.ground = this.parseObj(levelmap.ground);
 
-        if (reset) { return; }
+        if(reset){ 
+            let bosses = this.enemies.filter(enemy => enemy.isBoss === true);
+            bosses.forEach((boss) => { boss.destroy(); });
+            return;
+        }
 
         this.projectiles = this.parseObj(levelmap.projectiles);
         this.effects = this.parseObj(levelmap.effects);

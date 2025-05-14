@@ -47,8 +47,8 @@ class Ship extends Enemy {
         super.init();
 
         // Set random position and speed for the Ship.
-        this.x = 284 + random(0, 500);
-        this.y = 230;
+        this.delta = 0;
+        this.respawn( this.world.level.bounds[2] * 0.5, this.world.level.bounds[2], 230 );
         this.speed = random(0.04, 0.06);
         this.originalspeed = this.speed;
 

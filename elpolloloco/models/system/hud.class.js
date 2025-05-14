@@ -84,6 +84,7 @@ class HUD {
         let font = "bold " + (this.cvs.width * 0.1) + "px Arial";
         if (this.world.keyboard.SPACE) {
             this.world.level.enemies.forEach((enemy) => {
+                if (enemy.dead) { return; }
                 if (!enemy.isBoss) { 
                     enemy.health = 1; 
                 }
