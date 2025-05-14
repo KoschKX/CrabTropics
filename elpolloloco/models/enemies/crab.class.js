@@ -87,11 +87,11 @@ class Crab extends Enemy {
     /**
      * Initializes the crab by setting its collision boxes and making it hostile.
      */
-    init() {
+    init(respawn = true) {
         super.init();
         this.boxes = [this.boxes_fine];
         this.hostile = true;
-        this.respawn();
+        if(respawn){ this.respawn(); }
     }
 
     respawn(){

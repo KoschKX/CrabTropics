@@ -148,7 +148,7 @@ class Pirate extends Player {
         if (!this.world) { return; }
         let crabsB = this.world.level.enemies.filter(enemy => enemy.name === 'Crab' && enemy.variant === 3);
         if (!crabsB.length) {
-            let crabB = new Crab(this.world, 3);
+            let crabB = new Crab(this.world, 3, true);
             this.world.level.enemies.push(crabB);
             let rndDir = randomInt(0, 1);
             if (rndDir == 1) {
@@ -160,7 +160,7 @@ class Pirate extends Player {
             }
             let self = this;
             this.world.setTimer(function () {
-                crabB.init();
+                crabB.init(false);
             }, randomInt(1, 10) * 1000);
         }
     }
