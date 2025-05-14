@@ -30,7 +30,7 @@ class World {
         this.boss = null;
         this.clsnInterval = null;
         this.drawFramesId = null;
-        this.frameRate = 120;
+        this.frameRate = 70;
         this.elapsedTime = 0;
         this.elapsedClockTime = 0;
         this.clockStarted = false;
@@ -55,6 +55,10 @@ class World {
      * Initializes the world, playing ambient sounds and music and setting up initial game state.
      */
 	init() {
+
+        if(this.loadicon){ this.loadicon.stop(); };
+        // if(this.loadBar){ this.loadBar.stop(); };
+
 	    this.audio.playSound(this.level.ambient[0], 1.0, false, true);
 		this.audio.playMusic(this.level.music[0], 0.4, true);
 		
@@ -123,7 +127,7 @@ class World {
 
 		this.timestamp = timestamp; this.frameDuration = 1000 / this.frameRate;
 
-		this.ctx.clearRect(0,0,this.cvs.width,this.cvs.height);
+        //this.ctx.clearRect(0,0,this.cvs.width,this.cvs.height);
 
 		this.ctx.save(); 
 
@@ -137,6 +141,48 @@ class World {
 
 		this.drawFramesId = requestAnimationFrame((timestamp) => this.draw(timestamp));
 	}
+
+
+    drawObjects(){
+
+        this.addObjectsToMap(this.level.backgrounds.filter(background => background.layer === 0));
+        this.addObjectsToMap(this.level.clouds);
+
+        this.addObjectsToMap(this.level.backgrounds.filter(background => background.layer === 1));
+
+        this.addObjectsToMap(this.level.enemies.filter(enemy => enemy.name === 'Ship'));
+        this.addObjectsToMap(this.level.projectiles.filter(projectile => !projectile.falling && projectile.name === 'Cannonball'));
+        this.addObjectsToMap(this.level.effects.filter(effect => effect.name === 'Explosion'));
+
+        this.addObjectsToMap(this.level.backgrounds.filter(background => background.layer === 2));
+
+        this.addObjectsToMap(this.level.projectiles.filter(projectile => projectile.name === 'XMark'));
+        
+
+        this.addObjectsToMap(this.level.enemies.filter(enemy => enemy.name === 'SeaTurtle'));
+
+        this.addObjectsToMap(this.level.items.filter(item => item.name === 'Doubloon'));
+        this.addObjectsToMap(this.level.items.filter(item => item.name === 'Catnip'));
+
+        this.addObjectsToMap(this.level.enemies.filter(enemy => enemy.dead && enemy.name === 'Crab'));
+
+        this.addObjectsToMap(this.level.effects.filter(effect => effect.name === 'Sparkle'));
+
+        this.addToMap(this.player);
+        
+        this.addObjectsToMap(this.level.enemies.filter(enemy => !enemy.dead && enemy.name === 'Crab'));
+
+        this.addObjectsToMap(this.level.effects.filter(effect => effect.name === 'Stomp'));
+        
+        this.addObjectsToMap(this.level.projectiles.filter(projectile => projectile.falling && projectile.name === 'Cannonball'));
+
+        this.addObjectsToMap(this.level.backgrounds.filter(background => background.layer === 3));
+
+        this.addObjectsToMap(this.level.projectiles.filter(projectile => projectile.name === 'XArrow'));
+
+        this.addObjectsToMap(this.level.backgrounds.filter(background => background.layer === 4));
+    }
+
     /**
      * Adds objects to the game world map.
      * @param {Array} objects - The array of objects to add to the map.
@@ -186,23 +232,15 @@ class World {
             this.drawObjects();
 
 			// EXECUTER TIMERS
-            let timersExecuted = 0;
-            this.scheduledTimers = this.scheduledTimers.filter(timer => {
-                if (this.elapsedTime >= timer.execTime && timersExecuted < 1) {
-                    timer.callback();
-                    timersExecuted++;
-                    return false;
-                }
-                return true;
-            });
+			this.scheduledTimers = this.scheduledTimers.filter(timer => {
+
+		        if (this.elapsedTime >= timer.execTime) { timer.callback(); return false; }
+		        return true;
+		    });
 
 		    // EXECUTE REPEATERS
-            let repeatersExecuted = 0;
 		    for (const repeater of this.scheduledRepeaters) {
-		        if (this.elapsedTime >= repeater.execTime  && repeatersExecuted < 1) { 
-                    repeater.callback(); 
-                    repeater.execTime = this.elapsedTime + repeater.delay; 
-                }
+		        if (this.elapsedTime >= repeater.execTime) { repeater.callback(); repeater.execTime = this.elapsedTime + repeater.delay; }
 		    }
 
 		    this.elapsedTime += delta; 
@@ -220,45 +258,6 @@ class World {
 			this.player.main(delta);
 		}
 	}
-
-
-    drawObjects(){
-        this.addObjectsToMap(this.level.backgrounds.filter(background => background.layer === 0));
-        this.addObjectsToMap(this.level.clouds);
-
-        this.addObjectsToMap(this.level.backgrounds.filter(background => background.layer === 1));
-
-        this.addObjectsToMap(this.level.enemies.filter(enemy => enemy.name === 'Ship'));
-        this.addObjectsToMap(this.level.projectiles.filter(projectile => !projectile.falling && projectile.name === 'Cannonball'));
-        this.addObjectsToMap(this.level.effects.filter(effect => effect.name === 'Explosion'));
-
-        this.addObjectsToMap(this.level.backgrounds.filter(background => background.layer === 2));
-
-        this.addObjectsToMap(this.level.projectiles.filter(projectile => projectile.name === 'XMark'));
-        
-        this.addObjectsToMap(this.level.enemies.filter(enemy => enemy.name === 'SeaTurtle'));
-
-        this.addObjectsToMap(this.level.items.filter(item => item.name === 'Doubloon'));
-        this.addObjectsToMap(this.level.items.filter(item => item.name === 'Catnip'));
-
-        this.addObjectsToMap(this.level.enemies.filter(enemy => enemy.dead && enemy.name === 'Crab'));
-
-        this.addObjectsToMap(this.level.effects.filter(effect => effect.name === 'Sparkle'));
-
-        this.addToMap(this.player);
-        
-        this.addObjectsToMap(this.level.enemies.filter(enemy => !enemy.dead && enemy.name === 'Crab'));
-
-        this.addObjectsToMap(this.level.effects.filter(effect => effect.name === 'Stomp'));
-        
-        this.addObjectsToMap(this.level.projectiles.filter(projectile => projectile.falling && projectile.name === 'Cannonball'));
-
-        this.addObjectsToMap(this.level.backgrounds.filter(background => background.layer === 3));
-
-        this.addObjectsToMap(this.level.projectiles.filter(projectile => projectile.name === 'XArrow'));
-
-        this.addObjectsToMap(this.level.backgrounds.filter(background => background.layer === 4));
-    }
 
     /**
      * Returns the formatted clock time in "MM:SS" format.

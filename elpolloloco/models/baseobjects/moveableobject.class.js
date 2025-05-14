@@ -164,7 +164,6 @@ class MovableObject {
         } else {
             ctx.translate(this.x - offX, this.y);
         }
-
         ctx.drawImage(this.img, 0, 0, this.width, this.height);
     }
 

@@ -93,11 +93,15 @@ class Movie extends Background {
      */
     play(force = false) {
         this.isPlaying = true;
+        clearInterval(this.animInterval);
         if (this.vid && !this.isVideoPlaying() && force) {
             this.vid.play().catch(() => {});
+            this.animInterval = setInterval(() => { this.animate(); }, 1000 / 30);
+        }else{
+            this.animInterval = setInterval(() => { this.animate(); }, 1000 / this.frameRate);
         }
-        clearInterval(this.animInterval);
-        this.animInterval = setInterval(() => { this.animate(); }, 1000 / this.frameRate);
+        
+        
     }
 
     /**
@@ -212,7 +216,8 @@ class Movie extends Background {
             if (this.isPlaying) this.vid.play();
             ctx.drawImage(this.vid, this.x, this.y, this.width, this.height);
         } else {
-            if (!this.anim || !this.img) return;
+            console.log(this.anim);
+            if (!this.img) return;
             ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
         }
     }

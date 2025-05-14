@@ -64,6 +64,11 @@ class Icon {
         }
     }
 
+    stop(){
+        clearInterval(this.drawInterval);
+        //this.ctx.clearRect(0, 0, this.cvs.width, this.cvs.height);
+    }
+
     /**
      * Draws the icon on the canvas.
      * Clears the canvas and then draws the image at the specified position and size.

@@ -42,7 +42,7 @@ class ProgressBar {
      * Destroys the animation loop and deactivates the progress bar.
      */
     destroy() {
-        cancelAnimationFrame(this.drawFramesId);
+        //cancelAnimationFrame(this.drawFramesId);
     }
 
     /**
