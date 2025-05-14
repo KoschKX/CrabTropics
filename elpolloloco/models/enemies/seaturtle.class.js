@@ -272,6 +272,7 @@ class SeaTurtle extends Enemy {
 	 * Activates the SeaTurtle, starting its behavior and animations.
 	 */
 	activate(){
+
 		this.boxes = []; 
 		this.width = this.startwidth; 
 		this.height = this.startheight; 
@@ -306,6 +307,7 @@ class SeaTurtle extends Enemy {
 				self.changeState(rstate);
 			}
 		}, 2000 ); 	
+		self.changeState(0);
 	}
 
 	/**
