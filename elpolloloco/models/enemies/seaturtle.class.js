@@ -259,7 +259,7 @@ class SeaTurtle extends Enemy {
 				this.splashes.videoSeek(this.splashStopFrame);
 			}
 		}
-		if(this.splashes.currImage > 0 && this.splashes.currImage >= this.splashes.frames -2){ 
+		if(this.splashes.currImage > 0 && this.splashes.currImage >= this.splashes.frames - 3 || (this.splashFadingOut && this.splashes.currImage < 3)){ 
 			this.splashes.destroy(); 
 			this.splashes = null;
 			this.world.player.flickering = false; 
