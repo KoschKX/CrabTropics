@@ -66,6 +66,9 @@ class Crab extends Enemy {
             this.variant = variant;
         }
 
+        this.speed = random(0.05, 0.1);
+        this.originalspeed = this.speed;
+
         if (immediate) {
             this.init();
         }
@@ -88,13 +91,11 @@ class Crab extends Enemy {
         super.init();
         this.boxes = [this.boxes_fine];
         this.hostile = true;
+        this.respawn();
+    }
 
-        // Set the initial position and speed
-        if(!this.world){ return; } 
-        this.delta = 0;
-        this.respawn( this.world.level.bounds[2] * 0.5, this.world.level.bounds[2], this.world.ground );
-        this.speed = random(0.05, 0.1);
-        this.originalspeed = this.speed;
+    respawn(){
+        this.spawn( this.world.level.bounds[2] * 0.5, this.world.level.bounds[2], this.world.ground );
     }
 
     /**

@@ -48,13 +48,17 @@ class Ship extends Enemy {
 
         // Set random position and speed for the Ship.
         this.delta = 0;
-        this.respawn( this.world.level.bounds[2] * 0.5, this.world.level.bounds[2], 230 );
+        this.respawn();
         this.speed = random(0.04, 0.06);
         this.originalspeed = this.speed;
 
         // Load the Ship's floating animation.
         this.loadImage(this.IMAGES_FLOAT.files[0]);
         this.changeAnimation(this.IMAGES_FLOAT);
+    }
+
+    respawn(){
+        this.spawn( this.world.level.bounds[2] * 0.5, this.world.level.bounds[2], 230 );
     }
 
     /**

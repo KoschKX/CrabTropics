@@ -393,4 +393,16 @@ class Character extends MovableObject {
     reviveCallback(callback) {
         callback && callback();
     }
+
+    /** Spawns the character within bounds, randomly on the x coordinate */
+    spawn(x1, x2, y){
+        if( !this.world || !this.world.level ){ return; }
+        let min = this.world.level.bounds[0] - this.width;
+        let max = this.world.level.bounds[2] + this.width;
+        this.x = clamp(random(x1, x2), min, max);
+        this.y = y;
+    }
+
+    respawn(){}
+
 }

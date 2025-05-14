@@ -290,12 +290,5 @@ class MovableObject {
         return this.world ? this.y === this.world.ground + this.groundOffset : false;
     }
 
-    /** Respawns the object within bounds, randomly on the x coordinate */
-    respawn(x1, x2, y){
-        let min = this.world.level.bounds[0] - this.width;
-        let max = this.world.level.bounds[2] + this.width;
-        this.x = clamp(random(x1, x2), min, max);
-        this.y = y;
-    }
 
 }
