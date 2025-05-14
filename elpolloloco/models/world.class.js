@@ -40,7 +40,7 @@ class World {
         this.scheduledTimers = [];
         this.scheduledRepeaters = [];
         this.bossTime = null;
-        this.bossEventTime = 60;
+        this.bossEventTime = 300;
         this.debug = false;
     }
 
