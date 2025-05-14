@@ -40,29 +40,37 @@ class Movie extends Background {
      * @param {boolean} [strict=false] - Whether to strictly control frame playback.
      */
     constructor(world, imagePath, layer, frames, x, y, width, height, frameRate = 30, strict = false) {
-        
         // CHECK FOR MULTIPLE FORMATS
         if (Array.isArray(imagePath) && imagePath.length > 1) {
             super(world, null, layer, x, y, width, height);
             let checkFmt = checkFormat(imagePath, vidFormat);
             if(checkFmt){ imagePath = checkFmt; } else { this.imagePath = imagePath[0]; }
+            this.imagePath = imagePath;
+            this.frames = frames;
+            this.frameRate = frameRate;
+            this.strict = strict;
+            this.IMAGES_ANIM = new Anim(imagePath, frames, '');
+            this.imagesLib = [this.IMAGES_ANIM];
+            this.cacheAnim(this.IMAGES_ANIM);
+            this.x = x;
+            this.y = y;
+            this.layer = layer;
+            this.width = width;
+            this.height = height;
+            
         }else{
             super(world, imagePath, layer, x, y, width, height);
+            this.frames = frames;
+            this.imagePath = imagePath;
             imagePath = imagePath;
+            this.populateFrames();
+            this.img = new Image();
+            this.x = x;
+            this.y = y;
+            this.layer = layer;
+            this.width = width;
+            this.height = height;
         }
-
-        this.imagePath = imagePath;
-        this.frames = frames;
-        this.frameRate = frameRate;
-        this.strict = strict;
-        this.IMAGES_ANIM = new Anim(imagePath, frames, '');
-        this.imagesLib = [this.IMAGES_ANIM];
-        this.cacheAnim(this.IMAGES_ANIM);
-        this.x = x;
-        this.y = y;
-        this.layer = layer;
-        this.width = width;
-        this.height = height;
         this.generateStamp(this.name);
     }
 
@@ -87,6 +95,23 @@ class Movie extends Background {
         this.play();
     }
 
+
+    /**
+     * Populate image-based movie with frames.
+     */
+    populateFrames(){
+        for(let idx = 0; idx<this.frames; idx++){
+            let ext = this.imagePath.split('.').pop();
+            let img_name = this.imagePath.split('_').slice(0, -1).join('_');
+            let ipath =img_name+"_"+String(idx+1).padStart(3, '0')+'.'+ext;
+            if(this.imageCache?.[ipath]){return; };
+            this.anim.push(ipath);
+            this.imagesLib.push(ipath);
+            this.imageCache[ipath] = ipath;
+        }   
+    }
+
+
     /**
      * Starts playback of the movie or animation.
      * @param {boolean} [force=false] - Whether to forcibly play the video.
@@ -96,12 +121,11 @@ class Movie extends Background {
         clearInterval(this.animInterval);
         if (this.vid && !this.isVideoPlaying() && force) {
             this.vid.play().catch(() => {});
-            this.animInterval = setInterval(() => { this.animate(); }, 1000 / 30);
+
+            this.animInterval = setInterval(() => { this.animate(); }, 1000 / this.frameRate);
         }else{
             this.animInterval = setInterval(() => { this.animate(); }, 1000 / this.frameRate);
         }
-        
-        
     }
 
     /**
@@ -198,11 +222,11 @@ class Movie extends Background {
                 this.getVideoFrame();
             }
         } else {
-            if (!this.img || !this.isPlaying) return;
-            const i = this.currImage % this.IMAGES_ANIM.files.length;
-            const path = this.IMAGES_ANIM.files[i];
+            if(!this.img || !this.isPlaying){ return; }
+            let i = this.currImage % this.anim.length; 
+            let path = this.anim[i];
             this.currImage++;
-            if (!(path in this.imageCache)) return;
+            if(!(path in this.imageCache)) return;
             this.img.src = this.imageCache[path];
         }
     }
@@ -214,11 +238,10 @@ class Movie extends Background {
     draw(ctx) {
         if (this.vid) {
             if (this.isPlaying) this.vid.play();
-            ctx.drawImage(this.vid, this.x, this.y, this.width, this.height);
+            this.world.ctx.drawImage(this.vid, this.x, this.y, this.width, this.height);
         } else {
-            console.log(this.anim);
             if (!this.img) return;
-            ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+            this.world.ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
         }
     }
 

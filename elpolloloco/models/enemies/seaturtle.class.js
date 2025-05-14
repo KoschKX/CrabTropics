@@ -52,6 +52,7 @@ class SeaTurtle extends Enemy {
 	splashes;
 	splashType = 1;
 	splashStopFrame = 30;
+	splashFadingOut = false;
 	crater;
 
 	/**
@@ -81,6 +82,7 @@ class SeaTurtle extends Enemy {
 	 */
 	destroy(){
 		super.destroy();
+		this.splashFadingOut = false;
 		this.world.clearRepeater(this.sttInterval); 
 		this.world.clearTimer(this.retreatTimer);
 		this.world.level.enemies = destroy(this, this.world.level.enemies, this.world);
@@ -241,20 +243,23 @@ class SeaTurtle extends Enemy {
 				}
 	        });
 		}
-		if(this.scale < 1.0 && (this.splashes.currImage == this.splashStopFrame)){ 
-			if(this.splashes.isPlaying){ 
-				this.splashes.pause(true); 
-			} 
-			this.splashes.videoSeek(this.splashStopFrame);
+		if(!this.splashFadingOut && this.splashes.currImage >= this.splashStopFrame){ 
+			if(this.scale >= 1.0){
+				this.splashFadingOut = true;
+				this.splashes.play(true); 
+			}else{
+				if(this.splashes.isPlaying){ 
+					this.splashes.pause(true); 
+				} 
+				this.splashes.videoSeek(this.splashStopFrame);
+			}
 		}
-		if(this.scale >= 1.0 && !this.splashes.isPlaying){ 
-			this.splashes.play(true); 
-		}
-		if(this.splashes.currImage > 0 && this.splashes.currImage >= this.splashes.frames){ 
+		if(this.splashes.currImage > 0 && this.splashes.currImage >= this.splashes.frames -1){ 
 			this.splashes.destroy(); 
 			this.splashes = null;
 			this.world.player.flickering = false; 
 			this.world.player.invincible = false;
+			this.splashFadingOut = false;
 		}
 	}
 
