@@ -344,7 +344,7 @@ function checkOptions() {
 function inIframe(){
     document.querySelector('body').classList.add('nomobile');
     window.addEventListener('keydown', function(e) {
-        const prevent = ['ArrowUp', 'ArrowDown'];
+        const prevent = ['ArrowRight', 'ArrowLeft', 'ArrowUp','ArrowDown', 'Tab', 'CapsLock', 'Enter', ' '];
         if (prevent.includes(e.key)) { e.preventDefault(); }
     }, { passive: false });
     window.addEventListener('message', function(event) {
@@ -362,6 +362,15 @@ function inIframe(){
               bubbles: true, cancelable: true, clientX: x, clientY: y  
             });
             document.elementFromPoint(x, y)?.dispatchEvent(clickEvent);
+        }
+        if (event.data.action.includes("scroll")) {
+            let scroll=event.data.action.split(':');
+            if(scroll.length<1){ return; }
+            let s = scroll[1];
+            let ifrm = document.querySelector('#game iframe');
+            if(ifrm){ 
+                ifrm.contentDocument.querySelector('body .scroll').scrollBy({ top: s, behavior: 'smooth' }); 
+            }
         }
     });
 }
