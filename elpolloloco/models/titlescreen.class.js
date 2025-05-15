@@ -10,6 +10,8 @@ class Titlescreen {
     ctx;
     bounds = [0, 0, 0, 0];
     background;
+    video; 
+    vholder;
 
     /** INTERVALS */
     drawInterval;
@@ -55,6 +57,7 @@ class Titlescreen {
         clearInterval(this.drawInterval);
         clearInterval(this.ctlInterval);
         this.ctx.clearRect(0, 0, this.cvs.width, this.cvs.height);
+        if(this.vholder){ document.querySelector('body').removeChild(this.vholder); }
     }
 
     /**
@@ -70,24 +73,41 @@ class Titlescreen {
             self.ctlInterval = setInterval(() => { self.main(); }, 1000 / 60);
         });
 
+        this.createBGVideo();
+
+        this.screen.showMenu();
+        this.screen.showControls();
+    }
+
+    createBGVideo(){
+        this.vholder = document.createElement('div');  
+        this.vholder.id = 'title_bg'; 
+        this.vholder.classList.add('bg_video');
+        document.querySelector('body').appendChild(this.vholder);
         const vid = document.createElement('video');
         vid.id = 'title_video';
-        vid.classList.add('bg_video');
         vid.src = './mov/beachC_looped.'+vidFormat;
         vid.preload = 'auto';
+        vid.loading="lazy" 
+        vid.poster="./mov/beachC.jpg"
         vid.autoplay = true;
         vid.muted = true;
         vid.loop = true;
         vid.playsInline = true;
 
-        document.querySelector('body').appendChild(vid);
-        this.video = document.getElementById('title_video');
-        this.video.addEventListener('loadeddata', () => {
-            this.video.width = this.cvs.width;
-            this.video.height = this.cvs.height;
+        const img = document.createElement('img');
+        img.id = 'title_image';
+        img.src = './mov/beachC.jpg';
+
+        document.querySelector('body #title_bg').appendChild(img);
+        document.querySelector('body #title_bg').appendChild(vid);
+
+        this.bgimage = document.getElementById('title_image');
+        this.bgvideo = document.getElementById('title_video');
+        this.bgvideo.addEventListener('loadeddata', () => {
+            this.bgvideo.width = this.cvs.width;
+            this.bgvideo.height = this.cvs.height;
         });
-        this.screen.showMenu();
-        this.screen.showControls();
     }
 
     /**
@@ -114,7 +134,6 @@ class Titlescreen {
             if (typeof this[this.menuFuncs[this.selected]] === 'function') {
                 this[this.menuFuncs[this.selected]]();
                 this.menuChanged = true;
-                this.selfDestruct();
             }
         }
     }
@@ -125,13 +144,13 @@ class Titlescreen {
     selfDestruct() {
         this.destroy();
         this.screen.hideControls();
-        this.video.remove();
     }
 
     /**
      * Starts the game by loading the world and setting up the game screen.
      */
     start() {
+        this.selfDestruct();
         if(this.world){ return; }
         this.world = new World(this.cvs, this.screen, this.keyboard, this.audio);
         this.world.load(level01);
@@ -176,10 +195,20 @@ class Titlescreen {
      * Draws the background video onto the canvas.
      */
     drawVideo() {
-        if (this.video.currentTime >= this.video.duration - 0.2) {
-            this.video.currentTime = 0;
+        const hasVid = document.querySelector('#title_video');
+        const videoReady = hasVid && this.bgvideo && this.bgvideo.readyState >= 2;
+        const drawTarget = videoReady ? this.bgvideo : this.bgimage;
+        if (!drawTarget) return;
+        if (videoReady && this.bgvideo.currentTime >= this.bgvideo.duration - 0.2) {
+            this.bgvideo.currentTime = 0;
         }
-        this.ctx.drawImage(this.video, (this.cvs.width - this.width) * 0.5, (this.cvs.height - this.height) * 0.5, this.width, this.height);
+        this.ctx.drawImage(
+            drawTarget,
+            (this.cvs.width - this.width) * 0.5,
+            (this.cvs.height - this.height) * 0.5,
+            this.width,
+            this.height
+        );
     }
 
     /**
