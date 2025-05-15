@@ -273,7 +273,7 @@ class SeaTurtle extends Enemy {
 	 * Activates the SeaTurtle, starting its behavior and animations.
 	 */
 	activate(){
-		console.log('activated');
+		log('Turtle Activated');
 		this.boxes = []; 
 		this.width = this.startwidth; 
 		this.height = this.startheight; 
