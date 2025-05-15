@@ -719,7 +719,7 @@
             width: var(--app-width);
             height: var(--app-height);
             aspect-ratio: 3 / 2;
-            object-fit: contain;
+            /* object-fit: contain; */
         }
         
         body[data-fullscreen="true"] #holder, 
@@ -751,5 +751,13 @@
 
         body#impressum #holder .container{
             font-size: 1em;
+        }
+    }
+
+/* OPTIONS */
+
+    body.nomobile{
+        #controls{
+            display: none;
         }
     }

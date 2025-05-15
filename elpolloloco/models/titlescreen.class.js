@@ -27,6 +27,8 @@ class Titlescreen {
     /** STATUS */
     selected = 0;
     menuChanged = false;
+    started = false;
+
 
     /** WORLD REFERENCE */
     world;
@@ -156,6 +158,7 @@ class Titlescreen {
         this.world.load(level01);
         this.screen.setWorld(this.world);
         this.screen.resizeCanvas(this.world);
+        this.started=true;
     }
 
     /**

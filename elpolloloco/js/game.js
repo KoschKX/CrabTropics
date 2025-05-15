@@ -322,8 +322,48 @@ function init() {
          }, { passive: false });
     });
 
+    checkOptions();
+
     /** Check for hitbox grabber in URL params and initialize if needed */
     runHitBoxGrabber();
+}
+
+/** 
+ * Check QueryString for options 
+ * */
+function checkOptions() {
+    const qs = new URLSearchParams(window.location.search);
+    const iframe = qs.get("iframe");
+    if (iframe) { inIframe(); }
+}
+
+/**
+ * Setup for running the game inside an iFrame
+ * 
+ **/
+function inIframe(){
+    document.querySelector('body').classList.add('nomobile');
+    window.addEventListener('keydown', function(e) {
+        const prevent = ['ArrowUp', 'ArrowDown'];
+        if (prevent.includes(e.key)) { e.preventDefault(); }
+    }, { passive: false });
+    window.addEventListener('message', function(event) {
+        if (event.data.action === 'start') {
+            if(titlescreen && !titlescreen.started) { titlescreen.start(); }
+        }
+        if (event.data.action.includes("click")) {
+            let click=event.data.action.split(':');
+                if(click.length<2){ return; }
+            let coords=click[1].split(',');
+                if(coords.length<2){ return;}
+            let x = click = coords[0]; 
+            let y = coords[1];
+            const clickEvent = new MouseEvent('click', {
+              bubbles: true, cancelable: true, clientX: x, clientY: y  
+            });
+            document.elementFromPoint(x, y)?.dispatchEvent(clickEvent);
+        }
+    });
 }
 
 /**

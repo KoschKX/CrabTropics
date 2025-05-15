@@ -1,0 +1,29 @@
+@font-face {
+    font-family: 'Reggae'; 
+    src: url('fonts/reggae.woff2') format('woff2'),
+         url('fonts/reggae.woff') format('woff'),
+         url('fonts/reggae.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Keyboard'; 
+    src: url('fonts/keyboard.woff2') format('woff2'),
+         url('fonts/keyboard.woff') format('woff'),
+         url('fonts/keyboard.ttf') format('truetype'); 
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+  font-family: 'Symbols';
+  src: url('fonts/symbols.eot?75332767');
+  src: url('fonts/symbols.eot?75332767#iefix') format('embedded-opentype'),
+       url('fonts/symbols.woff2?75332767') format('woff2'),
+       url('fonts/symbols.woff?75332767') format('woff'),
+       url('fonts/symbols.ttf?75332767') format('truetype'),
+       url('fonts/symbols.svg?75332767#symbols') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
