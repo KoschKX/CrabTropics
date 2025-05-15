@@ -43,7 +43,13 @@ document.addEventListener('DOMContentLoaded', function() {
 function init() {
 
     let platform = document.querySelector('body').getAttribute('data-platform');
-    if (platform && platform.toLowerCase() === 'ipad') { vidFormat = 'mp4'; }
+    if (    
+            platform && (
+            platform.toLowerCase() === 'iphone' || 
+            platform.toLowerCase() === 'ipad')
+    )  { 
+        vidFormat = 'mp4'; 
+    }
 
     document.querySelector('body').setAttribute('video-format', vidFormat);
     document.querySelector('#debug_box #platform').innerHTML = platform;
