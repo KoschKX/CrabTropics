@@ -1,7 +1,6 @@
 /** CSS */
 
 	<link rel="stylesheet" href="/projects/crabtropics/fonts.css">
-
 	<style>
 		#keys{
 	    	display: flex;
@@ -14,12 +13,16 @@
 	      	font-size: 3em;
 	      	vertical-align: middle;
 		}
+		#game{
+	      	overflow: hidden;
+		}
 		.clickblocker{
-	        position: absolute;
-			width: 100%;
-	      	height: 100%;
-	      	z-index: 999;
-	      
+	        display: block;
+	        position: relative;
+	        top: -100%;
+	        width: 100%;
+	        height: 100%;
+	        pointer-events: all;
 		}
 	</style>
 
@@ -27,8 +30,8 @@
 /** HTML */
 
 	<div id="game">
-		<div class="clickblocker"></div>
 		<iframe id="ifrm" class="bordered" style="" src="/projects/crabtropics?iframe=true" width="100%" height="720" tabindex="0"  ></iframe>
+		<div class="clickblocker"></div>
 	</div>
 	
 
