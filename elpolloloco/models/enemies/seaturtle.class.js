@@ -22,13 +22,13 @@ class SeaTurtle extends Enemy {
 
 	/** ANIMATIONS */
 	IMAGES_SHELL = new Anim('./img/seaturtle/SHELL_001.png', 25, '');
-	IMAGES_IDLE = new Anim('./img/seaturtle/IDLE_001.png', 20, '');
-	IMAGES_FLING = new Anim('./img/seaturtle/FLING_001.png', 25, '');
-	IMAGES_EAT = new Anim('./img/seaturtle/EAT_001.png', 35, 'repeat=0');
-	IMAGES_SLAP = new Anim('./img/seaturtle/SLAP_001.png', 35, 'repeat=0');
-	IMAGES_COLLAPSE = new Anim('./img/seaturtle/COLLAPSE_001.png', 20, 'repeat=0');
-	IMAGES_RETREAT = new Anim('./img/seaturtle/RETREAT_001.png', 16, 'repeat=0');
-	IMAGES_DIE = new Anim('./img/seaturtle/DIE_001.png', 45, 'repeat=0');
+	IMAGES_IDLE = new Anim('./img/seaturtle/compressed/IDLE_001.png', 20, '');
+	IMAGES_FLING = new Anim('./img/seaturtle/compressed/FLING_001.png', 25, '');
+	IMAGES_EAT = new Anim('./img/seaturtle/compressed/EAT_001.png', 35, 'repeat=0');
+	IMAGES_SLAP = new Anim('./img/seaturtle/compressed/SLAP_001.png', 35, 'repeat=0');
+	IMAGES_COLLAPSE = new Anim('./img/seaturtle/compressed/COLLAPSE_001.png', 20, 'repeat=0');
+	IMAGES_RETREAT = new Anim('./img/seaturtle/compressed/RETREAT_001.png', 16, 'repeat=0');
+	IMAGES_DIE = new Anim('./img/seaturtle/compressed/DIE_001.png', 45, 'repeat=0');
 	imagesLib = [
 		this.IMAGES_SHELL, this.IMAGES_IDLE, this.IMAGES_FLING, this.IMAGES_EAT, this.IMAGES_COLLAPSE, this.IMAGES_RETREAT, this.IMAGES_SLAP, this.IMAGES_DIE,
 	];
@@ -50,7 +50,7 @@ class SeaTurtle extends Enemy {
 	startwidth = this.width;
 	startheight = this.height;
 	splashes;
-	splashType = 1;
+	splashType = 0;
 	splashStopFrame = 30;
 	splashFadingOut = false;
 	crater;
@@ -220,7 +220,7 @@ class SeaTurtle extends Enemy {
 				this.world.level.createVideo(this.splashes, './img/waves/SPLASH_001.webm', !check, false, false);
 				this.splashes.pause(true);
 			}else {
-				this.splashes  = new Movie(this.world, './img/waves/SPLASH_001.png', 4, 40, this.world.level.bounds[0], this.world.level.bounds[1], this.world.level.bounds[2], this.world.level.bounds[3] * 1.133);
+				this.splashes  = new Movie(this.world, './img/waves/compressed/SPLASH_001.png', 4, 40, this.world.level.bounds[0], this.world.level.bounds[1], this.world.level.bounds[2], this.world.level.bounds[3] * 1.133);
 			}
 			this.splashes.world = this.world;
 			this.splashes.init();
