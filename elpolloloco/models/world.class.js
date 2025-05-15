@@ -55,28 +55,19 @@ class World {
      * Initializes the world, playing ambient sounds and music and setting up initial game state.
      */
 	init() {
-
         if(this.loadicon){ this.loadicon.stop(); };
         // if(this.loadBar){ this.loadBar.stop(); };
-
 	    this.audio.playSound(this.level.ambient[0], 1.0, false, true);
 		this.audio.playMusic(this.level.music[0], 0.4, true);
-		
 		if(this.initialized){ return; }
-
     	this.frameDuration = 1000 / this.frameRate;
 		this.timestamp = 0; this.lastUpdateTime = performance.now(); 
-
 		this.bossTime = this.bossEventTime;
-
 		let self = this; setTimeout(function(){
 			self.clockStarted = true;
 		}, 1000);
-
 		this.draw();
-		
 		this.dripLoadBoss();
-
 		this.initialized = true;
 	}
 
@@ -125,62 +116,36 @@ class World {
      * @param {number} timestamp - The current time in milliseconds.
      */
 	draw(timestamp) {
-
 		this.timestamp = timestamp; this.frameDuration = 1000 / this.frameRate;
-
         // this.ctx.clearRect(0,0,this.cvs.width,this.cvs.height);
-
 		this.ctx.save(); 
-
 		this.updateCamera();
-
 		this.tick(timestamp);
-
 		this.ctx.restore();
-
 		this.hud.print();
-
 		this.drawFramesId = requestAnimationFrame((timestamp) => this.draw(timestamp));
 	}
 
-
     drawObjects(){
-
         this.addObjectsToMap(this.level.backgrounds.filter(background => background.layer === 0));
         this.addObjectsToMap(this.level.clouds);
-
         this.addObjectsToMap(this.level.backgrounds.filter(background => background.layer === 1));
-
         this.addObjectsToMap(this.level.enemies.filter(enemy => enemy.name === 'Ship'));
         this.addObjectsToMap(this.level.projectiles.filter(projectile => !projectile.falling && projectile.name === 'Cannonball'));
         this.addObjectsToMap(this.level.effects.filter(effect => effect.name === 'Explosion'));
-
         this.addObjectsToMap(this.level.backgrounds.filter(background => background.layer === 2));
-
         this.addObjectsToMap(this.level.projectiles.filter(projectile => projectile.name === 'XMark'));
-        
-
         this.addObjectsToMap(this.level.enemies.filter(enemy => enemy.name === 'SeaTurtle'));
-
         this.addObjectsToMap(this.level.items.filter(item => item.name === 'Doubloon'));
         this.addObjectsToMap(this.level.items.filter(item => item.name === 'Catnip'));
-
         this.addObjectsToMap(this.level.enemies.filter(enemy => enemy.dead && enemy.name === 'Crab'));
-
         this.addObjectsToMap(this.level.effects.filter(effect => effect.name === 'Sparkle'));
-
         this.addToMap(this.player);
-        
         this.addObjectsToMap(this.level.enemies.filter(enemy => !enemy.dead && enemy.name === 'Crab'));
-
         this.addObjectsToMap(this.level.effects.filter(effect => effect.name === 'Stomp'));
-        
         this.addObjectsToMap(this.level.projectiles.filter(projectile => projectile.falling && projectile.name === 'Cannonball'));
-
         this.addObjectsToMap(this.level.backgrounds.filter(background => background.layer === 3));
-
         this.addObjectsToMap(this.level.projectiles.filter(projectile => projectile.name === 'XArrow'));
-
         this.addObjectsToMap(this.level.backgrounds.filter(background => background.layer === 4));
     }
 
@@ -198,10 +163,8 @@ class World {
      */
     addToMap(mo) {
         if (mo.flickering && mo.flicker(1)) { return; }
-
         this.ctx.save();
         mo.draw(this.ctx);
-
         if (this.debug && mo instanceof Character) {
             mo.drawColliders(this.ctx);
         }
@@ -452,7 +415,6 @@ class World {
         });
     }
 
-
     /**
      * Checks if it's time for the boss fight to trigger.
      */
@@ -463,7 +425,6 @@ class World {
 			this.callBoss();
 		}
 	}
-
 
     /**
      * Calls and spawns the boss character when the boss fight begins.
