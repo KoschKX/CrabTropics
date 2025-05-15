@@ -207,6 +207,7 @@ class SeaTurtle extends Enemy {
 	 */
 	playIntro(){
 		if(!this.introPlaying){ return; }
+		this.state = -1; 
 		this.scale = Math.min(this.scale + 0.0025, 1.0);
 		this.x = (this.world.level.bounds[2] - this.width) * 0.5; 
 		this.y = (this.world.level.bounds[3]  - this.height) * (0.645 + (0.066 * this.scale)); 
@@ -234,7 +235,7 @@ class SeaTurtle extends Enemy {
 	 * Plays the crash animation when the SeaTurtle lands.
 	 */
 	playCrash(){
-		if(!this.splashes){ return; }
+		if(!this.splashes || this.state > -1){ return; }
 		this.world.player.invincible = true; 
 		this.world.player.flickering = true;
 		if(this.scale > 0.75 && this.scale < 1.0){  
@@ -249,11 +250,11 @@ class SeaTurtle extends Enemy {
 			if(this.scale >= 1.0){
 				this.splashFadingOut = true;
 				this.splashes.play(true); 
-				// console.log('play');
+				log('Playing Splash');
 			}else{
 				if(this.splashes.isPlaying){ 
 					this.splashes.pause(true); 
-					// console.log('pause');
+					log('Pausing Splash');
 				} 
 				this.splashes.videoSeek(this.splashStopFrame);
 			}
@@ -263,7 +264,8 @@ class SeaTurtle extends Enemy {
 			this.splashes = null;
 			this.world.player.flickering = false; 
 			this.world.player.invincible = false;
-			// console.log('destroyed');
+			log('Splash Destroyed');
+			this.behavior();
 		}
 	}
 
@@ -271,6 +273,7 @@ class SeaTurtle extends Enemy {
 	 * Activates the SeaTurtle, starting its behavior and animations.
 	 */
 	activate(){
+		console.log('activated');
 		this.boxes = []; 
 		this.width = this.startwidth; 
 		this.height = this.startheight; 
@@ -280,7 +283,6 @@ class SeaTurtle extends Enemy {
 
 		this.createCrater();
 		this.appear(); 
-		this.behavior();
 
 		this.world.audio.stopAllMusic();
 		this.world.audio.playMusic('sueno_tropical');
@@ -300,14 +302,15 @@ class SeaTurtle extends Enemy {
 	 * The SeaTurtle's behavior during the fight.
 	 */
 	behavior(){
-		this.state = 0;
-		let self = this; 
-		this.sttInterval = this.world.setRepeater(function(){
+		this.changeState(0);
+		log('Turtle Behavior started');
+		this.world.clearRepeater(this.sttInterval); 
+		let self = this;  this.sttInterval = this.world.setRepeater(function(){
 			let rstate = randomInt(1, 2);
 			if(self.state == 0){
 				self.changeState(rstate);
 			}
-		}, 1600 ); 	
+		}, 2000 ); 	
 	}
 
 	/**
@@ -316,6 +319,7 @@ class SeaTurtle extends Enemy {
 	 */
 	changeState(state) {
 		if (state === this.state) return;
+		log('Turtle state: '+state);
 		const actions = [
 			this.idle, this.bite, this.fling, this.slap, this.retreat, this.collapse, this.die
 		];
@@ -327,9 +331,10 @@ class SeaTurtle extends Enemy {
 	 * Makes the SeaTurtle appear.
 	 */
 	appear(){
-		if(this.state == 0){ return; }
-		this.state = 0; 
-		this.currImage = 0; 
+		//if(this.state == 0){ return; }
+		log('Boss Appeared');
+		//this.state = 0; 
+		//this.currImage = 0; 
 		this.loadImage(this.IMAGES_IDLE.files[0]);
 		this.changeAnimation(this.IMAGES_IDLE);
 	}

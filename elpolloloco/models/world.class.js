@@ -40,7 +40,7 @@ class World {
         this.scheduledTimers = [];
         this.scheduledRepeaters = [];
         this.bossTime = null;
-        this.bossEventTime = 300;
+        this.bossEventTime = 180;
         this.debug = false;
     }
 
@@ -90,6 +90,7 @@ class World {
 		this.elapsedTime = 0;
 		this.elapsedClockTime = 0;
 		this.clockStarted = false;
+        //this.lastUpdateTime = performance.now();
 		this.bossTime = this.bossEventTime;
 		this.gameover = false; 
 		this.debug = false; 
@@ -335,7 +336,7 @@ class World {
      */
     setRepeater(callback, delay) {
         const id = Math.random().toString(36).substr(2, 9);
-        const execTime = performance.now() + delay;
+        const execTime = this.elapsedTime + delay;
         this.scheduledRepeaters.push({ id, callback, delay, execTime });
         return id;
     }
