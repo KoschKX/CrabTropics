@@ -340,7 +340,7 @@ class World {
      */
     checkCollisionsItem() {
         this.level.items.forEach((item) => {
-            let colIA = this.player.isColliding(item, 0, 0);
+            let colIA = this.player.isColliding(item, 0, 0, true);
             if (colIA) {
                 this.player.getItem(item);
             }

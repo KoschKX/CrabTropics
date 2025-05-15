@@ -123,11 +123,11 @@ class Character extends MovableObject {
      * @param {number} idxB - The index of the other object's collision box.
      * @returns {number} - The direction of the collision or undefined if no collision.
      */
-    isColliding(mo,idxA,idxB) {
+    isColliding(mo,idxA,idxB, ignoreState = false) {
         if(!this.initialized){ return; }
         if(!this.boxes || !mo || !mo.boxes){ return; }
         if(!this.boxes[idxA][5] || !this.boxes[idxB][5] || idxA>this.boxes.length-1 || idxB>mo.boxes.length-1 ){ return; }
-        if((this.dead || this.invincible || !mo.hostile || mo.dead || mo.hurt) && idxA==0){ return; }
+        if( ( !ignoreState && (this.dead || this.invincible || !mo.hostile || mo.dead || mo.hurt)) && idxA==0 ){ return; }
 
         let offset = this.getOffset(); let moffset = mo.getOffset();    //
         let tx = this.x - offset[0]; let ty = this.y - offset[1];       // ACCOUNT FOR OFFSETS 
