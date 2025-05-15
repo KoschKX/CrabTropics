@@ -1,0 +1,59 @@
+/** CSS */
+
+	<link rel="stylesheet" href="/projects/crabtropics/fonts.css">
+
+	<style>
+		#keys{
+	    	display: flex;
+	      	flex-direction: row;
+	      	justify-content: space-evenly;
+		}
+		.key{
+	  		font-family: 'Keyboard';
+	      	margin-left: 0.5em;
+	      	font-size: 3em;
+	      	vertical-align: middle;
+		}
+		.clickblocker{
+	        position: absolute;
+			width: 100%;
+	      	height: 100%;
+	      	z-index: 999;
+	      
+		}
+	</style>
+
+
+/** HTML */
+
+	<div id="game">
+		<div class="clickblocker"></div>
+		<iframe id="ifrm" class="bordered" style="" src="/projects/crabtropics?iframe=true" width="100%" height="720" tabindex="0"  ></iframe>
+	</div>
+	
+
+/* JS */
+
+	<script>
+	document.addEventListener('DOMContentLoaded', function () {
+	  document.getElementById('ifrm').focus();
+	});
+	</script>
+	<script>
+	    const game = document.getElementById('game');
+	    game.addEventListener('click', function (e) {
+	       const iframe = document.getElementById('ifrm');
+	       document.getElementById('ifrm').focus();
+	       
+	       const rect = iframe.getBoundingClientRect();
+	 	   const x = e.clientX - rect.left; const y = e.clientY - rect.top;
+	      
+	       iframe.contentWindow.postMessage({ action: 'start' }, 'https://garyangelonejr.me');
+		   iframe.contentWindow.postMessage({ action: 'click:'+x+','+y }, 'https://garyangelonejr.me');
+		});
+	    game.addEventListener('wheel', function (e) {
+	       e.preventDefault();
+	       const iframe = document.getElementById('ifrm');
+		   iframe.contentWindow.postMessage({ action: 'scroll:'+e.deltaY }, 'https://garyangelonejr.me');
+	    });
+	</script>
