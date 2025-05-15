@@ -128,7 +128,7 @@ class World {
 
 		this.timestamp = timestamp; this.frameDuration = 1000 / this.frameRate;
 
-        this.ctx.clearRect(0,0,this.cvs.width,this.cvs.height);
+        // this.ctx.clearRect(0,0,this.cvs.width,this.cvs.height);
 
 		this.ctx.save(); 
 
