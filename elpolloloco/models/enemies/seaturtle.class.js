@@ -68,7 +68,7 @@ class SeaTurtle extends Enemy {
 		if(vidFormat=='mp4'){ this.splashType = 0; }
 
 		if(this.splashType == 0){
-			this.IMAGES_SPLASH = new Anim('./img/waves/SPLASH_001.png', 40, 'repeat=0');
+			this.IMAGES_SPLASH = new Anim('./img/waves/compressed/SPLASH_001.png', 40, 'repeat=0');
 			this.imagesLib.push(this.IMAGES_SPLASH);
 		}
 		if(this.splashType == 1){

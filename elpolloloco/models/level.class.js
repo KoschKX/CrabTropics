@@ -119,15 +119,16 @@ class Level {
         this.loadedCallback = callback;
         this.cacheImageLib(this.player, this.player.imagesLib); 
 
+        /*
         let minions = this.enemies.filter(enemy => !enemy.isBoss);
         minions.forEach((enemy) => { this.cacheImageLib(enemy, enemy.imagesLib); });
-
         let bosses = this.enemies.filter(enemy => enemy.isBoss === true);
         bosses.forEach((boss) => { this.tmp.push(boss); boss.destroy(); });
-
-        this.backgrounds.forEach((background) => { this.cacheImageLib(background, background.imagesLib); });
+        */
 
         let self = this;
+        this.backgrounds.forEach((background) => { this.cacheImageLib(background, background.imagesLib); });
+        this.enemies.forEach((enemy) => { this.cacheImageLib(enemy, enemy.imagesLib); });
         this.items.forEach((item) => { this.cacheImageLib(item, item.imagesLib); item.destroy(); self.items = []; });
         this.effects.forEach((effect) => { this.cacheImageLib(effect, effect.imagesLib); effect.destroy(); self.effects = []; });
         this.projectiles.forEach((projectile) => { this.cacheImageLib(projectile, projectile.imagesLib); projectile.destroy(); self.projectiles = []; });
