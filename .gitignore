@@ -4,3 +4,4 @@
 **/*.blend
 **/- ARCHIVE -/
 **/- WORKSPACE -/
+*.afdesign~lock~
