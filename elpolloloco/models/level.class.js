@@ -45,6 +45,9 @@ class Level {
     /** DOM REFERENCE */
     cacheDiv;
 
+    /** OPTIONS */
+    dripLoadBosses = false;
+
     /**
      * Creates a Level instance.
      * @param {World} The World.
@@ -116,19 +119,22 @@ class Level {
      * @param {function} callback - The callback to be called once all assets are preloaded.
      */
     preload(callback) {
+        let self = this;
         this.loadedCallback = callback;
         this.cacheImageLib(this.player, this.player.imagesLib); 
 
-        /*
-        let minions = this.enemies.filter(enemy => !enemy.isBoss);
-        minions.forEach((enemy) => { this.cacheImageLib(enemy, enemy.imagesLib); });
         let bosses = this.enemies.filter(enemy => enemy.isBoss === true);
-        bosses.forEach((boss) => { this.tmp.push(boss); boss.destroy(); });
-        */
+        let minions = this.enemies.filter(enemy => !enemy.isBoss);
+            
+        if(this.dripLoadBosses){
+            minions.forEach((enemy) => { this.cacheImageLib(enemy, enemy.imagesLib); });
+        }else{
+            this.enemies.forEach((enemy) => { this.cacheImageLib(enemy, enemy.imagesLib); });
+        }
 
-        let self = this;
+        bosses.forEach((boss) => { this.tmp.push(boss); boss.destroy(); });
+
         this.backgrounds.forEach((background) => { this.cacheImageLib(background, background.imagesLib); });
-        this.enemies.forEach((enemy) => { this.cacheImageLib(enemy, enemy.imagesLib); });
         this.items.forEach((item) => { this.cacheImageLib(item, item.imagesLib); item.destroy(); self.items = []; });
         this.effects.forEach((effect) => { this.cacheImageLib(effect, effect.imagesLib); effect.destroy(); self.effects = []; });
         this.projectiles.forEach((projectile) => { this.cacheImageLib(projectile, projectile.imagesLib); projectile.destroy(); self.projectiles = []; });
