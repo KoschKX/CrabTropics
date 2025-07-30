@@ -140,9 +140,7 @@ class Level {
         this.projectiles.forEach((projectile) => { this.cacheImageLib(projectile, projectile.imagesLib); projectile.destroy(); self.projectiles = []; });
     }
 
-    /**
-     * Unloads the level, removing all components and resetting state.
-     */
+    /* Unloads the level, removing all components and resetting state. */
     unload() {
         this.player.destroy();
         this.enemies.forEach((enemy) => { enemy.destroy(); });
@@ -151,21 +149,13 @@ class Level {
         this.backgrounds.forEach((background) => { background.destroy(); });
         this.name = '';
         this.player = null;
-        this.enemies = [];
-        this.clouds = [];
-        this.backgrounds = [];
-        this.items = [];
-        this.effects = [];
-        this.projectiles = [];
-        this.ambient = [];
-        this.music = [];
+        this.enemies = []; this.clouds = []; this.backgrounds = []; this.items = []; this.effects = []; this.projectiles = [];
+        this.ambient = []; this.music = [];
         this.bounds = [0, 0, 0, 0];
         this.ground = 0;
     }
 
-    /**
-     * Resets the level, unloading and rebuilding it.
-     */
+    /* Resets the level, unloading and rebuilding it. */
     reset() {
         this.unload();
         this.buildMap(this.levelmap, true);
@@ -201,17 +191,13 @@ class Level {
 
 	/**
 	 * Caches the assets (images) by appending them to the cache div.
-	 * It also ensures that a blank image is preloaded in case there are any missing assets.
-	 * 
 	 * @param {Array} images - The array of images to cache, each represented as an array with object and image path.
 	 * @param {boolean} [onDemand=false] - Flag indicating whether the caching is done on demand (default is false).
 	 */
 	cacheAssets(images, onDemand = false) {
 	    if (!images || !images.length || !this.cacheDiv) { return; }
-
 	    let self = this;
-
-	    // Check if the blank image is already in the cache, if not, append it
+        
 	    let checkBlank = document.querySelector('#cache img[src="' + './img/blank.png' + '"]');
 	    if (!checkBlank) {
 	        let blankImage = new Image();
@@ -219,18 +205,13 @@ class Level {
 	        this.cacheDiv.appendChild(blankImage);
 	    }
 
-	    // Set the data-level attribute on the body to track the level
 	    document.querySelector('body').setAttribute('data-level', this.name);
 
-	    // Process each image and add it to the cache
-	    images.forEach(function (image) {
-	        self.processAsset(image, onDemand);
-	    });
+	    images.forEach(function (image) { self.processAsset(image, onDemand); });
 	}
 
 	/**
 	 * Asynchronously loads a sequence of assets (images or videos) with a delay between each.
-	 * This can be used to reduce performance spikes caused by loading many assets at once.
 	 * @param {Array} images - An array of [object, path] pairs representing assets to load.
 	 * @param {number} delay - The delay in milliseconds between loading each asset.
 	 * @param {Function} [callback] - An optional callback function to call after all assets are loaded.
@@ -246,14 +227,10 @@ class Level {
 	        const promise = (async () => {
 	            await wait(startDelay);
 	            let [asset, type] = self.createAsset(obj, path, true);
-	            if (type === 'video') {
-	                self.loadedAssets += 1;
-	                return;
-	            }
-	            if (type !== 'image' || !asset) return;
+	            if (type === 'video') { self.loadedAssets += 1; return; }
+	            if (type !== 'image' || !asset) { return; }
 	            return new Promise(resolve => {
-	                asset.onload = resolve;
-	                asset.onerror = resolve;
+	                asset.onload = resolve; asset.onerror = resolve;
 	            });
 	        })();
 	        loadPromises.push(promise);
@@ -298,10 +275,7 @@ class Level {
 
 	/**
 	 * Processes and caches an asset (image or video) by checking if it is already cached.
-	 * Loads an asset and tracks the loading progress.
-	 * 
-	 * @param {Array} image - An array where the first element is the object associated with the asset,
-	 *                        and the second element is the path to the image or video file.
+	 * @param {Array} image - An array where the first element is the object associated with the asset, and the second element is the path to the image or video file.
 	 * @param {boolean} onDemand - A flag indicating whether the asset is being loaded on-demand (default is false).
 	 */
     processAsset(image, onDemand){
@@ -329,9 +303,7 @@ class Level {
             };
             self.totalAssets += 1;
         }else if(onDemand){
-            if(this.onDemandCallback) {
-                this.onDemandCallback(); this.onDemandCallback = null;
-            }
+            if(this.onDemandCallback) { this.onDemandCallback(); this.onDemandCallback = null; }
         }
     }
 
@@ -405,20 +377,15 @@ class Level {
 
 	/**
 	 * Converts a task name for displaying progress.
-	 *
 	 * @param {string} task - The task name string to sanitize.
 	 * @returns {string} - The sanitized task name with underscores replaced by spaces.
 	 */
 	sanitizeTaskName(task) {
-	    task = task.replaceAll('_', ' ');
-	    return task;
+	    task = task.replaceAll('_', ' '); return task;
 	}
 
 	/**
 	 * Updates the attributes of the cache container.
-	 * The method sets the progress, task name, and the file path
-	 * on the body element when loading is complete.
-	 * 
 	 * @param {number} progress - A decimal value representing the progress of asset loading (e.g., 0.5 for 50%).
 	 * @param {string} task - The path or name of the task or file being loaded. Used to derive the task name.
 	 * @param {boolean} [loaded] - A flag indicating whether the loading is complete. If true, sets a 'data-loaded' attribute on the body.
@@ -430,5 +397,4 @@ class Level {
         document.querySelector('#cache').setAttribute('data-task', this.sanitizeTaskName(taskname));
         if(loaded){ document.querySelector('body').setAttribute('data-loaded', loaded ); }
     }
-
 }

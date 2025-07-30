@@ -74,12 +74,9 @@ class SeaTurtle extends Enemy {
 		if(this.splashType == 1){
 			this.splashStopFrame -= 1;
 		}
-		//if(immediate){ init(); }
 	}
 
-	/**
-	 * Destroys the SeaTurtle instance and cleans up.
-	 */
+	/* Destroys the SeaTurtle instance and cleans up. */
 	destroy(){
 		super.destroy();
 		this.world.clearRepeater(this.sttInterval); 
@@ -90,9 +87,7 @@ class SeaTurtle extends Enemy {
 
 	}
 
-	/**
-	 * Initializes the SeaTurtle, resetting its properties.
-	 */
+	/* Initializes the SeaTurtle, resetting its properties. */
 	init() {
 		super.init();
 		this.state = -1;
@@ -105,9 +100,7 @@ class SeaTurtle extends Enemy {
 		this.getAnimatedHitBoxes();
 	}
 
-	/**
-	 * Starts the intro sequence, playing the SeaTurtle's appearance animation.
-	 */
+	/* Starts the intro sequence, playing the SeaTurtle's appearance animation. */
 	callBoss(){
 		this.world.audio.playSound('seaturtle_hornA', 0.5, true);
 		this.intro();
@@ -127,9 +120,7 @@ class SeaTurtle extends Enemy {
 		}
 	}
 
-	/**
-	 * Handles when the SeaTurtle is hit.
-	 */
+	/* Handles when the SeaTurtle is hit. */
 	isHit(){
 		super.isHit(); 
 		if(!this.dead && this.health > 0) { 
@@ -139,9 +130,7 @@ class SeaTurtle extends Enemy {
 		if(this.health <= 0) this.world.clearTimer(this.reviveTimer);
 	}
 
-	/**
-	 * Handles the SeaTurtle's animations based on its current state.
-	 */
+	/* Handles the SeaTurtle's animations based on its current state. */
 	handleAnimation(){
 
 		if(this.world.debug && this.world.keyboard.ENTER){
@@ -183,14 +172,10 @@ class SeaTurtle extends Enemy {
 		this.animateCollisionBoxes();
 	}
 
-	/**
-	 * Handles the SeaTurtle's movement. (Currently not implemented)
-	 */
+	/* Handles the SeaTurtle's movement. (Currently not implemented) */
 	handleMovement(){}
 
-	/**
-	 * Handles the intro animation of the SeaTurtle.
-	 */
+	/* Handles the intro animation of the SeaTurtle. */
 	intro(){
 		this.boxes = []; 
 		this.state = -1;
@@ -202,9 +187,7 @@ class SeaTurtle extends Enemy {
 		this.introPlaying = true;
 	}
 
-	/**
-	 * Plays the intro animation.
-	 */
+	/* Plays the intro animation. */
 	playIntro(){
 		if(!this.introPlaying){ return; }
 		this.state = -1; 
@@ -231,9 +214,7 @@ class SeaTurtle extends Enemy {
 		}
 	}
 
-	/**
-	 * Plays the crash animation when the SeaTurtle lands.
-	 */
+	/* Plays the crash animation when the SeaTurtle lands. */
 	playCrash(){
 		if(!this.splashes || this.state > -1){ return; }
 		this.world.player.invincible = true; 
@@ -269,9 +250,7 @@ class SeaTurtle extends Enemy {
 		}
 	}
 
-	/**
-	 * Activates the SeaTurtle, starting its behavior and animations.
-	 */
+	/* Activates the SeaTurtle, starting its behavior and animations. */
 	activate(){
 		log('Turtle Activated');
 		this.boxes = []; 
@@ -298,9 +277,7 @@ class SeaTurtle extends Enemy {
 		this.crater.init();
 	}
 
-	/**
-	 * The SeaTurtle's behavior during the fight.
-	 */
+	/* The SeaTurtle's behavior during the fight. */
 	behavior(){
 		this.changeState(0);
 		log('Turtle Behavior started');
@@ -327,21 +304,14 @@ class SeaTurtle extends Enemy {
 		if (action) action.call(this);
 	}
 	
-	/**
-	 * Makes the SeaTurtle appear.
-	 */
+	/* Makes the SeaTurtle appear. */
 	appear(){
-		//if(this.state == 0){ return; }
 		log('Boss Appeared');
-		//this.state = 0; 
-		//this.currImage = 0; 
 		this.loadImage(this.IMAGES_IDLE.files[0]);
 		this.changeAnimation(this.IMAGES_IDLE);
 	}
 
-	/**
-	 * Makes the SeaTurtle idle.
-	 */
+	/* Makes the SeaTurtle idle. */
 	idle(){
 		if(this.state == 0){ return; }
 		this.state = 0; 
@@ -349,9 +319,7 @@ class SeaTurtle extends Enemy {
 		this.changeAnimation(this.IMAGES_IDLE);
 	}
 
-	/**
-	 * Makes the SeaTurtle bite.
-	 */
+	/* Makes the SeaTurtle bite. */
 	bite(){
 		if(this.state == 1){ return; }
 		this.state = 1; 
@@ -359,9 +327,7 @@ class SeaTurtle extends Enemy {
 		this.changeAnimation(this.IMAGES_EAT);
 	}
 	
-	/**
-	 * Makes the SeaTurtle fling.
-	 */
+	/* Makes the SeaTurtle fling. */
 	fling(){
 		if(this.state == 2){ return; }
 		this.state = 2; 
@@ -369,9 +335,7 @@ class SeaTurtle extends Enemy {
 		this.changeAnimation(this.IMAGES_FLING);
 	}
 
-	/**
-	 * Makes the SeaTurtle slap.
-	 */
+	/* Makes the SeaTurtle slap. */
 	slap(){
 		if(this.state == 3){ return; }
 		this.state = 3; 
@@ -379,9 +343,7 @@ class SeaTurtle extends Enemy {
 		this.changeAnimation(this.IMAGES_SLAP);
 	}
 
-	/**
-	 * Makes the SeaTurtle retreat.
-	 */
+	/* Makes the SeaTurtle retreat. */
 	retreat(){
 		if(this.state == 4 || this.retreatTimer){ return; }
 		this.world.clearTimer(this.retreatTimer);
@@ -394,9 +356,7 @@ class SeaTurtle extends Enemy {
 		}, 2000);
 	}
 
-	/**
-	 * Makes the SeaTurtle collapse.
-	 */
+	/* Makes the SeaTurtle collapse. */
 	collapse(){
 		if(this.state == 5){ return; }
 		this.state = 5; 
@@ -404,9 +364,7 @@ class SeaTurtle extends Enemy {
 		this.changeAnimation(this.IMAGES_COLLAPSE);
 	}
 
-	/**
-	 * Makes the SeaTurtle die.
-	 */
+	/* Makes the SeaTurtle die. */
 	die(){
 		if(this.state == 6 || this.dead){ return; }
 		this.world.clearTimer(this.retreatTimer); 
@@ -418,15 +376,11 @@ class SeaTurtle extends Enemy {
 		this.world.audio.playSound('seaturtle_growlA', 1.0);
 	}
 
-	/**
-	 * No Movement for ol' turtle man.
-	 */
+	/* No Movement for ol' turtle man. */
 	moveLeft(){}
 	moveRight(){}
 
-	/**
-	 * No Revive.
-	 */
+	/* No Revive. */
 	revive(){}
 
 }

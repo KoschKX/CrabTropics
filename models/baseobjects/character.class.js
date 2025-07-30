@@ -71,8 +71,6 @@ class Character extends MovableObject {
         this.world.clearTimer(this.dieTimout);
     }
 
-    /* COLLISIONS */
-
     /**
      * Initializes the character's collision boxes.
      */
@@ -247,10 +245,8 @@ class Character extends MovableObject {
         const scaleX = tw / fw;
         const scaleY = th / fh;
         const box = sbox.slice();
-        box[0] = box[0] * scaleX;
-        box[1] = box[1] * scaleY;
-        box[2] = box[2] * scaleX;
-        box[3] = box[3] * scaleY;
+        box[0] = box[0] * scaleX; box[1] = box[1] * scaleY;
+        box[2] = box[2] * scaleX; box[3] = box[3] * scaleY;
         return box;
     }
 
@@ -390,9 +386,7 @@ class Character extends MovableObject {
      * Callback for after the character has been revived.
      * @param {function} callback - Function executed after revival.
      */
-    reviveCallback(callback) {
-        callback && callback();
-    }
+    reviveCallback(callback) { callback && callback(); }
 
     /** Spawns the character within bounds, randomly on the x coordinate */
     spawn(x1, x2, y){
@@ -402,7 +396,5 @@ class Character extends MovableObject {
         this.x = clamp(random(x1, x2), min, max);
         this.y = y;
     }
-
     respawn(){}
-
 }

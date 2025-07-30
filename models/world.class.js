@@ -10,53 +10,29 @@
 class World {
     
     constructor(cvs, scr, kbd, aud) {
-        this.cvs = cvs;
-        this.ctx = cvs.getContext('2d');
-        this.screen = scr;
-        this.keyboard = kbd;
-        this.audio = aud;
-        this.loadicon = new LoadIcon(canvas);
-        this.loadbar = new ProgressBar(canvas);
-        this.cam = new Camera(this);
-        this.hud = new HUD(this);
-        this.gameover = false;
-        this.paused = false;
-        this.initialized = false;
-        this.cache = true;
-        this.bosstest = false;
-        this.bossDripLoading = false;
-        this.level = null;
-        this.levelmap = null;
-        this.boss = null;
-        this.clsnInterval = null;
-        this.drawFramesId = null;
-        this.frameRate = 70;
-        this.elapsedTime = 0;
-        this.elapsedClockTime = 0;
-        this.clockStarted = false;
-        this.lastTime = null;
-        this.timestamp = null;
-        this.lastUpdateTime = null;
-        this.scheduledTimers = [];
-        this.scheduledRepeaters = [];
-        this.bossTime = null;
-        this.bossEventTime = 60;
-        this.debug = false;
+        this.cvs = cvs; this.ctx = cvs.getContext('2d');
+        this.screen = scr; this.keyboard = kbd; this.audio = aud;
+        this.loadicon = new LoadIcon(canvas); this.loadbar = new ProgressBar(canvas);
+        this.cam = new Camera(this); this.hud = new HUD(this);
+        this.gameover = false; this.paused = false;
+        this.boss = null; this.bosstest = false; this.bossDripLoading = false;
+        this.level = null; this.levelmap = null;
+        this.clsnInterval = null; this.drawFramesId = null;
+        this.frameRate = 70; this.elapsedTime = 0; this.elapsedClockTime = 0; this.clockStarted = false;
+        this.lastTime = null; this.timestamp = null; this.lastUpdateTime = null;
+        this.scheduledTimers = []; this.scheduledRepeaters = [];
+        this.bossTime = null; this.bossEventTime = 60;
+        this.initialized = false; this.cache = true; this.debug = false;
     }
 
-    /**
-     * Destroys the world instance and cancels any ongoing animation frame.
-     */
+    /* Destroys the world instance and cancels any ongoing animation frame. */
 	destroy() {
 		cancelAnimationFrame(this.drawFramesId); this.drawFramesId = null;
 	}
 
-    /**
-     * Initializes the world, playing ambient sounds and music and setting up initial game state.
-     */
+    /* Initializes the world, playing ambient sounds and music and setting up initial game state. */
 	init() {
         if(this.loadicon){ this.loadicon.stop(); };
-        // if(this.loadBar){ this.loadBar.stop(); };
 	    this.audio.playSound(this.level.ambient[0], 1.0, false, true);
 		this.audio.playMusic(this.level.music[0], 0.4, true);
 		if(this.initialized){ return; }
@@ -71,9 +47,7 @@ class World {
 		this.initialized = true;
 	}
 
-    /**
-     * Restarts the game, resetting all timers, states, and variables.
-     */
+    /* Restarts the game, resetting all timers, states, and variables. */
 	restart() {
 		this.unpause();
 		this.clearAllTimers();
@@ -81,7 +55,6 @@ class World {
 		this.elapsedTime = 0;
 		this.elapsedClockTime = 0;
 		this.clockStarted = false;
-        //this.lastUpdateTime = performance.now();
 		this.bossTime = this.bossEventTime;
 		this.gameover = false; 
 		this.debug = false; 
@@ -105,10 +78,7 @@ class World {
         this.levelmap = levelmap;
         this.player = this.level.player;
         this.ground = this.level.ground;
-        this.level.preload(function() {
-            this.world.init();
-            this.world.screen.showControls();
-        });
+        this.level.preload(function() { this.world.init(); this.world.screen.showControls(); });
     }
 
     /**
@@ -117,7 +87,6 @@ class World {
      */
 	draw(timestamp) {
 		this.timestamp = timestamp; this.frameDuration = 1000 / this.frameRate;
-        // this.ctx.clearRect(0,0,this.cvs.width,this.cvs.height);
 		this.ctx.save(); 
 		this.updateCamera();
 		this.tick(timestamp);
@@ -153,9 +122,7 @@ class World {
      * Adds objects to the game world map.
      * @param {Array} objects - The array of objects to add to the map.
      */
-    addObjectsToMap(objects) {
-        objects.forEach(obj => { this.addToMap(obj); });
-    }
+    addObjectsToMap(objects) { objects.forEach(obj => { this.addToMap(obj); }); }
 
     /**
      * Adds a single object to the map and draws it.
@@ -163,23 +130,14 @@ class World {
      */
     addToMap(mo) {
         if (mo.flickering && mo.flicker(1)) { return; }
-        this.ctx.save();
-        mo.draw(this.ctx);
-        if (this.debug && mo instanceof Character) {
-            mo.drawColliders(this.ctx);
-        }
+        this.ctx.save(); mo.draw(this.ctx);
+        if (this.debug && mo instanceof Character) { mo.drawColliders(this.ctx);}
         this.ctx.restore();
     }
 
-    /**
-     * Updates the camera's position based on the player's location.
-     */
+    /* Updates the camera's position based on the player's location. */
     updateCamera() {
-        this.cam.update(
-            [this.player.x, this.player.y],
-            [this.player.width * 0.5, 0],
-            this.level.bounds,
-        );
+        this.cam.update( [this.player.x, this.player.y], [this.player.width * 0.5, 0], this.level.bounds);
     }
 
     /**
@@ -228,8 +186,7 @@ class World {
      */
 	clock(){
 		let seconds= Math.floor(this.elapsedClockTime / 1000);
-		let minutes = Math.floor(seconds / 60);
-			seconds = seconds % 60;
+		let minutes = Math.floor(seconds / 60); seconds = seconds % 60;
 		return minutes.toString().padStart(2, '0')+':'+seconds.toString().padStart(2, '0');
 	}
 
@@ -240,11 +197,8 @@ class World {
      */
     remainderClock(total) {
         let remaining = Math.floor(total - (this.elapsedClockTime / 1000));
-        if (remaining < 0) {
-            remaining = 0;
-        }
-        const minutes = Math.floor(remaining / 60);
-        const seconds = remaining % 60;
+        if (remaining < 0) { remaining = 0; }
+        const minutes = Math.floor(remaining / 60); const seconds = remaining % 60;
         return minutes.toString().padStart(2, '0') + ':' + seconds.toString().padStart(2, '0');
     }
 
@@ -308,55 +262,32 @@ class World {
      * Clears a scheduled repeater by its ID.
      * @param {string} id - The ID of the repeater to clear.
      */
-    clearRepeater(id) {
-        this.scheduledRepeaters = this.scheduledRepeaters.filter(i => i.id !== id);
-    }
+    clearRepeater(id) { this.scheduledRepeaters = this.scheduledRepeaters.filter(i => i.id !== id); }
 
-    /**
-     * Clears all scheduled timers.
-     */
-    clearAllTimers() {
-        this.scheduledTimers = [];
-    }
+    /* Clears all scheduled timers. */
+    clearAllTimers() { this.scheduledTimers = []; }
 
-    /**
-     * Clears all scheduled repeaters.
-     */
-    clearAllRepeats() {
-        this.scheduledRepeaters = [];
-    }
+    /* Clears all scheduled repeaters. */
+    clearAllRepeats() { this.scheduledRepeaters = []; }
 
-    /**
-     * Checks for collisions between various game objects.
-     */
+    /* Checks for collisions between various game objects. */
     checkCollisions() {
-        this.checkCollisionsItem();
-        this.checkCollisionsProjectile();
-        this.checkCollisionsEnemy();
+        this.checkCollisionsItem(); this.checkCollisionsProjectile(); this.checkCollisionsEnemy(); this.checkCollisionsEnemyOnEnemy();
     }
 
-    /**
-     * Checks for collisions between the player and items.
-     */
+    /* Checks for collisions between the player and items. */
     checkCollisionsItem() {
         this.level.items.forEach((item) => {
             let colIA = this.player.isColliding(item, 0, 0, true);
-            if (colIA) {
-                this.player.getItem(item);
-            }
+            if (colIA) { this.player.getItem(item); }
         });
     }
 
-    /**
-     * Checks for collisions between projectiles and various game entities (player, enemies).
-     */
+    /* Checks for collisions between projectiles and various game entities (player, enemies). */
     checkCollisionsProjectile() {
         this.level.projectiles.forEach((projectile) => {
-            let colPA = this.player.isColliding(projectile, 0, 0);
-            let colPB = this.player.isColliding(projectile, 1, 0);
-            if (colPA) {
-                this.player.isHit(true);
-            }
+            let colPA = this.player.isColliding(projectile, 0, 0); let colPB = this.player.isColliding(projectile, 1, 0);
+            if (colPA) { this.player.isHit(true); }
             if (colPB) {
                 if (projectile instanceof XMark) {
                     if (this.keyboard.DOWN) this.player.dig(projectile);
@@ -374,13 +305,10 @@ class World {
         });
     }
 
-    /**
-     * Checks for collisions between the player and enemies.
-     */
+    /* Checks for collisions between the player and enemies. */
     checkCollisionsEnemy() {
         this.level.enemies.forEach((enemy) => {
-            let colA = this.player.isColliding(enemy, 0, 0);
-            let colB = this.player.isColliding(enemy, 1, 1);
+            let colA = this.player.isColliding(enemy, 0, 0); let colB = this.player.isColliding(enemy, 1, 1);
             if (colB) {
                 if (this.player.falling) {
                     let bopPoint = enemy.y + enemy.boxes[1][1] - (this.player.boxes[1][1]);
@@ -400,35 +328,31 @@ class World {
                 }
             }
         });
+    }
 
-        /** Checks enemies on other enemies */
-        let antiEnemies = this.level.enemies.filter(antiEnemy => antiEnemy.attacksEnemies === true);
-        antiEnemies.forEach((antiEnemy) => {
-            if( !antiEnemy.boxes || !antiEnemy.boxes.length ){ return; }
-            this.level.enemies.forEach((enemy) => {
-                if(enemy==antiEnemy){ return; }
-                let colA = antiEnemy.isColliding(enemy,0,0);
-                if(colA){
-                    enemy.isHit();
-                }
+    /** Checks enemies on other enemies */
+    checkCollisionsEnemyOnEnemy() {
+        this.level.enemies.forEach((enemy) => {
+            let antiEnemies = this.level.enemies.filter(antiEnemy => antiEnemy.attacksEnemies === true);
+            antiEnemies.forEach((antiEnemy) => {
+                if( !antiEnemy.boxes || !antiEnemy.boxes.length ){ return; }
+                this.level.enemies.forEach((enemy) => {
+                    if(enemy==antiEnemy){ return; }
+                    let colA = antiEnemy.isColliding(enemy,0,0);
+                    if(colA){ enemy.isHit(); }
+                });
             });
         });
     }
 
-    /**
-     * Checks if it's time for the boss fight to trigger.
-     */
+    /* Checks if it's time for the boss fight to trigger. */
 	checkBossTime(){
 		if(this.boss){ return; }
 		let remaining = Math.floor(this.bossTime - (this.elapsedClockTime / 1000));
-		if( remaining<0 ){
-			this.callBoss();
-		}
+		if( remaining<0 ){ this.callBoss(); }
 	}
 
-    /**
-     * Calls and spawns the boss character when the boss fight begins.
-     */
+    /* Calls and spawns the boss character when the boss fight begins. */
 	callBoss(){
 		if(this.bosstest || this.gameover){ return; } 
 		let tmpBoss = new SeaTurtle(this, false);
@@ -436,8 +360,7 @@ class World {
 			log('Boss Called');
 			self.bossTime = (self.elapsedClockTime / 1000);
 			self.boss = new SeaTurtle(self, false);
-		  	self.boss.init();
-		  	self.boss.callBoss();
+		  	self.boss.init(); self.boss.callBoss();
 		  	self.boss.appearing = false; self.boss.static = true;
 		  	self.level.enemies.push(self.boss);
 		  	tmpBoss.destroy();
@@ -446,23 +369,17 @@ class World {
 		this.audio.playSound('seaturtle_hornA', 0.5, true);
 	}
 
-    /**
-     * Drip loads the boss assets (e.g., images, animations) as needed.
-     */
+    /* Drip loads the boss assets (e.g., images, animations) as needed. */
 	dripLoadBoss(){
 		if(this.bossDripLoading){ return; } 
 		this.bossDripLoading = true;
 		let tmpBoss = new SeaTurtle(this, false);
 		let self = this; this.level.dripImageLib(tmpBoss, tmpBoss.imagesLib, 100 ,function(){
-			log('Boss Loaded');
-			self.bossDripLoading = false;
-			tmpBoss.destroy();
+			log('Boss Loaded'); self.bossDripLoading = false; tmpBoss.destroy();
 		});
 	}
 
-    /**
-     * Check for the Video Format.
-     */
+    /* Check for the Video Format. */
     getVideoFormat(){
         this.videoFormat = document.querySelector('body').getAttribute('video-format');
         if(!this.videoFormat){this.videoFormat = 'mp4'; }
@@ -470,21 +387,13 @@ class World {
 
 /* ------------------ DEBUG ------------------ */
 
-    /**
-     * Checks if the TAB key is pressed to enable advanced menu.
-     */
+    /* Checks if the TAB key is pressed to enable advanced menu. */
     checkAdvMenuKey(){
-        if(this.keyboard.TAB){
-            document.querySelector('body').setAttribute('advanced-menu', true);
-        }
+        if(this.keyboard.TAB){ document.querySelector('body').setAttribute('advanced-menu', true); }
     }
 
-    /**
-     * Toggle to see Debug information on the screen and in the console.
-     */
+    /* Toggle to see Debug information on the screen and in the console. */
     toggleDebug(onoff, force = false){
-        document.querySelector('body').setAttribute('data-debug', onoff);
-        this.debug = onoff;
+        document.querySelector('body').setAttribute('data-debug', onoff); this.debug = onoff;
     }
-
 }
