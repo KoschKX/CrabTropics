@@ -231,6 +231,7 @@
         font-family: "Symbols";
         text-align: center;
         width: 1em;
+        cursor: pointer !important;
     }
 
     #menu .button .icon.active {
