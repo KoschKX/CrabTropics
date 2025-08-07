@@ -146,7 +146,9 @@ function init() {
             e.stopPropagation();
             e.preventDefault();
             if (titlescreen.world) {
+                let astate = audio.muted;
                 titlescreen.world.restart();
+                if(astate){ audio.mute(); }
             }
         }, { passive: false });
     });
