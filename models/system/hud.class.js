@@ -108,6 +108,21 @@ class HUD {
     }
 
     /**
+     * Displays the boss's current health on the HUD.
+     */
+    displayBossHealth() {
+        if(!this.world.boss){ return; }
+        let scale = 3;
+        let fontSize = 40;
+        let font = 'bold ' + fontSize + 'px Arial';
+        let lineHeight = fontSize * 0.33;
+        let text = Array(this.world.boss.health).fill('¤').join('\u2009');
+        //drawText(this.ctx, scale * 7.25, scale * 40, 0, 0, text, 'white', font, 'left', 'middle', 'red', 1);
+        drawText(this.ctx, (this.cvs.width) * 0.5, scale * 60, 0, 0, text, 'white', font, 'center', 'middle', 'red', 1);
+    }
+
+
+    /**
      * Displays the player's current wealth (doubloons) on the HUD.
      */
     displayWealth() {
@@ -138,6 +153,7 @@ class HUD {
      */
     status() {
         this.displayHealth();
+        this.displayBossHealth();
         this.displayWealth();
         this.displayClock();
     }
