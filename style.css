@@ -687,9 +687,9 @@
             display: none;
     }
 
-    @media screen and (max-width: 1152px){
+    @media screen and (max-width: 1180px){
         #holder, #game, #canvas {
-            width: 100% !important;
+            /*  width: 100% !important; */
             /*  height: 100% !important; */
             object-fit: contain;
         }
@@ -711,7 +711,7 @@
         }
     }
 
-    @media screen and (min-width: 1153px){
+    @media screen and (min-width: 1181px){
 
        
         #holder,
